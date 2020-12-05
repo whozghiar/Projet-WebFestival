@@ -6,7 +6,6 @@ $port=3306;
 $user="root";
 $passwd="root";
 
-/*** require('tp2.php');**/
 $db = new PDO
   (
       // !! une seule ligne, sans espace !!
