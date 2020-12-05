@@ -1,8 +1,8 @@
 <?php
-require '../../includes/flight/flight/Flight.php';
+require '../includes/flight/flight/Flight.php';
 require 'routes.php';
-require '../../includes/Smarty/libs/Smarty.class.php'; 
-require '../../includes/pdo.php';
+require '../includes/Smarty/libs/Smarty.class.php'; 
+require '../includes/pdo.php';
 
 Flight::register('view', 'Smarty', array(), function($smarty){
     $smarty->template_dir = './templates/';
