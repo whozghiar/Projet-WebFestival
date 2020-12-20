@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
     <head>
+	    <link href="css/index.css" type="text/css" rel="stylesheet" >
             <meta name= "viewport" content="width=device-width, initial-scale=1">
             <title>index</title>
     </head>
