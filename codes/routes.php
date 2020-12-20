@@ -37,21 +37,25 @@ Flight::route('GET /register', function(){
  * on y déclare une variable $erreur de type Booléen, qui nous servira d'indicateur d'erreur, TRUE s'il y en a une, FALSE sinon.
  * On déclare également un tableau $messages qui contiendra les messages d'erreur.
  *
- * On implémente des variables $nom ; $mail ; $mdp qui sont les 3 champs rentrés par l'utilisateur.
+ * On implémente des variables $prenom $nom ; $mail ; $mdp qui sont les 4 champs rentrés par l'utilisateur.
  *
+ * 
  * Dans un premier temps, on vérifier que le champ "nom" envoyé n'est pas vide.
  * S'il l'est, la variable erreur passe à True et on ajoute un message d'erreur dans le tableau à la clé "nom".
  *
+ * On vérifie que le champ "prenom" envoyé n'est pas vide.
+ * S'il l'est, la variable erreur passe à True et on ajoute un message d'erreur dans le tableau à la clé "prenom". 
+ * 
  * On vérifie que le champ "mail" envoyé n'est pas vide.
  * S'il l'est, la variable erreur passe à True et on ajoute un message d'erreur dans le tableau à la clé "mail".
  *
  * Sinon, On vérifie que le champ "mail" envoyé correspond à un mail valide.
  * S'il ne l'est pas, la variable erreur passe à True et on ajoute un message d'erreur dans le tableau à la clé "mail".
  *
- * On vérifie que le champ "Motdepasse" n'est pas vide.
+ * On vérifie que le champ "motdepasse" n'est pas vide.
  * S'il l'est, la variable erreur passe à True et on ajoute un message d'erreur dans le tableau à la clé "passe".
  *
- * Sinon, on vérifie que le champ "Motdepasse" est d'une longueur supérieure à 8 caractères.
+ * Sinon, on vérifie que le champ "motdepasse" est d'une longueur supérieure à 8 caractères.
  * S'il ne l'est pas, la variable erreur passe à True et on ajoute un message d'erreur dans le tableau à la clé "passe".
  *
  *
@@ -75,9 +79,15 @@ Flight::route('POST /register', function(){
   $erreur = False;
   $messages=array();
 
+  $prenom = $_POST["prenom"];
   $nom = $_POST["nom"];
   $mail = $_POST["email"];
   $mdp = $_POST["passe"];
+
+  if (empty($nom)){
+    $erreur = True;
+    $messages["prenom"] = 'Vous devez saisir un Prénom.';
+  }
 
   if (empty($nom)){
     $erreur = True;
@@ -106,7 +116,7 @@ Flight::route('POST /register', function(){
   else {
     $db = Flight::get('db');
     // MAIL
-    $req = $db -> prepare( "SELECT email FROM utilisateur where email = :mail");
+    $req = $db -> prepare( "SELECT mail FROM utilisateurs where mail = :mail");
     $req -> execute (array(':mail' => "$mail"));
 
     if ($req -> rowCount() > 0)
@@ -128,7 +138,8 @@ Flight::route('POST /register', function(){
   else{
     $mdp = password_hash($mdp,PASSWORD_DEFAULT);
     $db = Flight::get('db');
-    $req = $db -> prepare("INSERT INTO utilisateur(Nom,Email,Motdepasse) VALUES (:nom,:mail,:passe)");
+    $req = $db -> prepare("INSERT INTO utilisateurs(mail,nom,prenom,motdepasse) VALUES (:mail,:nom,:prenom,:passe)");
+    $req -> bindParam(':prenom',$prenom);
     $req -> bindParam(':nom',$nom);
     $req -> bindParam(':mail',$mail);
     $req -> bindParam('passe',$mdp);
@@ -140,6 +151,12 @@ Flight::route('POST /register', function(){
 
 });
 
+Flight::route('GET /success', function(){
+  $data=array(
+    "titre" => "Succès"
+  );
+  Flight::render('success.tpl',$data);
+});
 
 
 /*
