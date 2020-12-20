@@ -230,7 +230,7 @@ Flight::route('POST /login', function(){
 
   else {
     $db = Flight::get('db');
-    $req = $db -> prepare ("SELECT * FROM utilisateur WHERE Email=:email");
+    $req = $db -> prepare ("SELECT * FROM utilisateurs WHERE mail=:email");
     $req -> bindParam(':email',$mail);
     $req -> execute();
     if ($req -> rowCount()==0){
@@ -244,13 +244,14 @@ Flight::route('POST /login', function(){
       $compte= $req -> fetch();
 
     }
+    print_r($compte);
 
     if (isset($compte)){
 
-      if (password_verify($mdp,$compte[2])){
+      if (password_verify($mdp,$compte[5])){
 
           $_SESSION['user'] = $compte[0];
-          $_SESSION['mail'] = $compte[1];
+          $_SESSION['mail'] = $compte[2];
 
         }
 
@@ -267,6 +268,7 @@ Flight::route('POST /login', function(){
   if ($erreur==False){
 
     Flight::redirect("/");
+    
 
   }
 
@@ -293,6 +295,25 @@ Flight::route('POST /login', function(){
     );
     Flight::render('liste_candidature.tpl',$data);
   });
+
+
+
+
+
+
+  Flight::route('GET /candidature', function(){
+    $data=array(
+      "titre"=>"Candidature",
+      "messages"=>array()
+    );
+    Flight::render('formulaire_candidature.tpl',$data);
+  });
+
+
+
+
+
+
 
 
 
