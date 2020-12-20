@@ -175,55 +175,107 @@ Flight::route('GET /success', function(){
   });
 
 
-  /*
-    Cette route permet d'accéder à la page de connexion par la méthode  POST
-    On vérifie si les deux champs ne sont pas vides, si c'est le cas on renvoie une erreur. De plus on execute une commande SQl pour vérifier si l'email et le mot de passe sont bien dans la base.
-    Si c'est le cas on renvoie à la route "/" sinon on envoie un message d'erreur pour dire qu'un des deux champs est incorrect.
-*/
+ /**
+ * La méthode POST de la route /login permet de vérifier la correspondance entre les champs rentrés par l'utilisateur
+ * et la base de données.
+ *
+ * On initialise une variable $erreur à la valeur False. Elle déterminera si une erreur survient durant le traitement TRUE si oui, FALSE sinon.
+ * On initialise également un tableau $messages  qui contiendra les messages d'erreurs en fonction des champs problématiques.
+ * On initialise des variables $mail, $mdp qui correspondent respectivement à la valeur du champ concerné, rentré par l'utilisateur.
+ *
+ * On vérifie que le champ "Email" n'est pas vide.
+ * S'il l'est, la variable $erreur passe à True et on ajoute un message d'erreur dans le tableau à la clé "email".
+ *
+ * On vérifie que le champ "Motdepasse" n'est pas vide.
+ * S'il l'est, la variable $erreur passe à True et on ajoute un message d'erreur dans le tableau à la clé "passe".
+ *
+ * Si les conditions ci-dessus ne sont pas remplies, on procède à une requête préparée.
+ * Cette requête est préparée puisque les données traitées sont injectées par l'utilisateur.
+ * On associe grâce à la fonction "bindParam" le paramètre email à la variable $mail.
+ * On exécute la requête SQL.
+ *
+ * Si aucune ligne ne ressort de cette requête alors l'identifiant par email n'existe pas dans la table.
+ * La variable $erreur passe à True et on ajoute un message d'erreur dans le tableau à la clé "email".
+ * Sinon, on insère dans une variable $compte le résultat de la requête.
+ *
+ * Si cette variable $compte existe, on vérifie la correspondance des mots de passe.
+ * Si la correspondance est vérifiée, on insère dans une tableau $_SESSION à la clé "user" la valeur de l'élément d'indice [0] du tableau $compte (le Nom d'utilisateur)
+ *
+ * Si le mot de passe n'est pas vérifié
+ * La variable $erreur passe à True et on ajoute un message d'erreur dans le tableau à la clé "passe".
+ *
+ *
+ * S'il n'y a pas d'erreur dans le traitement, on redirige l'utilisateur sur la page d'index lié à la route "/"
+ * Sinon, on renvoie la page de login avec les champs erronés.
+ */
 
-  Flight::route("POST /login", function(){
-    $error = false;
-    if (empty($_POST['email'])) $error["email"] = "champs vide";
-    if (empty($_POST['mdp'])) $error["mdp"] = "champs vide";
-    if (!$error) {
-        $db = Flight::get("db");
-        $req = $db->prepare("SELECT * FROM `logs` WHERE `Email` = ?");
-        $req->execute(array($_POST['email'])); // On execute la commande sql (avec cette email à la place de ?)
-        if ($data = $req->fetch()) { // Si résultat
-            if (password_verify($_POST['mdp'], $data['Motdepasse'])) { // Si mot de passe correct
-                $_SESSION['logged'] = true;
-                $_SESSION['username'] = $data['Nom'];
-            } else $error['error'] = "Adresse Email ou mot de passe invalide.";
+
+Flight::route('POST /login', function(){
+  $erreur = False;
+  $messages = array();
+  $mail = $_POST["email"];
+  $mdp = $_POST["passe"];
+
+  if(empty($mail)){
+
+    $erreur = True;
+    $messages['Email'] = "L'email est invalide, SAISISSEZ UN MAIL VALIDE.";
+  }
+
+  if (empty($mdp)){
+
+    $erreur = True;
+    $messages['passe'] = "Le mot de passe est invalide, SAISISSEZ UN MOT DE PASSE.";
+  }
+
+  else {
+    $db = Flight::get('db');
+    $req = $db -> prepare ("SELECT * FROM utilisateur WHERE Email=:email");
+    $req -> bindParam(':email',$mail);
+    $req -> execute();
+    if ($req -> rowCount()==0){
+
+      $erreur = True;
+      $messages['Email'] = " Les identifiants n'existent pas.";
+    }
+
+    else{
+
+      $compte= $req -> fetch();
+
+    }
+
+    if (isset($compte)){
+
+      if (password_verify($mdp,$compte[2])){
+
+          $_SESSION['user'] = $compte[0];
+          $_SESSION['mail'] = $compte[1];
+
         }
-        else $error['error'] = "Adresse email ou mot de passe invalide.";
+
+      else{
+
+          $erreur = True;
+          $messages['passe'] = "Mot de passe incorrect";
+
+        }
     }
-    if ($error) {
-        Flight::render("templates/login.tpl", 
-          array(
-            "post" => $_POST, 
-            "error" => $error
-          )
-        );
-  
-    } else {
-        Flight::redirect("/"); //Si aucune erreur l'utilisateur et redirigé vers la page d'acceuil
-    }
-  });
 
-/*
-    Cette route permet d'accéder à la page de formulaire des candidatures par la méthode GET
-    On y déclare un tableau, dans lequel on retrouve le titre de la page, sa route complète et les messages d'erreurs qui s'afficheront.
-    On fait ensuite un rendu du fichier template : "formulaire_candidature.tpl" ; un formulaire nous demandans de rentrer toutes les informations pour que les groupes puissent s'inscire et soumettre leur candidature.
+  }
 
-*/
+  if ($erreur==False){
 
-  Flight::route('GET /formulaire_candidature', function(){
-    $data=array(
-      "titre"=>"formulaire_candidature",
-      "messages"=>array()
-    );
-    Flight::render('formulaire_candidature.tpl',$data);
-  });
+    Flight::redirect("/");
+
+  }
+
+  else{
+    Flight::view()->assign('messages',$messages);
+    Flight::render("login.tpl",$_POST);
+  }
+
+});
 
 
 

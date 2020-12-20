@@ -22,7 +22,7 @@
             {else}
             <p>  Vous êtes déjà inscrits ? <a href="login"> Connectez vous </a> </p> 
                 <br> <br> 
-                OU 
+                <p> OU <p> 
                 <br> <br>
             <p> <a href = "register"> Inscrivez vous </a> <br> Vous verrez, c'est cool !  </p>
             {/if}
