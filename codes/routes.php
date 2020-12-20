@@ -32,65 +32,114 @@ Flight::route('GET /register', function(){
   });
 
 
-/*
-    Cette route permet d'envoyer les données de connexion rentrés par l'utilisateur par la méthode POST (son mot de passe, son nom et son email)
-   On vérifie si l'emai n'est pas déjà dans la base de données, si c'est le cas on message d'eereur pour dire qu'elle est déjà utilisé. 
+/**
+ * Cette route utilise la méthode POST,
+ * on y déclare une variable $erreur de type Booléen, qui nous servira d'indicateur d'erreur, TRUE s'il y en a une, FALSE sinon.
+ * On déclare également un tableau $messages qui contiendra les messages d'erreur.
+ *
+ * On implémente des variables $nom ; $mail ; $mdp qui sont les 3 champs rentrés par l'utilisateur.
+ *
+ * Dans un premier temps, on vérifier que le champ "nom" envoyé n'est pas vide.
+ * S'il l'est, la variable erreur passe à True et on ajoute un message d'erreur dans le tableau à la clé "nom".
+ *
+ * On vérifie que le champ "mail" envoyé n'est pas vide.
+ * S'il l'est, la variable erreur passe à True et on ajoute un message d'erreur dans le tableau à la clé "mail".
+ *
+ * Sinon, On vérifie que le champ "mail" envoyé correspond à un mail valide.
+ * S'il ne l'est pas, la variable erreur passe à True et on ajoute un message d'erreur dans le tableau à la clé "mail".
+ *
+ * On vérifie que le champ "Motdepasse" n'est pas vide.
+ * S'il l'est, la variable erreur passe à True et on ajoute un message d'erreur dans le tableau à la clé "passe".
+ *
+ * Sinon, on vérifie que le champ "Motdepasse" est d'une longueur supérieure à 8 caractères.
+ * S'il ne l'est pas, la variable erreur passe à True et on ajoute un message d'erreur dans le tableau à la clé "passe".
+ *
+ *
+ * Autrement, on fait une requête préparée puisque l'utilisateur injecte des valeurs de champs.
+ * Cette requête vérifie que l'Email inséré n'est pas déjà présente dans la base de données.
+ * Si elle l'est, la variable erreur passe à True et on ajoute un message d'erreur dans le tableau à la clé "mail".
+ *
+ * En cas d'erreur, on assigne à une variable flight "messages" le tableau de messages d'erreurs que nous pourrons ré-utiliser dans le fichier template : "register.tpl".
+ * On réutilise le tableau $_POST pour ne pas avoir à retaper les champs valides par l'utilisateur.
+ *
+ * S'il n'y a pas d'erreur, on peut procéder à l'insertion des champs rentrés par l'utilisateur dans notre base de données.
+ * On commence tout d'abord par un chiffrage du mot de passe de manière "salée", on récupère ensuite la base de données.
+ * On y insère les champs rentrés par l'utilisateur dans une requête préparée.
+ * L'opérateur " bindParam " permet de lier un paramètre un nom de variable spécifique.
+ * On exécute ensuite la requête.
+ * On redirige l'utilisateur sur la page "Success" rendue par le fichier template "success.tpl".
+ *
+ */
 
-*/
+Flight::route('POST /register', function(){
+  $erreur = False;
+  $messages=array();
 
-  Flight::route('POST /register', function(){
-  
-    $erreur = false;
-    $messages=array();
-    $mail = $_POST['email'];
-    $nom = $_POST['nom'];
-    if (empty($_POST["nom"])){
-      $erreur = true;
-      $messages["nom"] = 'Saisir un Nom';
-    }
-    if (empty($_POST["email"])){
-      $erreur = true;
-      $messages["email"] = 'Saisir une adresse mail';
-    }
-    else if(!filter_var($mail, FILTER_VALIDATE_EMAIL)){
-      $erreur = true;
-      $messages["email"] = "Email invalide";
-    }
-    else{
-      $db = Flight::get('db');
-      $statement = $db -> prepare("select Email from logs where Email = :email");
-      $statement -> execute(array(':email' => "$mail"));
-      if($statement -> rowCount() > 0){
-        $erreur = true;
-        $messages['email'] = 'Email déjà utilisé.';
-      }
-    }
-    $mdp = $_POST['mdp'];
-    if (empty($mdp)){
-      $erreur = true;
-      $messages['mdp'] = 'Saisir un mot de passe';
-    }
-    else if(strlen($mdp)<8){
-      $messages['mdp']="Le mot de passe doit contenir au moins 8 caractères";
+  $nom = $_POST["nom"];
+  $mail = $_POST["email"];
+  $mdp = $_POST["passe"];
+
+  if (empty($nom)){
+    $erreur = True;
+    $messages["nom"] = 'Vous devez saisir un Nom.';
   }
-  
-    if ($erreur){
-      Flight::view()->assign('messages',$messages);
-  
-      Flight::render('register.tpl',$_POST);
-  
+  if (empty($mail)){
+    $erreur = True;
+    $messages["email"] = 'Vous devez saisir une Email.';
+  }
+
+  elseif (!filter_var($mail,FILTER_VALIDATE_EMAIL)){
+    $erreur = True;
+    $messages["email"]='Vous devez saisir une Email VALIDE.';
+  }
+
+  if (empty($mdp)){
+    $erreur = True;
+    $messages["passe"] = 'Vous devez saisir un mot de passe.';
+  }
+
+  elseif  (strlen($mdp) < 8 ){
+    $erreur = True;
+    $messages["passe"] = 'Votre mot de passe doit faire 8 caractères minimum.';
+  }
+
+  else {
+    $db = Flight::get('db');
+    // MAIL
+    $req = $db -> prepare( "SELECT email FROM utilisateur where email = :mail");
+    $req -> execute (array(':mail' => "$mail"));
+
+    if ($req -> rowCount() > 0)
+    {
+      $erreur = True;
+      $messages['email'] = 'Email déjà existante.';
     }
-    else{
-      $statement = $db -> prepare("insert into logs (Nom, Email, Motdepasse) VALUES (:nom, :mail, :mdp)");
-              $mdp = password_hash($mdp, PASSWORD_DEFAULT);
-              $statement -> execute(array(':nom' => $nom, ':mail' => $mail, ':mdp' => $mdp));
-              $_SESSION['logged'] = true;
-              $_SESSION['username'] = $_POST["nom"];
-              Flight::redirect('sucess');
-    }
-  
-  
-  });
+  }
+
+
+
+  if ($erreur){
+    Flight::view()->assign('messages',$messages);
+
+    Flight::render('register.tpl',$_POST);
+
+  }
+
+  else{
+    $mdp = password_hash($mdp,PASSWORD_DEFAULT);
+    $db = Flight::get('db');
+    $req = $db -> prepare("INSERT INTO utilisateur(Nom,Email,Motdepasse) VALUES (:nom,:mail,:passe)");
+    $req -> bindParam(':nom',$nom);
+    $req -> bindParam(':mail',$mail);
+    $req -> bindParam('passe',$mdp);
+    $req -> execute();
+    Flight::redirect('/success');
+
+  }
+
+
+});
+
 
 
 /*
