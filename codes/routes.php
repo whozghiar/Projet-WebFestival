@@ -300,7 +300,9 @@ Flight::route('POST /login', function(){
   /*
     Cette route permet d'accéder à la page de candidature, dans laquelle, un utilisateur, est en capacité d'inscrire son groupe à l'évènement.
     On déclare dans cette route, un tableau comportant le titre de la page ainsi que d'éventuels messages d'erreurs.
-    On utilise une requête directe dans laquelle on sélectionne le nom des départements, afin qu'ils soient proposés dans une liste déroulante.
+
+    On utilise une requête directe dans laquelle on sélectionne le nom des départements, afin qu'ils soient proposés dans une liste déroulante du formulaire.
+    On utilise également une requête directe dans laquelle on sélectionne les types de scènes, afin qu'ils soient proposés dans une liste déroulante du formulaire.
   */
 
 
