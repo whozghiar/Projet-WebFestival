@@ -302,9 +302,15 @@ Flight::route('POST /login', function(){
 
 
   Flight::route('GET /candidature', function(){
+    $db = Flight::get('db');
+
     $data=array(
       "titre"=>"Candidature",
-      "messages"=>array()
+      "messages"=>array(),
+      "reqAlb"=>$db->query(
+      "SELECT nom FROM departements ")
+
+
     );
     Flight::render('formulaire_candidature.tpl',$data);
   });
@@ -328,6 +334,7 @@ Flight::route('POST /login', function(){
     $data=array(
       "titre"=>"detail_candidature",
       "messages"=>array()
+
     );
     Flight::render('detail_candidature.tpl',$data);
   });

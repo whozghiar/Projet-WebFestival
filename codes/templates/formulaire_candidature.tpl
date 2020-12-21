@@ -11,17 +11,28 @@
         <h1> Candidature au festival : </h1>
 
 
-<form action="register" method="POST">
+<form action="candidature" method="POST">
 
-    <p> <label> Nom du groupe : </label> <input type = "text" name = "Nom du groupe" value = "{$nomGrp|default:''}" required>{$messages.nomGrp|default:''} </p>
+    <div> <label> Nom du groupe : </label> <input type = "text" name = "Nom du groupe" value = "{$nomGrp|default:''}" required>{$messages.nomGrp|default:''} </div>
+    
+    <div> <label> Département : </label>
+              <select type = "text"  name = "Departement" required> 
+                <option selected> Autre
+                {foreach $reqAlb item=ligne}
+                <option> {$ligne[0]}
+                {/foreach}
+                </select>
+    </div>
 
-    <p>  <label> Nom : </label> <input type = "text" name="nom" value="{$nom|default:''}"> {$messages.nom|default:''} </p>
+    <div>  <label> Ville représentant : </label> <input type = "text" name="Ville représentant" value="{$villeRep|default:''}"> {$messages.villeRep|default:''}  </div>
+   
+    <div> <label> Code Postal Représentant : </label> <input type = "number" min =  name = "Code Postal" value = "{$cp|default:''}"> {$messages.cp|default:''} </div>
 
-    <p> <label> Email : </label> <input type = "email" name="email" value="{$email|default:''}"> {$messages.email|default:''}</p>
+    <div> <label>  Téléphone : </label> <input type = "number" name="tel" value = "{$cp|default:''}" required> {$messages.tel|default:''}  </div>
 
-    <p> <label>  Mot De Passe : </label> <input type = "password" name="passe"> {$messages.passe|default:''}</p>
 
-    <p> <input type ="submit"> </p>
+
+    <div> <input type ="submit"> </div>
 </form>
 
     </body>
