@@ -7,7 +7,9 @@
         <title>Login</title>
     </head>
     <body>
-        <h1> Connexion : </h1>
+        <div class="fadeIn H1">
+            <h1> Connexion : </h1>
+        </div>
 
         <br> 
     <div class = "wrapper fadeInDown">

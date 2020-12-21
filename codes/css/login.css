@@ -203,7 +203,18 @@ input[type=mail]::placeholder,input[type=password]:placeholder {
   animation-delay: 1s;
 }
 
-
+.fadeIn.H1 {
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  text-transform: uppercase;
+  margin: 40px 8px 10px 8px; 
+  color: #fcfcfc;
+  -webkit-animation-delay: 1.2s;
+  -moz-animation-delay: 1.2s;
+  animation-delay: 1.2s;
+}
 
 
 /* OTHERS */

@@ -6,7 +6,7 @@
             <title>{$titre}</title>
     </head>
     <body>
-        <div class="fadeIn H1"
+        <div class="fadeIn H1">
             <h1> Inscription : </h1>
         </div>
 
