@@ -297,6 +297,11 @@ Flight::route('POST /login', function(){
 
 
 
+  /*
+    Cette route permet d'accéder à la page de candidature, dans laquelle, un utilisateur, est en capacité d'inscrire son groupe à l'évènement.
+    On déclare dans cette route, un tableau comportant le titre de la page ainsi que d'éventuels messages d'erreurs.
+    On utilise une requête directe dans laquelle on sélectionne le nom des départements, afin qu'ils soient proposés dans une liste déroulante.
+  */
 
 
 
@@ -306,7 +311,7 @@ Flight::route('POST /login', function(){
     $data=array(
       "titre"=>"Candidature",
       "messages"=>array(),
-      "reqAlb"=>$db->query(
+      "reqDep"=>$db->query(
       "SELECT nom FROM departements ")
 
 
