@@ -78,6 +78,15 @@
     </div> 
 
     <div>
+        <label> Scène : * </label>
+        <select required
+                type = "text"
+                name = "scene">
+            {foreach $reqScenes item = scene}
+                <option> {$scene[0]}
+            {/foreach}
+        </select>
+    <div>
         <label> Votre Style musical : * </label>
         <input  type = "text"
                 name = "styleMus"
@@ -217,13 +226,38 @@
     <div>
         <label> Insérez deux Photos du groupe (Résolution > 300 DPI) * </label>
         <br>
-        <input  name = "photoGrp1"
+        <input  required
+                name = "photoGrp1"
                 id = "photoGrp1"
                 type = "file">
         </input>
         <br>
-        <input  name = "photoGrp2"
+        <input  required
+                name = "photoGrp2"
                 id = "photoGrp2"
+                type = "file">
+        </input>
+    </div>
+
+
+    <div>
+        <label> Ajoutez 3 extraits de vos musiques en .MP3 * </label>
+        <br>
+        <input  required
+                name = "mus1"
+                id = "mus1"
+                type = "file">
+        </input>
+        <br>
+        <input  required
+                name = "mus2"
+                id = "mus2"
+                type = "file">
+        </input>
+        <br>
+        <input  required
+                name = "mus3"
+                id = "mus3"
                 type = "file">
         </input>
     </div>
@@ -237,6 +271,10 @@
 
     </body>
 </html>
+
+
+
+
 
 {else}
 

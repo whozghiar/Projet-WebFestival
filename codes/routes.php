@@ -312,7 +312,11 @@ Flight::route('POST /login', function(){
       "titre"=>"Candidature",
       "messages"=>array(),
       "reqDep"=>$db->query(
-      "SELECT nom FROM departements ")
+        "SELECT nom FROM departements "),
+
+      "reqScenes"=>$db->query(
+        "SELECT s.type FROM scenes s ")
+      
 
 
     );
