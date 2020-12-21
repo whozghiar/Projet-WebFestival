@@ -1,4 +1,5 @@
 <?php
+session_start();
 require '../includes/flight/flight/Flight.php';
 require 'routes.php';
 require '../includes/Smarty/libs/Smarty.class.php'; 
@@ -17,10 +18,9 @@ Flight::register('view', 'Smarty', array(), function($smarty){
    
 Flight::set("db",$db);
 
-
-Flight::route('/', function(){
-    echo 'hello world!';
-});
+if(isset($_SESSION['user'])){
+    Flight::view() -> assign('user',$_SESSION['user']);
+}
 
 Flight::start();
 

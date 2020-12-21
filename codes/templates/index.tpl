@@ -8,8 +8,9 @@
     <body>
         <h1> Accueil </h1>
             {if isset ($user)}
-            <p> <h2> Salut {$user} ! </h2> </p>
-            
+            <p> <h2> Bonjour {$user} ! </h2> </p>
+            <br>
+            <p> <h3> Vous pouvez désormais naviguer sur le site. </h3> </p>
             <br>
             <br>
 

@@ -25,7 +25,7 @@ Flight::route('GET /', function(){
 */
 Flight::route('GET /register', function(){
     $data=array(
-      "titre"=>"Register",
+      "titre"=>"Inscription",
       "messages"=>array()
     );
     Flight::render('register.tpl',$data);
@@ -250,7 +250,7 @@ Flight::route('POST /login', function(){
 
       if (password_verify($mdp,$compte[5])){
 
-          $_SESSION['user'] = $compte[0];
+          $_SESSION['user'] = $compte[4];
           $_SESSION['mail'] = $compte[2];
 
         }
@@ -340,3 +340,4 @@ Flight::route('POST /login', function(){
     $_SESSION['logged'] = false;
     Flight::redirect("/"); // Redirection vers l'accueil
 });
+

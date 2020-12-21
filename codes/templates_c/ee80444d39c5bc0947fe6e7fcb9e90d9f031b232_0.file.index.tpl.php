@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-12-20 16:57:05
+/* Smarty version 3.1.34-dev-7, created on 2020-12-20 18:23:36
   from 'C:\public_html\codes\templates\index.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5fdf82612819f8_05383742',
+  'unifunc' => 'content_5fdf96a8154211_71277065',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'ee80444d39c5bc0947fe6e7fcb9e90d9f031b232' => 
     array (
       0 => 'C:\\public_html\\codes\\templates\\index.tpl',
-      1 => 1608483423,
+      1 => 1608488590,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5fdf82612819f8_05383742 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5fdf96a8154211_71277065 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!doctype html>
 <html>
     <head>
@@ -31,9 +31,10 @@ function content_5fdf82612819f8_05383742 (Smarty_Internal_Template $_smarty_tpl)
     <body>
         <h1> Accueil </h1>
             <?php if ((isset($_smarty_tpl->tpl_vars['user']->value))) {?>
-            <p> <h2> Salut <?php echo $_smarty_tpl->tpl_vars['user']->value;?>
+            <p> <h2> Bonjour <?php echo $_smarty_tpl->tpl_vars['user']->value;?>
  ! </h2> </p>
-            
+            <br>
+            <p> <h3> Vous pouvez désormais naviguer sur le site. </h3> </p>
             <br>
             <br>
 
