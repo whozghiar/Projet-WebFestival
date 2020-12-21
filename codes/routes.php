@@ -244,7 +244,6 @@ Flight::route('POST /login', function(){
       $compte= $req -> fetch();
 
     }
-    print_r($compte);
 
     if (isset($compte)){
 

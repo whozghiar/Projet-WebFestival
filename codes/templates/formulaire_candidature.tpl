@@ -67,14 +67,37 @@
                  max = "2021"
                  value = "{$anneeCrea|default:''}"
                  required> {$messages.anneeCrea|default:''}
-                 
-            
-
     </div> 
 
+    <div>
+        <input  type = "text"
+                name = "styleMus"
+                placeholder="Style Musical"
+                value = "{$styleMus|default:''}"
+                required> {$messages.styleMus|default:''}
+    </div>
+
+    <div>
+        <input  type = "text"
+                name = "presTexte"
+                placeholder="Présentez votre groupe..."
+                value = "{$presTexte|default:''}"
+                required> {$messages.presTexte|default:''}
+    </div>  
+
+    <div>
+        <input  type = "text"
+                name = "expScenique"
+                placeholder="Parlez-nous de votre expérience scénique..."
+                value = "{$expScenique|default:''}"
+                required> {$messages.expScenique|default:''}
+    </div>
 
 
-    <div> <input type ="submit"> </div>
+    <div> 
+        <input type ="submit">
+    </div>
+    
 </form>
 
     </body>
