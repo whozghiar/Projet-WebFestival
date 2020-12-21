@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-12-20 19:29:28
+/* Smarty version 3.1.34-dev-7, created on 2020-12-21 15:39:11
   from 'C:\public_html\codes\templates\login.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5fdfa618e0d861_71239006',
+  'unifunc' => 'content_5fe0c19fa194c9_64315217',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '55e905338665b244e7eb45c3ca0eadbfbbf25ad7' => 
     array (
       0 => 'C:\\public_html\\codes\\templates\\login.tpl',
-      1 => 1608492564,
+      1 => 1608565012,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5fdfa618e0d861_71239006 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5fe0c19fa194c9_64315217 (Smarty_Internal_Template $_smarty_tpl) {
 ?><html>
     <head>
         
@@ -30,7 +30,9 @@ function content_5fdfa618e0d861_71239006 (Smarty_Internal_Template $_smarty_tpl)
         <title>Login</title>
     </head>
     <body>
-        <h1> Connexion : </h1>
+        <div class="fadeIn H1">
+            <h1> Connexion : </h1>
+        </div>
 
         <br> 
     <div class = "wrapper fadeInDown">

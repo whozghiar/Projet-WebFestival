@@ -28,7 +28,11 @@
    
     <div> <label> Code Postal Représentant : </label> <input type = "number" min =  name = "Code Postal" value = "{$cp|default:''}"> {$messages.cp|default:''} </div>
 
-    <div> <label>  Téléphone : </label> <input type = "number" name="tel" value = "{$cp|default:''}" required> {$messages.tel|default:''}  </div>
+    <div> <label>  Téléphone : </label>
+        <input type = "tel" name="tel" pattern = "[0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2}" value = "{$tel|default:''}" required> {$messages.tel|default:''}
+        
+    
+    </div>
 
 
 

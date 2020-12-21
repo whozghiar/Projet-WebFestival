@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-12-20 18:21:02
+/* Smarty version 3.1.34-dev-7, created on 2020-12-21 15:40:16
   from 'C:\public_html\codes\templates\register.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5fdf960e3f1266_62856196',
+  'unifunc' => 'content_5fe0c1e07ab339_02452802',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '233e6a21c6290170d11c85e0db4d848eabb2e636' => 
     array (
       0 => 'C:\\public_html\\codes\\templates\\register.tpl',
-      1 => 1608488456,
+      1 => 1608565012,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5fdf960e3f1266_62856196 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5fe0c1e07ab339_02452802 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!doctype html>
 <html>
     <head>
@@ -30,40 +30,36 @@ function content_5fdf960e3f1266_62856196 (Smarty_Internal_Template $_smarty_tpl)
 </title>
     </head>
     <body>
+        <div class="fadeIn H1">
+            <h1> Inscription : </h1>
+        </div>
 
-        <h1> Inscription : </h1>
 
 
-<form action="register" method="POST">
 
-    <fieldset>
-        <div>
-            <label for="aligned-name"> Prénom : </label>
-            <input type = "text"  name = "prenom" placeholder="prenom" value = "<?php echo (($tmp = @$_smarty_tpl->tpl_vars['prenom']->value)===null||$tmp==='' ? '' : $tmp);?>
+        <div class = "wrapper fadeInDown"> 
+            <div id = "formContent">
+                <form action="register" method="POST">
+                   
+                    <input class = "fadeIn second" type = "text"  name = "prenom" placeholder="prenom" value = "<?php echo (($tmp = @$_smarty_tpl->tpl_vars['prenom']->value)===null||$tmp==='' ? '' : $tmp);?>
 "><?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['prenom'])===null||$tmp==='' ? '' : $tmp);?>
 
-        <div>
-        <div> 
-            <label> Nom : </label> 
-            <input type = "text" name="nom" placeholder="nom" value="<?php echo (($tmp = @$_smarty_tpl->tpl_vars['nom']->value)===null||$tmp==='' ? '' : $tmp);?>
+                
+                    <input class = "fadeIn third" type = "text" name="nom" placeholder="nom" value="<?php echo (($tmp = @$_smarty_tpl->tpl_vars['nom']->value)===null||$tmp==='' ? '' : $tmp);?>
 "> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['nom'])===null||$tmp==='' ? '' : $tmp);?>
 
-        <div> 
-        <div> 
-            <label> Email : </label> 
-            <input type = "email" name="email" placeholder="email" value="<?php echo (($tmp = @$_smarty_tpl->tpl_vars['email']->value)===null||$tmp==='' ? '' : $tmp);?>
-"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['email'])===null||$tmp==='' ? '' : $tmp);?>
+            
+                    <input class = "fadeIn fourth" type="email" name="email" placeholder="Email" value="<?php echo (($tmp = @$_smarty_tpl->tpl_vars['email']->value)===null||$tmp==='' ? '' : $tmp);?>
+"  required> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['Email'])===null||$tmp==='' ? '' : $tmp);?>
 
-        <div> 
-        <div> 
-            <label>  Mot De Passe : </label> 
-            <input type = "password" name="passe" placeholder="mot de passe"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['passe'])===null||$tmp==='' ? '' : $tmp);?>
+            
+                    <input class ="fadeIn fifth" type="password"  name="passe" placeholder="Mot de passe" required> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['passe'])===null||$tmp==='' ? '' : $tmp);?>
 
-        <div> 
-        <div> 
-            <input class="bouton" type ="submit"> 
-        <div> 
-    </fieldset>
+                
+                    <p> <input class = "fadeIn six" type ="submit" value = "S'inscrire"> </p>
+            </div> 
+        </div> 
+    
 </form>
 
     </body>

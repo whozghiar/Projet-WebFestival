@@ -6,33 +6,29 @@
             <title>{$titre}</title>
     </head>
     <body>
+        <div class="fadeIn H1">
+            <h1> Inscription : </h1>
+        </div>
 
-        <h1> Inscription : </h1>
 
 
-<form action="register" method="POST">
 
-    <fieldset>
-        <div>
-            <label for="aligned-name"> Prénom : </label>
-            <input type = "text"  name = "prenom" placeholder="prenom" value = "{$prenom|default:''}">{$messages.prenom|default:''}
-        <div>
-        <div> 
-            <label> Nom : </label> 
-            <input type = "text" name="nom" placeholder="nom" value="{$nom|default:''}"> {$messages.nom|default:''}
-        <div> 
-        <div> 
-            <label> Email : </label> 
-            <input type = "email" name="email" placeholder="email" value="{$email|default:''}"> {$messages.email|default:''}
-        <div> 
-        <div> 
-            <label>  Mot De Passe : </label> 
-            <input type = "password" name="passe" placeholder="mot de passe"> {$messages.passe|default:''}
-        <div> 
-        <div> 
-            <input class="bouton" type ="submit"> 
-        <div> 
-    </fieldset>
+        <div class = "wrapper fadeInDown"> 
+            <div id = "formContent">
+                <form action="register" method="POST">
+                   
+                    <input class = "fadeIn second" type = "text"  name = "prenom" placeholder="prenom" value = "{$prenom|default:''}">{$messages.prenom|default:''}
+                
+                    <input class = "fadeIn third" type = "text" name="nom" placeholder="nom" value="{$nom|default:''}"> {$messages.nom|default:''}
+            
+                    <input class = "fadeIn fourth" type="email" name="email" placeholder="Email" value="{$email|default:''}"  required> {$messages.Email|default:''}
+            
+                    <input class ="fadeIn fifth" type="password"  name="passe" placeholder="Mot de passe" required> {$messages.passe|default:''}
+                
+                    <p> <input class = "fadeIn six" type ="submit" value = "S'inscrire"> </p>
+            </div> 
+        </div> 
+    
 </form>
 
     </body>
