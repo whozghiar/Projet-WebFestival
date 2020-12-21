@@ -15,12 +15,14 @@
                 <p> <h3> Vous pouvez désormais naviguer sur le site. </h3> </p>
                 <br>
                 <br>
-
-                <a href="logout"><input type="button" value="Se déconnecter"> </a>
+            <div class = "wrapper fadeInDown">
+            <div id = "formContent">
+                <a href="logout"><input class = "fadeIn fourth" type="button" value="Se déconnecter"> </a>
                 <br>
                 <br>
-                <a href="profil"><input type="button" value="Voir le profil"> </a>
-
+                <a href="profil"><input class = "fadeIn fourth" type="button" value="Candidater"> </a>
+            </div>
+            </div>
 
                 {else}
                 <p>  Vous êtes déjà inscrits ? <a href="login"> Connectez vous </a> </p> 
