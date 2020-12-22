@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-12-22 10:42:33
+/* Smarty version 3.1.34-dev-7, created on 2020-12-22 13:31:33
   from 'C:\git\projetWEB\codes\templates\index.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5fe1cd991e56f5_83571191',
+  'unifunc' => 'content_5fe1f5350a74f5_70220475',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'a63b66045a51b5d66741f4e4de1ca0138cc7a057' => 
     array (
       0 => 'C:\\git\\projetWEB\\codes\\templates\\index.tpl',
-      1 => 1608630236,
+      1 => 1608643888,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5fe1cd991e56f5_83571191 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5fe1f5350a74f5_70220475 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!doctype html>
 <html>
     <head>
@@ -44,7 +44,7 @@ function content_5fe1cd991e56f5_83571191 (Smarty_Internal_Template $_smarty_tpl)
                 <a href="logout"><input class = "fadeIn fourth" type="button" value="Se déconnecter"> </a>
                 <br>
                 <br>
-                <a href="profil"><input class = "fadeIn fourth" type="button" value="Candidater"> </a>
+                <a href="candidature"><input class = "fadeIn fourth" type="button" value="Candidater"> </a>
             </div>
             </div>
 

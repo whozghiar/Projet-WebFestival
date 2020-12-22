@@ -20,7 +20,7 @@
                 <a href="logout"><input class = "fadeIn fourth" type="button" value="Se déconnecter"> </a>
                 <br>
                 <br>
-                <a href="profil"><input class = "fadeIn fourth" type="button" value="Candidater"> </a>
+                <a href="candidature"><input class = "fadeIn fourth" type="button" value="Candidater"> </a>
             </div>
             </div>
 
