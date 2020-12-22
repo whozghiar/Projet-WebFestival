@@ -222,6 +222,7 @@
            
                 <label class = "fadeIn fourth"> Fiche Technique (PDF) : * </label>
                 <input  class = "fadeIn fourth"
+                        required
                         name = "ficheTechnique"
                         type="file">
                 {$messages.ft|default:''}
@@ -235,6 +236,7 @@
             
                 <label class = "fadeIn fourth"> Document SACEM (PDF) : * </label>
                 <input  class = "fadeIn fourth"
+                        required
                         name = "sacem"
                         type="file">
                 {$messages.sacem|default:''}

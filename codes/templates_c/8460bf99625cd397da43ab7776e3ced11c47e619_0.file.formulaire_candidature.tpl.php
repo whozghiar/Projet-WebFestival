@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-12-22 16:37:12
+/* Smarty version 3.1.34-dev-7, created on 2020-12-22 16:38:43
   from 'C:\public_html\codes\templates\formulaire_candidature.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5fe220b8c3b225_85001027',
+  'unifunc' => 'content_5fe22113d4d511_73659033',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '8460bf99625cd397da43ab7776e3ced11c47e619' => 
     array (
       0 => 'C:\\public_html\\codes\\templates\\formulaire_candidature.tpl',
-      1 => 1608655011,
+      1 => 1608655114,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5fe220b8c3b225_85001027 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5fe22113d4d511_73659033 (Smarty_Internal_Template $_smarty_tpl) {
 if ((isset($_smarty_tpl->tpl_vars['user']->value))) {?>
 
 <!doctype html>
@@ -286,6 +286,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
            
                 <label class = "fadeIn fourth"> Fiche Technique (PDF) : * </label>
                 <input  class = "fadeIn fourth"
+                        required
                         name = "ficheTechnique"
                         type="file">
                 <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['ft'])===null||$tmp==='' ? '' : $tmp);?>
@@ -301,6 +302,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
             
                 <label class = "fadeIn fourth"> Document SACEM (PDF) : * </label>
                 <input  class = "fadeIn fourth"
+                        required
                         name = "sacem"
                         type="file">
                 <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['sacem'])===null||$tmp==='' ? '' : $tmp);?>
