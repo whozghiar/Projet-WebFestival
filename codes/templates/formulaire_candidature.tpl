@@ -172,6 +172,7 @@
                 </input>
             
                 <br>
+                <br>
 
                 <label class = "fadeIn third"> Êtes-vous inscrits à la SACEM ? * </label>
                 <input  class = "fadeIn third"
@@ -190,6 +191,7 @@
                         Non
                 </input>
 
+                <br>
                 <br>
            
                 <label class = "fadeIn third"> Votre groupe est-il sous contrat d'un producteur ? * </label>

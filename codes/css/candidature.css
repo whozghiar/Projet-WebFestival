@@ -73,7 +73,7 @@ input[type=submit]:active {
   transform: scale(0.95);
 }
 
-input[type=email],[type=password],[type=text],[type=number],[type=tel],[type=url],[type=radio],[type=file]{
+input[type=email],[type=password],[type=text],[type=number],[type=tel],[type=url],[type=file]{
   background-color: #f6f6f6ab;
   border: none;
   color: #0d0d0d;
@@ -93,6 +93,7 @@ input[type=email],[type=password],[type=text],[type=number],[type=tel],[type=url
   -webkit-border-radius: 5px 5px 5px 5px;
   border-radius: 15px 15px 15px 15px;
 }
+
 
 input[type=mail]:focus,input[type=password]:focus {
   background-color: #fff;

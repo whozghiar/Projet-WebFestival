@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-12-22 10:22:05
+/* Smarty version 3.1.34-dev-7, created on 2020-12-22 12:25:42
   from 'C:\git\projetWEB\codes\templates\formulaire_candidature.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5fe1c8cdc418e5_33616244',
+  'unifunc' => 'content_5fe1e5c6dd04a9_58412167',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'a414bd6203fdb03588033206398daeb83adfd396' => 
     array (
       0 => 'C:\\git\\projetWEB\\codes\\templates\\formulaire_candidature.tpl',
-      1 => 1608632523,
+      1 => 1608639938,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5fe1c8cdc418e5_33616244 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5fe1e5c6dd04a9_58412167 (Smarty_Internal_Template $_smarty_tpl) {
 if ((isset($_smarty_tpl->tpl_vars['user']->value))) {?>
 
 <!doctype html>
@@ -234,6 +234,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                 </input>
             
                 <br>
+                <br>
 
                 <label class = "fadeIn third"> Êtes-vous inscrits à la SACEM ? * </label>
                 <input  class = "fadeIn third"
@@ -252,6 +253,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                         Non
                 </input>
 
+                <br>
                 <br>
            
                 <label class = "fadeIn third"> Votre groupe est-il sous contrat d'un producteur ? * </label>
