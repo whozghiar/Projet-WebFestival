@@ -319,10 +319,99 @@ Flight::route('POST /login', function(){
       "reqScenes"=>$db->query(
         "SELECT s.type FROM scenes s ")
       
-
-
     );
     Flight::render('formulaire_candidature.tpl',$data);
+  });
+
+
+
+  Flight::route('POST /candidature', function(){
+    $erreur = False;
+    $messages = array();
+    $nomGrp = $_POST['nomGrp'];
+    $dep = $_POST['dep'];
+    $villeRep = $_POST['ville'];
+    $cp = $_POST['codePostal'];
+    $tel = $_POST['tel'];
+    $anneeCrea = $_POST['annee'];
+    $scene = $_POST['scene'];
+    $styleMus = $_POST['styleMus'];
+    $presTexte = $_POST['presTexte'];
+    $expScenique = $_POST['expScenique'];
+    $ulrFB = $_POST['facebook'];
+    $urlSC = $_POST['soundCloud'];
+    $urlYT = $_POST['youTube'];
+    // TEST SUR LES RADIOS
+
+    // TEST SUR LES CHAMPS VIDES 
+
+    foreach (array('nomGrp','villeRep','cp','tel','anneeCrea','styleMus','presTexte','expScenique','urlFB') as $res){
+      if (empty($res)){
+        $erreur = True;
+        $messages[$res] = "Veuillez saisir un champ.";
+      }
+    };
+
+    // Fichier FicheTechnique.pdf
+    $nomWebFT = $_POST['ficheTechnique']['name'];
+    $sizeFT = $_POST['ficheTechnique']['size'];
+    $nomTmpFT = $_POST['ficheTechnique']['tmp_name'];
+    $codeErrFT = $_POST['ficheTechnique']['error'];
+
+    // Fichier DocumentSACEM.pdf
+
+    $nomWebSacem = $_POST['sacem']['name'];
+    $sizeSacem = $_POST['sacem']['size'];
+    $nomTmpSacem = $_POST['sacem']['tmp_name'];
+    $codeErrSacem = $_POST['sacem']['error'];
+
+    // Fichier DossierPresse.pdf
+    $nomWebDp = $_POST['dossierPresse']['name'];
+    $sizeDp = $_POST['dossierPresse']['size'];
+    $nomTmpDp = $_POST['dossierPresse']['tmp_name'];
+    $codeErrDp = $_POST['dossierPresse']['error'];   
+
+    // Fichier photoGrp1.jpg
+    $nomWebGrp1 = $_POST['photoGrp1']['name'];
+    $sizeGrp1 = $_POST['photoGrp1']['size'];
+    $nomTmpGrp1 = $_POST['photoGrp1']['tmp_name'];
+    $codeErrGrp1 = $_POST['photoGrp1']['error'];  
+
+    // Fichier photoGrp2.jpg
+    $nomWebGrp2 = $_POST['photoGrp2']['name'];
+    $sizeGrp2 = $_POST['photoGrp2']['size'];
+    $nomTmpGrp2 = $_POST['photoGrp2']['tmp_name'];
+    $codeErrGrp2 = $_POST['photoGrp2']['error'];
+    
+    // Fichier mus1.mp3
+    $nomWebmus1 = $_POST['mus1']['name'];
+    $sizemus1 = $_POST['mus1']['size'];
+    $nomTmpmus1 = $_POST['mus1']['tmp_name'];
+    $codeErrmus1 = $_POST['mus1']['error'];  
+
+    // Fichier mus2.mp3
+    $nomWebmus2 = $_POST['mus2']['name'];
+    $sizemus2 = $_POST['mus2']['size'];
+    $nomTmpmus2 = $_POST['mus2']['tmp_name'];
+    $codeErrmus2 = $_POST['mus2']['error'];  
+
+    // Fichier mus3.mp3
+    $nomWebmus3 = $_POST['mus3']['name'];
+    $sizemus3 = $_POST['mus3']['size'];
+    $nomTmpmus3 = $_POST['mus3']['tmp_name'];
+    $codeErrmus3 = $_POST['mus3']['error'];  
+    
+    if ($erreur==False){
+
+      Flight::redirect("/");
+      
+  
+    }
+  
+    else{
+      Flight::view()->assign('messages',$messages);
+      Flight::render("login.tpl",$_POST);
+    }
   });
 
 

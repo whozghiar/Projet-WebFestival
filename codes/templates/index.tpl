@@ -19,7 +19,7 @@
                 <a href="logout"><input type="button" value="Se déconnecter"> </a>
                 <br>
                 <br>
-                <a href="profil"><input type="button" value="Voir le profil"> </a>
+                <a href="candidature"><input type="button" value="Candidater"> </a>
 
 
                 {else}

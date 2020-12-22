@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-12-21 15:39:04
+/* Smarty version 3.1.34-dev-7, created on 2020-12-22 00:32:22
   from 'C:\public_html\codes\templates\index.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5fe0c1981cb637_66316599',
+  'unifunc' => 'content_5fe13e96d823d4_81725060',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'ee80444d39c5bc0947fe6e7fcb9e90d9f031b232' => 
     array (
       0 => 'C:\\public_html\\codes\\templates\\index.tpl',
-      1 => 1608565012,
+      1 => 1608597141,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5fe0c1981cb637_66316599 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5fe13e96d823d4_81725060 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!doctype html>
 <html>
     <head>
@@ -43,7 +43,7 @@ function content_5fe0c1981cb637_66316599 (Smarty_Internal_Template $_smarty_tpl)
                 <a href="logout"><input type="button" value="Se déconnecter"> </a>
                 <br>
                 <br>
-                <a href="profil"><input type="button" value="Voir le profil"> </a>
+                <a href="candidature"><input type="button" value="Candidater"> </a>
 
 
                 <?php } else { ?>

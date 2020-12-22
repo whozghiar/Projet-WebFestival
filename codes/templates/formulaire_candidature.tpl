@@ -17,17 +17,17 @@
     <div> 
         <label> Nom du groupe :  * </label>
         <input type = "text"
-               name = "Nom du groupe"
+               name = "nomGrp"
                placeholder= "Ex : !Ayya!"
                value = "{$nomGrp|default:''}"
-               required> {$messages.nomGrp|default:''}
+               > {$messages.nomGrp|default:''}
     </div>
     
     <div>       
             <label> Département : * <label> 
                 <select required
                         type = "text"
-                        name = "Departement" required> 
+                        name = "dep" required> 
 
                     <option selected> Autre
                         {foreach $reqDep item=ligne}
@@ -39,7 +39,7 @@
     <div>
         <label> Ville * </label>
         <input  type = "text"
-                name="Ville représentant" 
+                name="ville" 
                 placeholder= "Ex : Creil"
                 value="{$villeRep|default:''}"
                 required> {$messages.villeRep|default:''} 
@@ -50,7 +50,7 @@
         <label> Code Postal * </label>
         <input  type = "number"
         style="-moz-appearance: textfield"
-        name = "Code Postal"
+        name = "codePostal"
         placeholder = "Ex : 60140"
         value = "{$cp|default:''}"
         required> {$messages.cp|default:''} 
@@ -61,7 +61,7 @@
         <input  type = "tel"
         name="tel"
         placeholder="Ex : 06 57 25 14 38"
-        pattern = "[0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2}"
+        pattern = "+33 [0-9]{10}"
         value = "{$tel|default:''}"
         required> {$messages.tel|default:''}
     </div>
@@ -116,7 +116,7 @@
     <div>
         <label> Lien vers votre site ou page Facebook/Twitter. * </label>
         <input  type = "url"
-                name ="Facebook"
+                name ="facebook"
                 placeholder="Ex : https://www.facebook.com/!Ayya!"
                 value = "{$urlFB|default:''}"
                 required>{$messages.urlFB|default:''}
@@ -125,7 +125,7 @@
     <div>
         <label> Lien vers votre Soundcloud.</label>
         <input  type = "url"
-                name ="Soundcloud"
+                name ="soundcloud"
                 placeholder="Ex : https://soundcloud.com/ytprodmusic/!Ayya!"
                 value = "{$urlSC|default:''}">{$messages.urlSC|default:''}
     </div>
@@ -133,7 +133,7 @@
     <div>
         <label> Lien vers votre chaîne YouTube. </label>
         <input  type = "url"
-                name ="YouTube"
+                name ="youTube"
                 placeholder="Ex : https://www.youtube.com/c/!Ayya!"
                 value = "{$urlYT|default:''}">{$messages.urlYT|default:''}
     </div>
@@ -194,11 +194,15 @@
         <label> Dossier de presse (PDF) : </label>
         <input  name = "dossierPresse"
                 id = "dossierPresse"
-                type="file">
+                type="file"> 
+        </input>
+        {$messages.dp|default:''}
 
         <input  type = "hidden"
                 name ="MAX_FILE_SIZE"
                 value ="25000000">
+        </input>
+        {$messages.dp|default:''}
     </div>
 
     <div>
@@ -206,10 +210,15 @@
         <input  name = "ficheTechnique"
                 id = "ficheTechnique"
                 type="file">
+        </input>
+        {$messages.ft|default:''}
 
         <input  type = "hidden"
                 name ="MAX_FILE_SIZE"
                 value ="25000000">
+        </input>
+        {$messages.ft|default:''}
+              
     </div>
 
     <div>
@@ -218,9 +227,15 @@
                 id = "sacem"
                 type="file">
 
+        </input>
+        {$messages.sacem|default:''}
         <input  type = "hidden"
                 name ="MAX_FILE_SIZE"
                 value ="25000000">
+                
+        </input>
+        {$messages.sacem|default:''}
+
     </div>
 
     <div>
@@ -231,12 +246,16 @@
                 id = "photoGrp1"
                 type = "file">
         </input>
+        {$messages.grp1|default:''}
+
         <br>
         <input  required
                 name = "photoGrp2"
                 id = "photoGrp2"
                 type = "file">
         </input>
+        {$messages.grp2|default:''}
+
     </div>
 
 
@@ -248,18 +267,21 @@
                 id = "mus1"
                 type = "file">
         </input>
+        {$messages.mus1|default:''}
         <br>
         <input  required
                 name = "mus2"
                 id = "mus2"
                 type = "file">
         </input>
+        {$messages.mus2|default:''}
         <br>
         <input  required
                 name = "mus3"
                 id = "mus3"
                 type = "file">
         </input>
+        {$messages.mus3|default:''}
     </div>
 
 
