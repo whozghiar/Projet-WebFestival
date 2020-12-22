@@ -341,40 +341,142 @@ Flight::route('POST /login', function(){
     $ulrFB = $_POST['facebook'];
     $urlSC = $_POST['soundcloud'];
     $urlYT = $_POST['youTube'];
-    // TEST SUR LES RADIOS
+    
+    if (isset ($_POST['nomMembre'])){
+      $nomMembre = $_POST['nomMembre'];
+      $prenomMembre = $_POST['prenomMembre'];
+      $instrumentMembre = $_POST['instrumentMembre'];
+      }
+    // Test sur le nom du groupe :
 
-    // Test sur le nom du groupe
-    $fNomGrp = Flight::request()->data->nomGrp;
+      //Test Côté client :
+      
+      $fNomGrp = Flight::request()->data->nomGrp;
+      
+      if (empty($fNomGrp)){
+        $erreur = True;
+        $messages['nomGrp'] = "(Client) Veuillez saisir un nom de groupe ";
+      }
 
-    if (empty($nomGrp)){
-      $erreur = True; 
-      $messages['nomGrp'] = "Veuillez saisir un nom de groupe";
-    }
-    if (empty($fNomGrp)){
-      $erreur = True;
-      $messages['nomGrp'] = "Veuillez saisir un nom de groupe";
-    }
+      // Test Côté serveur :
+       
+      if (empty($nomGrp)){
+        $erreur = True; 
+        $messages['nomGrp'] = "(Serveur) Veuillez saisir un nom de groupe";
+      }
 
 
+      if (strlen($nomGrp)>30){
+        $erreur = True;
+        $messages['nomGrp'] = "(Serveur) Veuillez saisir un nom plus court (-30 caractères)";
+      }
 
+ // Test Sur l'année :
 
-    // Test Sur l'année
+    // Test Côté Client :
     $fannee = Flight::request()->data->annee;
 
-    if(empty($anneeCrea)){
+    if(empty($fannee)){
       $erreur = True;
-      $messages['anneeCrea'] = "Veuillez saisir une année";
+      $messages['anneeCrea'] = " (Client) Veuillez saisir une année.";
     }
 
-    if(empty($fannee)){
+    if((strlen($fannee)<4) or (strlen($fannee)>4)){
+      $erreur = True;
+      $messages['anneeCrea'] = " (Client) Veuillez saisir une année valide toast.";
+    }
+    
+    if ((intval($fannee)>=1930) or (intval($fannee)<=2021)){
+      $erreur = True;
+      $messages['anneeCrea'] = " (Client) Veuillez saisir une année entre 1930 et 2021";
+    }
+    // Test côté Serveur : 
+
+
+    if(empty($anneeCrea)){
       $erreur = True;
       $messages['anneeCrea'] = "Veuillez saisir une année.";
     }
 
-    if(strlen($fannee)<4){
+    if (!is_numeric($anneeCrea)){
       $erreur = True;
       $messages['anneeCrea'] = "Veuillez saisir une année valide.";
     }
+
+    if ((strlen($anneeCrea) > 4) or (strlen($anneeCrea) < 4)){
+      $erreur = True;
+      $messages['anneeCrea'] = "L'année est incorrecte, veuillez rééssayer";
+    }
+
+    if ((intval($anneeCrea)>=1930) or (intval($anneeCrea)<=2021)){
+      $erreur = True;
+      $messages['anneeCrea'] = " (Client) Veuillez saisir une année entre 1930 et 2021";
+    }
+    
+  // Test sur l'URL Facebook ou site :
+
+    // Test Côté Client :
+      $furlFB = Flight::request()->data->facebook;
+      
+      if(empty($furlFB)){
+        $erreur = True;
+        $messages['urlFB'] = "<br>(Client) Veuillez saisir une URL.";
+      }
+      else {
+        if(!filter_var($furlFB, FILTER_VALIDATE_URL)){
+            $erreur = True;
+            $messages['urlFB'] = "<br>(Client) Veuillez saisir une URL valide.";
+        }
+      }  
+    // Test Côté Serveur : 
+      if(empty($urlFB)){
+        $erreur = True;
+        $messages['urlFB'] = "<br>(Serveur) Veuillez saisir une URL.";
+      }
+      else {
+        if(!filter_var($urlFB, FILTER_VALIDATE_URL)){
+            $erreur = True;
+            $messages['urlFB'] = "<br>(Serveur) Veuillez saisir une URL valide.";
+        }
+      }
+
+  // Test sur l'URL SoundCloud:
+
+    // Test Côté Client :
+    $furlSC = Flight::request()->data->soundcloud;
+    if(empty($furlSC)){
+      $erreur = True;
+      $messages['urlSC'] = "<br>(Client) Veuillez saisir une URL Soundcloud.";
+      $_POST['soundcloud']="";
+    }
+    else {
+      if((!filter_var($furlSC, FILTER_VALIDATE_URL)) or (strpos($furlSC,'soundcloud')==FALSE)){
+          $erreur = True;
+          echo "ERREUR";
+          $messages['urlSC'] = "<br>(Client) Veuillez saisir une URL Soundclound valide.";
+          $_POST['soundcloud']="";
+      }
+    }  
+  // Test Côté Serveur : 
+    if(empty($urlSC)){
+      $erreur = True;
+      $messages['urlSC'] = "<br>(Serveur) Veuillez saisir une URL SoundCloud.";
+      $_POST['soundcloud']="";
+    }
+    else {
+      if((!filter_var($urlSC, FILTER_VALIDATE_URL)) or (strpos($urlSC,'soundcloud')==FALSE)){
+          $erreur = True;
+          echo "ERREUR";
+          $messages['urlSC'] = "<br>(Serveur) Veuillez saisir une URL Soundcloud valide.";
+          $_POST['soundcloud']="";
+      }
+    }
+
+
+
+
+
+
 
     // Test sur le code Postal
     $fcp = Flight::request()->data->codePostal;
@@ -393,16 +495,20 @@ Flight::route('POST /login', function(){
       $messages['cp'] = "Veuillez saisir un code postal valide.";
     }
 
+    // Test sur la présentation du texte
+    
+    if (empty ($presTexte)){
+      $erreur = True;
+      $messages['presTexte'] = "Veuillez présenter votre groupe (500 car. max)";
+    }
 
+    if (strlen($presTexte) > 500){
+      $erreur = True;
+      $messages['presTexte'] = "Votre texte dépasse les 500 caractères.";
+    }
 
     // TEST SUR LES CHAMPS VIDES 
     $erreur = True;
-    foreach (array('nomGrp','villeRep','cp','tel','anneeCrea','styleMus','presTexte','expScenique','urlFB') as $res){
-      if (empty($res)){
-        $erreur = True;
-        $messages[$res] = "Veuillez saisir un champ.";
-      }
-    };
 
     if(isset(Flight::request()->files)){
   
@@ -455,16 +561,21 @@ Flight::route('POST /login', function(){
       $nomTmpmus3 = $_FILES['mus3']['tmp_name'];
       $codeErrmus3 = $_FILES['mus3']['error'];  
     }
-    if ($erreur==False){
+    if ($erreur){
 
-      Flight::redirect("/");
+      Flight::view()->assign('messages',$messages);
+      $db = Flight::get('db');
+      $reqDep=$db->query("SELECT nom FROM departements ");
+      $reqScenes=$db->query("SELECT s.type FROM scenes s ");
+      Flight::view()->assign('reqDep',$reqDep);
+      Flight::view()->assign('reqScenes',$reqScenes);
+      Flight::render("formulaire_candidature.tpl",$_POST);
       
   
     }
   
     else{
-      Flight::view()->assign('messages',$messages);
-      Flight::render("formulaire_candidature.tpl",$_POST);
+      Flight::redirect("/");
     }
   });
 

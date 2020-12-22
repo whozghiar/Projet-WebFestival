@@ -193,6 +193,12 @@ input[type=mail]::placeholder,input[type=password]:placeholder {
     animation-delay: 1.2s;
   }
   
+  .erreur{
+    text-decoration: underline;
+    font-size : 10px;
+    font-style : italic;
+    color : red;
+  }
 
 
 /* OTHERS */

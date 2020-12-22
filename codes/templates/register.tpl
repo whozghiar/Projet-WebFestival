@@ -3,7 +3,7 @@
     <head>
             <link href="css/register.css" type="text/css" rel="stylesheet" >
             <meta name= "viewport" content="width=device-width, initial-scale=1">
-            <title>{$titre}</title>
+            <title>Inscription</title>
     </head>
     <body>
         <div class="fadeIn H1">

@@ -1,5 +1,27 @@
+<?php
+/* Smarty version 3.1.34-dev-7, created on 2020-12-22 21:46:57
+  from 'C:\projetWEB\codes\templates\formulaire_candidature.tpl' */
 
-{if isset ($user)}
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.34-dev-7',
+  'unifunc' => 'content_5fe269515d5131_89227121',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '21771375d4e8c2ffa9c902722f08180574156fd3' => 
+    array (
+      0 => 'C:\\projetWEB\\codes\\templates\\formulaire_candidature.tpl',
+      1 => 1608673578,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_5fe269515d5131_89227121 (Smarty_Internal_Template $_smarty_tpl) {
+if ((isset($_smarty_tpl->tpl_vars['user']->value))) {?>
 
 <!doctype html>
 <html>
@@ -7,8 +29,9 @@
             <link href="css/candidature.css" type="text/css" rel="stylesheet" >
             <meta name= "viewport" content="width=device-width, initial-scale=1">
             <title>Candidature</title>
-        {literal}
-            <script type="text/JavaScript">
+        
+            <?php echo '<script'; ?>
+ type="text/JavaScript">
                 <!--
                 function ajouter() // Ajoute une ligne de champs
                 {
@@ -75,9 +98,10 @@
                         } 
                 }
 
-                </script>
+                <?php echo '</script'; ?>
+>
 
-        {/literal}
+        
     </head>
     <body>
         <div class="fadeIn H">
@@ -93,8 +117,10 @@
                     type = "text"
                     name = "nomGrp"
                     placeholder= "Ex : !Ayya!"
-                    value = "{$nomGrp|default:''}"
-                    > <br> <span class="erreur"> {$messages.nomGrp|default:''} </span> <br> <br>
+                    value = "<?php echo (($tmp = @$_smarty_tpl->tpl_vars['nomGrp']->value)===null||$tmp==='' ? '' : $tmp);?>
+"
+                    > <br> <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['nomGrp'])===null||$tmp==='' ? '' : $tmp);?>
+ </span> <br> <br>
                 
                     <label class = "fadeIn second"> Département : * <label> 
                         <select class = "fadeIn second"
@@ -103,9 +129,17 @@
                                 name = "dep" required> 
 
                             <option selected> Autre
-                                {foreach $reqDep item=ligne}
-                                    <option> {$ligne[0]}
-                                {/foreach}
+                                <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['reqDep']->value, 'ligne');
+$_smarty_tpl->tpl_vars['ligne']->do_else = true;
+if ($_from !== null) foreach ($_from as $_smarty_tpl->tpl_vars['ligne']->value) {
+$_smarty_tpl->tpl_vars['ligne']->do_else = false;
+?>
+                                    <option> <?php echo $_smarty_tpl->tpl_vars['ligne']->value[0];?>
+
+                                <?php
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                         </select>
            
                 <br>
@@ -115,8 +149,10 @@
                         type = "text"
                         name="ville" 
                         placeholder= "Ex : Creil"
-                        value="{$ville|default:''}"
-                        required> <br> <span class="erreur"> {$messages.villeRep|default:''} </span> <br>
+                        value="<?php echo (($tmp = @$_smarty_tpl->tpl_vars['ville']->value)===null||$tmp==='' ? '' : $tmp);?>
+"
+                        required> <br> <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['villeRep'])===null||$tmp==='' ? '' : $tmp);?>
+ </span> <br>
 
                 <br>
            
@@ -126,8 +162,10 @@
                     style="-moz-appearance: textfield"
                     name = "codePostal"
                     placeholder = "Ex : 60140"
-                    value = "{$codePostal|default:''}"
-                    required> <br> <span class="erreur"> {$messages.cp|default:''} </span> <br>
+                    value = "<?php echo (($tmp = @$_smarty_tpl->tpl_vars['codePostal']->value)===null||$tmp==='' ? '' : $tmp);?>
+"
+                    required> <br> <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['cp'])===null||$tmp==='' ? '' : $tmp);?>
+ </span> <br>
            
                 <br>
 
@@ -136,9 +174,12 @@
                     type = "tel"
                     name="tel"
                     placeholder="Ex : 06 57 25 14 38"
-                    pattern = "+33 [0-9]{10}"
-                    value = "{$tel|default:''}"
-                    required> <br> <span class="erreur"> {$messages.tel|default:''} </span> <br>
+                    pattern = "+33 [0-9]<?php echo 10;?>
+"
+                    value = "<?php echo (($tmp = @$_smarty_tpl->tpl_vars['tel']->value)===null||$tmp==='' ? '' : $tmp);?>
+"
+                    required> <br> <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['tel'])===null||$tmp==='' ? '' : $tmp);?>
+ </span> <br>
            
                 <br>
 
@@ -149,8 +190,10 @@
                         placeholder="Ex : 1998"
                         min = "1930"
                         max = "2021"
-                        value = "{$annee|default:''}"
-                        required> <br> <span class="erreur"> {$messages.anneeCrea|default:''} </span> <br>
+                        value = "<?php echo (($tmp = @$_smarty_tpl->tpl_vars['annee']->value)===null||$tmp==='' ? '' : $tmp);?>
+"
+                        required> <br> <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['anneeCrea'])===null||$tmp==='' ? '' : $tmp);?>
+ </span> <br>
           
                 <br>
 
@@ -159,9 +202,17 @@
                         required
                         type = "text"
                         name = "scene">
-                    {foreach $reqScenes item = scene}
-                        <option> {$scene[0]}
-                    {/foreach}
+                    <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['reqScenes']->value, 'scene');
+$_smarty_tpl->tpl_vars['scene']->do_else = true;
+if ($_from !== null) foreach ($_from as $_smarty_tpl->tpl_vars['scene']->value) {
+$_smarty_tpl->tpl_vars['scene']->do_else = false;
+?>
+                        <option> <?php echo $_smarty_tpl->tpl_vars['scene']->value[0];?>
+
+                    <?php
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                 </select>
            
                 <br>
@@ -171,8 +222,10 @@
                         type = "text"
                         name = "styleMus"
                         placeholder="Ex : Trance-rock"
-                        value = "{$styleMus|default:''}"
-                        required> <br> <span class="erreur"> {$messages.styleMus|default:''} </span> <br>
+                        value = "<?php echo (($tmp = @$_smarty_tpl->tpl_vars['styleMus']->value)===null||$tmp==='' ? '' : $tmp);?>
+"
+                        required> <br> <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['styleMus'])===null||$tmp==='' ? '' : $tmp);?>
+ </span> <br>
             
                 <br>
 
@@ -181,8 +234,10 @@
                         type = "text"
                         name = "presTexte"
                         placeholder="Ex : Notre groupe est né lors d'une rencontre entre ..."
-                        value = "{$presTexte|default:''}"
-                        required> <br> <span class="erreur"> {$messages.presTexte|default:''} </span> <br>
+                        value = "<?php echo (($tmp = @$_smarty_tpl->tpl_vars['presTexte']->value)===null||$tmp==='' ? '' : $tmp);?>
+"
+                        required> <br> <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['presTexte'])===null||$tmp==='' ? '' : $tmp);?>
+ </span> <br>
             
                 <br>
 
@@ -191,8 +246,10 @@
                         type = "text"
                         name = "expScenique"
                         placeholder="Ex : Le groupe participera a son 100ème concert..."
-                        value = "{$expScenique|default:''}"
-                        required> <br> <span class="erreur"> {$messages.expScenique|default:''} </span> <br>
+                        value = "<?php echo (($tmp = @$_smarty_tpl->tpl_vars['expScenique']->value)===null||$tmp==='' ? '' : $tmp);?>
+"
+                        required> <br> <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['expScenique'])===null||$tmp==='' ? '' : $tmp);?>
+ </span> <br>
            
                 <br>
 
@@ -201,8 +258,10 @@
                         type = "url"
                         name ="facebook"
                         placeholder="Ex : https://www.facebook.com/!Ayya!"
-                        value = "{$facebook|default:''}"
-                        required> <span class="erreur"> {$messages.urlFB|default:''} </span>
+                        value = "<?php echo (($tmp = @$_smarty_tpl->tpl_vars['facebook']->value)===null||$tmp==='' ? '' : $tmp);?>
+"
+                        required> <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['urlFB'])===null||$tmp==='' ? '' : $tmp);?>
+ </span>
                 <br>
                 <br>
 
@@ -211,7 +270,9 @@
                         type = "url"
                         name ="soundcloud"
                         placeholder="Ex : https://soundcloud.com/ytprodmusic/!Ayya!"
-                        value = "{$soundcloud|default:''}"> <span class="erreur"> <br> {$messages.urlSC|default:''} </span> <br>
+                        value = "<?php echo (($tmp = @$_smarty_tpl->tpl_vars['soundcloud']->value)===null||$tmp==='' ? '' : $tmp);?>
+"> <span class="erreur"> <br> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['urlSC'])===null||$tmp==='' ? '' : $tmp);?>
+ </span> <br>
             
                 <br>
                 
@@ -221,7 +282,9 @@
                         type = "url"
                         name ="youTube"
                         placeholder="Ex : https://www.youtube.com/c/!Ayya!"
-                        value = "{$youTube|default:''}"> <br> <span class="erreur"> {$messages.urlYT|default:''} </span> <br>
+                        value = "<?php echo (($tmp = @$_smarty_tpl->tpl_vars['youTube']->value)===null||$tmp==='' ? '' : $tmp);?>
+"> <br> <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['urlYT'])===null||$tmp==='' ? '' : $tmp);?>
+ </span> <br>
             
                 <br>
                 
@@ -232,19 +295,22 @@
                         type = "text"
                         name ="nomMembre[1]"
                         placeholder="Nom"
-                        value = "{$nomMembre[1]|default:''}"
+                        value = "<?php echo (($tmp = @$_smarty_tpl->tpl_vars['nomMembre']->value[1])===null||$tmp==='' ? '' : $tmp);?>
+"
                         required>
                         <input
                         type = "text"
                         name ="prenomMembre[1]"
                         placeholder="Prenom"
-                        value = "{$prenomMembre[1]|default:''}"
+                        value = "<?php echo (($tmp = @$_smarty_tpl->tpl_vars['prenomMembre']->value[1])===null||$tmp==='' ? '' : $tmp);?>
+"
                         required>
                         <input
                         type = "text"
                         name ="instrumentMembre[1]"
                         placeholder="Instrument"
-                        value = "{$instrumentMembre[1]|default:''}"
+                        value = "<?php echo (($tmp = @$_smarty_tpl->tpl_vars['instrumentMembre']->value[1])===null||$tmp==='' ? '' : $tmp);?>
+"
                         required>
 		</div>
                 <input type="button" value="Ajouter un membre" onClick="javascript:ajouter()">
@@ -313,12 +379,14 @@
                 <input  class = "fadeIn fourth"
                         name = "dossierPresse"
                         type="file"> 
-                {$messages.dp|default:''}
+                <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['dp'])===null||$tmp==='' ? '' : $tmp);?>
+
 
                 <input  type = "hidden"
                         name ="MAX_FILE_SIZE"
                         value ="25000000">
-                {$messages.dp|default:''}
+                <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['dp'])===null||$tmp==='' ? '' : $tmp);?>
+
 
                 <br>
                 <br>
@@ -328,12 +396,14 @@
                         required
                         name = "ficheTechnique"
                         type="file">
-                {$messages.ft|default:''}
+                <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['ft'])===null||$tmp==='' ? '' : $tmp);?>
+
 
                 <input  type = "hidden"
                         name ="MAX_FILE_SIZE"
                         value ="25000000">
-                {$messages.ft|default:''}
+                <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['ft'])===null||$tmp==='' ? '' : $tmp);?>
+
 
                 <br>    
                 <br>
@@ -343,12 +413,14 @@
                         required
                         name = "sacem"
                         type="file">
-                {$messages.sacem|default:''}
+                <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['sacem'])===null||$tmp==='' ? '' : $tmp);?>
+
                 <input  type = "hidden"
                         name ="MAX_FILE_SIZE"
                         value ="25000000">
                         
-                {$messages.sacem|default:''}
+                <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['sacem'])===null||$tmp==='' ? '' : $tmp);?>
+
 
                 <br>
                 <br>
@@ -358,13 +430,15 @@
                 <input  class = "fadeIn fourth"
                         required
                         name = "photoGrp1"
-                        type = "file">   <br>  <span class="erreur"> {$messages.grp1|default:''} </span> <br>
+                        type = "file">   <br>  <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['grp1'])===null||$tmp==='' ? '' : $tmp);?>
+ </span> <br>
 
                 <br>
                 <input  class = "fadeIn fourth"
                         required
                         name = "photoGrp2"
-                        type = "file"> <br>  <span class="erreur">  {$messages.grp2|default:''} </span> <br>
+                        type = "file"> <br>  <span class="erreur">  <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['grp2'])===null||$tmp==='' ? '' : $tmp);?>
+ </span> <br>
 
                 <br>
 
@@ -373,18 +447,21 @@
                 <input  class = "fadeIn fourth"
                         required
                         name = "mus1"
-                        type = "file"> <br>  <span class="erreur">  {$messages.mus1|default:''} </span> <br>
+                        type = "file"> <br>  <span class="erreur">  <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['mus1'])===null||$tmp==='' ? '' : $tmp);?>
+ </span> <br>
                 <br>
                 <input  class = "fadeIn fourth"
                         required
                         name = "mus2"
-                        type = "file"> <br>  <span class="erreur"> {$messages.mus2|default:''} </span> <br>
+                        type = "file"> <br>  <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['mus2'])===null||$tmp==='' ? '' : $tmp);?>
+ </span> <br>
                 <br>
                 <input  class = "fadeIn fourth"
                         required
                         name = "mus3"
                         type = "file">
-                <span class="erreur"> {$messages.mus3|default:''} </span>
+                <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['mus3'])===null||$tmp==='' ? '' : $tmp);?>
+ </span>
            
                 <input type ="submit">
             
@@ -401,7 +478,7 @@
 
 
 
-{else}
+<?php } else { ?>
 
 <!doctype html>
 <html>
@@ -414,4 +491,6 @@
         <h1> Vous devez être inscrits et connectés sur le site pour accéder à cette page. </h1>
     </body>
 </html>
-{/if}
+<?php }
+}
+}
