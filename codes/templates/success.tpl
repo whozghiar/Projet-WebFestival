@@ -11,7 +11,7 @@
         </div>
          <div class = "wrapper fadeInDown">
             <div id = "formContent">
-                <a href="index"><input class = "fadeIn fourth" type="submit" value="Retour à l'acceuil"> </a>
+                <a href="/codes"><input class = "fadeIn fourth" type="submit" value="Retour à l'acceuil"> </a>
             </div>
         </div>
 

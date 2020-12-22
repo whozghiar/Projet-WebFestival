@@ -8,13 +8,12 @@
     <body>
         <div class="fadeIn H">
             <h1> Accueil </h1>
-        </div>
         
         
                 {if isset ($user)}
-                <p><div class="fadeIn H"> <h2> Bonjour {$user} ! </h2> </div></p>
+                <p> <h2> Bonjour {$user} ! </h2> </p>
                 <br>
-                <p><div class="fadeIn H"> <h3> Vous pouvez désormais naviguer sur le site. </h3></div> </p>
+                <p> <h3> Vous pouvez désormais naviguer sur le site. </h3> </p>
                 <br>
                 <br>
             <div class = "wrapper fadeInDown">

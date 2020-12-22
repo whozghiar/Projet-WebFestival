@@ -216,7 +216,6 @@
                 <label class = "fadeIn fourth"> Dossier de presse (PDF) : </label>
                 <input  class = "fadeIn fourth"
                         name = "dossierPresse"
-                        id = "dossierPresse"
                         type="file"> 
                 </input>
                 {$messages.dp|default:''}
@@ -232,7 +231,6 @@
                 <label class = "fadeIn fourth"> Fiche Technique (PDF) : * </label>
                 <input  class = "fadeIn fourth"
                         name = "ficheTechnique"
-                        id = "ficheTechnique"
                         type="file">
                 </input>
                 {$messages.ft|default:''}
@@ -248,7 +246,6 @@
                 <label class = "fadeIn fourth"> Document SACEM (PDF) : * </label>
                 <input  class = "fadeIn fourth"
                         name = "sacem"
-                        id = "sacem"
                         type="file">
 
                 </input>
@@ -267,7 +264,6 @@
                 <input  class = "fadeIn fourth"
                         required
                         name = "photoGrp1"
-                        id = "photoGrp1"
                         type = "file">
                 </input>
                 {$messages.grp1|default:''}
@@ -276,7 +272,6 @@
                 <input  class = "fadeIn fourth"
                         required
                         name = "photoGrp2"
-                        id = "photoGrp2"
                         type = "file">
                 </input>
                 {$messages.grp2|default:''}
@@ -288,7 +283,6 @@
                 <input  class = "fadeIn fourth"
                         required
                         name = "mus1"
-                        id = "mus1"
                         type = "file">
                 </input>
                 {$messages.mus1|default:''}
@@ -296,7 +290,6 @@
                 <input  class = "fadeIn fourth"
                         required
                         name = "mus2"
-                        id = "mus2"
                         type = "file">
                 </input>
                 {$messages.mus2|default:''}
@@ -304,7 +297,6 @@
                 <input  class = "fadeIn fourth"
                         required
                         name = "mus3"
-                        id = "mus3"
                         type = "file">
                 </input>
                 {$messages.mus3|default:''}
