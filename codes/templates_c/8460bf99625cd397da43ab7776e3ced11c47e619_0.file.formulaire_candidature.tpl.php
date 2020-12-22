@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-12-22 15:12:45
+/* Smarty version 3.1.34-dev-7, created on 2020-12-22 16:37:12
   from 'C:\public_html\codes\templates\formulaire_candidature.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5fe20ced5fba85_85421214',
+  'unifunc' => 'content_5fe220b8c3b225_85001027',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '8460bf99625cd397da43ab7776e3ced11c47e619' => 
     array (
       0 => 'C:\\public_html\\codes\\templates\\formulaire_candidature.tpl',
-      1 => 1608649957,
+      1 => 1608655011,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5fe20ced5fba85_85421214 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5fe220b8c3b225_85001027 (Smarty_Internal_Template $_smarty_tpl) {
 if ((isset($_smarty_tpl->tpl_vars['user']->value))) {?>
 
 <!doctype html>
@@ -223,7 +223,6 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                         value = "Oui"
                         >
                         Oui
-                </input>
                 <input  class = "fadeIn third"
                         required
                         type = "radio"
@@ -231,7 +230,6 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                         value = "Non" 
                         checked>
                         Non
-                </input>
             
                 <br>
                 <br>
@@ -243,7 +241,6 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                         name ="sacem"
                         value = "Oui">
                         Oui
-                </input>
                 <input  class = "fadeIn third"
                         required
                         type = "radio"
@@ -251,7 +248,6 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                         value = "Non" 
                         checked>
                         Non
-                </input>
 
                 <br>
                 <br>
@@ -263,7 +259,6 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                         name ="producteur"
                         value = "Oui">
                         Oui
-                </input>
                 <input  class = "fadeIn third"
                         required
                         type = "radio"
@@ -271,7 +266,6 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                         value = "Non" 
                         checked>
                         Non
-                </input>
 
                 <br>
            
@@ -279,14 +273,12 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                 <input  class = "fadeIn fourth"
                         name = "dossierPresse"
                         type="file"> 
-                </input>
                 <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['dp'])===null||$tmp==='' ? '' : $tmp);?>
 
 
                 <input  type = "hidden"
                         name ="MAX_FILE_SIZE"
                         value ="25000000">
-                </input>
                 <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['dp'])===null||$tmp==='' ? '' : $tmp);?>
 
 
@@ -296,14 +288,12 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                 <input  class = "fadeIn fourth"
                         name = "ficheTechnique"
                         type="file">
-                </input>
                 <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['ft'])===null||$tmp==='' ? '' : $tmp);?>
 
 
                 <input  type = "hidden"
                         name ="MAX_FILE_SIZE"
                         value ="25000000">
-                </input>
                 <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['ft'])===null||$tmp==='' ? '' : $tmp);?>
 
 
@@ -313,15 +303,12 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                 <input  class = "fadeIn fourth"
                         name = "sacem"
                         type="file">
-
-                </input>
                 <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['sacem'])===null||$tmp==='' ? '' : $tmp);?>
 
                 <input  type = "hidden"
                         name ="MAX_FILE_SIZE"
                         value ="25000000">
                         
-                </input>
                 <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['sacem'])===null||$tmp==='' ? '' : $tmp);?>
 
 
@@ -332,18 +319,14 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                 <input  class = "fadeIn fourth"
                         required
                         name = "photoGrp1"
-                        type = "file">
-                </input>
-                <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['grp1'])===null||$tmp==='' ? '' : $tmp);?>
+                        type = "file">                <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['grp1'])===null||$tmp==='' ? '' : $tmp);?>
 
 
                 <br>
                 <input  class = "fadeIn fourth"
                         required
                         name = "photoGrp2"
-                        type = "file">
-                </input>
-                <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['grp2'])===null||$tmp==='' ? '' : $tmp);?>
+                        type = "file">                <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['grp2'])===null||$tmp==='' ? '' : $tmp);?>
 
 
                 <br>
@@ -353,24 +336,19 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                 <input  class = "fadeIn fourth"
                         required
                         name = "mus1"
-                        type = "file">
-                </input>
-                <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['mus1'])===null||$tmp==='' ? '' : $tmp);?>
+                        type = "file">                <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['mus1'])===null||$tmp==='' ? '' : $tmp);?>
 
                 <br>
                 <input  class = "fadeIn fourth"
                         required
                         name = "mus2"
-                        type = "file">
-                </input>
-                <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['mus2'])===null||$tmp==='' ? '' : $tmp);?>
+                        type = "file">                <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['mus2'])===null||$tmp==='' ? '' : $tmp);?>
 
                 <br>
                 <input  class = "fadeIn fourth"
                         required
                         name = "mus3"
                         type = "file">
-                </input>
                 <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['mus3'])===null||$tmp==='' ? '' : $tmp);?>
 
            

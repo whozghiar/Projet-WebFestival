@@ -161,7 +161,6 @@
                         value = "Oui"
                         >
                         Oui
-                </input>
                 <input  class = "fadeIn third"
                         required
                         type = "radio"
@@ -169,7 +168,6 @@
                         value = "Non" 
                         checked>
                         Non
-                </input>
             
                 <br>
                 <br>
@@ -181,7 +179,6 @@
                         name ="sacem"
                         value = "Oui">
                         Oui
-                </input>
                 <input  class = "fadeIn third"
                         required
                         type = "radio"
@@ -189,7 +186,6 @@
                         value = "Non" 
                         checked>
                         Non
-                </input>
 
                 <br>
                 <br>
@@ -201,7 +197,6 @@
                         name ="producteur"
                         value = "Oui">
                         Oui
-                </input>
                 <input  class = "fadeIn third"
                         required
                         type = "radio"
@@ -209,7 +204,6 @@
                         value = "Non" 
                         checked>
                         Non
-                </input>
 
                 <br>
            
@@ -217,13 +211,11 @@
                 <input  class = "fadeIn fourth"
                         name = "dossierPresse"
                         type="file"> 
-                </input>
                 {$messages.dp|default:''}
 
                 <input  type = "hidden"
                         name ="MAX_FILE_SIZE"
                         value ="25000000">
-                </input>
                 {$messages.dp|default:''}
 
                 <br>
@@ -232,13 +224,11 @@
                 <input  class = "fadeIn fourth"
                         name = "ficheTechnique"
                         type="file">
-                </input>
                 {$messages.ft|default:''}
 
                 <input  type = "hidden"
                         name ="MAX_FILE_SIZE"
                         value ="25000000">
-                </input>
                 {$messages.ft|default:''}
 
                 <br>    
@@ -247,14 +237,11 @@
                 <input  class = "fadeIn fourth"
                         name = "sacem"
                         type="file">
-
-                </input>
                 {$messages.sacem|default:''}
                 <input  type = "hidden"
                         name ="MAX_FILE_SIZE"
                         value ="25000000">
                         
-                </input>
                 {$messages.sacem|default:''}
 
                 <br>
@@ -264,17 +251,13 @@
                 <input  class = "fadeIn fourth"
                         required
                         name = "photoGrp1"
-                        type = "file">
-                </input>
-                {$messages.grp1|default:''}
+                        type = "file">                {$messages.grp1|default:''}
 
                 <br>
                 <input  class = "fadeIn fourth"
                         required
                         name = "photoGrp2"
-                        type = "file">
-                </input>
-                {$messages.grp2|default:''}
+                        type = "file">                {$messages.grp2|default:''}
 
                 <br>
 
@@ -283,22 +266,17 @@
                 <input  class = "fadeIn fourth"
                         required
                         name = "mus1"
-                        type = "file">
-                </input>
-                {$messages.mus1|default:''}
+                        type = "file">                {$messages.mus1|default:''}
                 <br>
                 <input  class = "fadeIn fourth"
                         required
                         name = "mus2"
-                        type = "file">
-                </input>
-                {$messages.mus2|default:''}
+                        type = "file">                {$messages.mus2|default:''}
                 <br>
                 <input  class = "fadeIn fourth"
                         required
                         name = "mus3"
                         type = "file">
-                </input>
                 {$messages.mus3|default:''}
            
                 <input type ="submit">
