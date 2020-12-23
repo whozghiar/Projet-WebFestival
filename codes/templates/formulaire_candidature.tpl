@@ -200,7 +200,7 @@
            
                 <br>
 
-                <label class = "fadeIn third"> Lien vers votre site ou page Facebook/Twitter. * </label>
+                <label class = "fadeIn third"> Lien vers votre site ou page Facebook|Twitter. * </label>
                 <input  class = "fadeIn third"
                         type = "url"
                         name ="facebook"
@@ -440,66 +440,3 @@
 </html>
 
         
-{/if}
-    </body>
-</html>
-
-        
-{/if}
-    </body>
-</html>
-
-        
-{/if}
-    </body>
-</html>
-
-        
-{/if}
-    </body>
-</html>
-
-        
-{/if}
-    </body>
-</html>
-
-        
-{/if}
-    </body>
-</html>
-
-        
-{/if}
-    </body>
-</html>
-
-        
-{/if}
-    </body>
-</html>
-
-        
-{/if}
-    </body>
-</html>
-
-        
-{/if}
-    </body>
-</html>
-
-        
-{/if}
-    </body>
-</html>
-
-        
-{/if}
-    </body>
-</html>
-
-        
-{/if}
-    </body>
-</html>

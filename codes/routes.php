@@ -339,7 +339,7 @@ Flight::route('POST /login', function(){
     $styleMus = $_POST['styleMus'];
     $presTexte = $_POST['presTexte'];
     $expScenique = $_POST['expScenique'];
-    $ulrFB = $_POST['facebook'];
+    $urlFB = $_POST['facebook'];
     $urlSC = $_POST['soundcloud'];
     $urlYT = $_POST['youTube'];
     $nomMembre = $_POST['nomMembre'];
@@ -447,7 +447,8 @@ Flight::route('POST /login', function(){
       
       if(empty($furlFB)){
         $erreur = True;
-        $messages['urlFB'] = "<br>(Client) Veuillez saisir une URL.";
+        $messages['urlFB'] = "<br>(Client) Veuillez saisir une URL Facebook.";
+        echo "test1";
       }
       else {
         if(!filter_var($furlFB, FILTER_VALIDATE_URL)){
@@ -459,7 +460,8 @@ Flight::route('POST /login', function(){
     // Test Côté Serveur : 
       if(empty($urlFB)){
         $erreur = True;
-        $messages['urlFB'] = "<br>(Serveur) Veuillez saisir une URL.";
+        $messages['urlFB'] = "<br>(Serveur) Veuillez saisir une URL Facebook.";
+
       }
       else {
         if(!filter_var($urlFB, FILTER_VALIDATE_URL)){
@@ -778,7 +780,7 @@ Flight::route('POST /login', function(){
               $extension_fichier = $infosfichier['extension'];
               $extension_verif = array('pdf','txt','odt');
               if (in_array($extension_fichier,$extension_verif)){
-                move_uploaded_file($nomTmpFT,"../data/upload".basename($nomWebFT));
+                move_uploaded_file($nomTmpFT,"../data/upload/upload ".basename($nomWebFT));
               }
               else {
                 $erreur = True;
@@ -814,7 +816,7 @@ Flight::route('POST /login', function(){
             $extension_fichier = $infosfichier['extension'];
             $extension_verif = array('pdf','txt','odt');
             if (in_array($extension_fichier,$extension_verif)){
-              move_uploaded_file($nomTmpSacem,"../data/upload".basename($nomWebSacem));
+              move_uploaded_file($nomTmpSacem,"../data/upload/upload ".basename($nomWebSacem));
             }
             else {
               $erreur = True;
@@ -849,7 +851,7 @@ Flight::route('POST /login', function(){
               $extension_fichier = $infosfichier['extension'];
               $extension_verif = 'pdf';
               if ($extension_fichier==$extension_verif){
-                move_uploaded_file($nomTmpDp,"../data/upload".basename($nomWebDp));
+                move_uploaded_file($nomTmpDp,"../data/upload/upload ".basename($nomWebDp));
               }
               else {
                 $erreur = True;
@@ -884,7 +886,7 @@ Flight::route('POST /login', function(){
               $extension_fichier = pathinfo($nomWebGrp[$i], PATHINFO_EXTENSION); //infosfichier['extension'];
               $extension_verif = array('png','jpeg','jpg','gif');
               if (in_array($extension_fichier,$extension_verif)){
-                move_uploaded_file($nomTmpGrp[$i],"../data/upload".basename($nomWebGrp[$i]));
+                move_uploaded_file($nomTmpGrp[$i],"../data/upload/upload ".basename($nomWebGrp[$i]));
                 echo "Envoie effectué";
               }
               else {
@@ -920,7 +922,7 @@ Flight::route('POST /login', function(){
             $extension_fichier = pathinfo($nomWebmus[$i], PATHINFO_EXTENSION); //infosfichier['extension'];
             $extension_verif = 'mp3';
             if ($extension_fichier==$extension_verif){
-              move_uploaded_file($nomTmpmus[$i],"../data/upload".basename($nomWebmus[$i]));
+              move_uploaded_file($nomTmpmus[$i],"../data/upload/upload ".basename($nomWebmus[$i]));
               echo "Envoie effectué";
             }
             else {
