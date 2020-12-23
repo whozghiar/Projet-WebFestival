@@ -81,6 +81,7 @@
     </head>
     <body>
     {if isset ($user)}
+        {if ($candidat==1)}
         <div class="fadeIn H">
             <h1> Candidature au festival : </h1>
         </div>
@@ -177,24 +178,25 @@
             
                 <br>
 
-                <label class = "fadeIn second"> Présentez vous : * </label>
-                <input  class = "fadeIn second"
-                        type = "text"
-                        size = "150"
+                <label class = "fadeIn second"> Présentez vous (<500 caractères) : * </label>
+                <textarea  class = "fadeIn second"
+                        type="text"
+                        maxlength = 500
                         name = "presTexte"
                         placeholder="Ex : Notre groupe est né lors d'une rencontre entre ..."
                         value = "{$presTexte|default:''}"
-                        required> <br> <span class="erreur"> {$messages.presTexte|default:''} </span> <br>
-            
+                        required></textarea> <br> <span class="erreur"> {$messages.presTexte|default:''} </span> <br>
+
                 <br>
 
-                <label class = "fadeIn third"> Votre expérience scénique : * </label>
-                <input  class = "fadeIn third"
+                <label class = "fadeIn third"> Votre expérience scénique (<500 caractères) : * </label>
+                <textarea  class = "fadeIn third"
                         type = "text"
+                        maxlength = 500
                         name = "expScenique"
                         placeholder="Ex : Le groupe participera a son 100ème concert..."
                         value = "{$expScenique|default:''}"
-                        required> <br> <span class="erreur"> {$messages.expScenique|default:''} </span> <br>
+                        required></textarea> <br> <span class="erreur"> {$messages.expScenique|default:''} </span> <br>
            
                 <br>
 
@@ -315,12 +317,13 @@
                 <input  class = "fadeIn fourth"
                         name = "dossierPresse"
                         type="file"> 
-                {$messages.dp|default:''}
+                <br>
+                <span class="erreur">  {$messages.dp|default:''} </span>
 
                 <input  type = "hidden"
                         name ="MAX_FILE_SIZE"
                         value ="25000000">
-                {$messages.dp|default:''}
+                
 
                 <br>
                 <br>
@@ -330,12 +333,13 @@
                         required
                         name = "ficheTechnique"
                         type="file">
-                {$messages.ft|default:''}
+                <br>
+                <span class="erreur"> {$messages.ft|default:''} </span>
 
                 <input  type = "hidden"
                         name ="MAX_FILE_SIZE"
                         value ="25000000">
-                {$messages.ft|default:''}
+                
 
                 <br>    
                 <br>
@@ -345,12 +349,13 @@
                         required
                         name = "sacem"
                         type="file">
-                {$messages.sacem|default:''}
+                <br>
+                <span class="erreur"> {$messages.sacem|default:''} </span>
                 <input  type = "hidden"
                         name ="MAX_FILE_SIZE"
                         value ="25000000">
                         
-                {$messages.sacem|default:''}
+               
 
                 <br>
                 <br>
@@ -360,13 +365,14 @@
                 <input  class = "fadeIn fourth"
                         required
                         name = "photoGrp1"
-                        type = "file">   <br>  <span class="erreur"> {$messages.grp1|default:''} </span> <br>
+                        type = "file">   
+                <br>  <span class="erreur"> {$messages.photoGrp1|default:''} </span> <br>
 
                 <br>
                 <input  class = "fadeIn fourth"
                         required
                         name = "photoGrp2"
-                        type = "file"> <br>  <span class="erreur">  {$messages.grp2|default:''} </span> <br>
+                        type = "file"> <br>  <span class="erreur">  {$messages.photoGrp2|default:''} </span> <br>
 
                 <br>
 
@@ -386,7 +392,7 @@
                         required
                         name = "mus3"
                         type = "file">
-                <span class="erreur"> {$messages.mus3|default:''} </span>
+                <br> <span class="erreur"> {$messages.mus3|default:''} </span>
            
                 <input type ="submit">
             
@@ -397,20 +403,102 @@
 </form>
 
 
-
-
+        {else} 
+        <div class="fadeIn H">
+                <h1> Vous avez déjà fait une candidature.</h1>
+        
+       
+        <br>
+        
+                 <a href = "profil">Voir ma candidature</a>
+        </div>
+         {/if}
 
 
 {else}
 
 
         
+        <div class="fadeIn H">
+                <h1> Vous devez être connecté pour pouvoir candidater.</h1>
         
-        <h1> Vous devez être connecté pour pouvoir candidater.</h1>
-         <p> <a href = "login" class="btns"> Se connecter</a></p>
-        <img src="../images/neo_et_sa_mere.gif">
-      
+       
+        <br>
+        
+                 <a href = "login"> Se connecter</a>
+        </div>
+         <br>
+        <div class="img">
+                <img src="../images/neo_et_sa_mere.gif">
+        </div>
             
+        
+
+        
+{/if}
+    </body>
+</html>
+
+        
+{/if}
+    </body>
+</html>
+
+        
+{/if}
+    </body>
+</html>
+
+        
+{/if}
+    </body>
+</html>
+
+        
+{/if}
+    </body>
+</html>
+
+        
+{/if}
+    </body>
+</html>
+
+        
+{/if}
+    </body>
+</html>
+
+        
+{/if}
+    </body>
+</html>
+
+        
+{/if}
+    </body>
+</html>
+
+        
+{/if}
+    </body>
+</html>
+
+        
+{/if}
+    </body>
+</html>
+
+        
+{/if}
+    </body>
+</html>
+
+        
+{/if}
+    </body>
+</html>
+
         
 {/if}
     </body>

@@ -12,19 +12,33 @@
             </div>
         
                 {if isset ($user)}
-                <p> <h2> Bonjour {$user} ! </h2> </p>
-                <br>
-                <p> <h3> Vous pouvez désormais naviguer sur le site. </h3> </p>
+                    {if ($candidat==1)}
+                    <p> <h2> Bonjour {$user} ! </h2> </p>
+                    <br>
+                    <p> <h3> Vous pouvez désormais naviguer sur le site. </h3> </p>
 
-            <div class = "wrapper fadeInDown">
-            <div id = "formContent">
-                <a href="candidature" class="btns">Candidater </a>
-                <br>
-                <br>
-                <a href="logout" class="logout">Se déconnecter </a>
-            </div>
-            </div>
+                    <div class = "wrapper fadeInDown">
+                    <div id = "formContent">
+                        <a href="candidature" class="btns">Candidater </a>
+                        <br>
+                        <br>
+                        <a href="logout" class="logout">Se déconnecter </a>
+                    </div>
+                    </div>
+                    {else}
+                    <p> <h2> Bonjour {$user} ! </h2> </p>
+                    <br>
+                    <p> <h3> Vous pouvez désormais naviguer sur le site. </h3> </p>
 
+                    <div class = "wrapper fadeInDown">
+                    <div id = "formContent">
+                        <a href="profil" class="btns">Voir ma candidature </a>
+                        <br>
+                        <br>
+                        <a href="logout" class="logout">Se déconnecter </a>
+                    </div>
+                    </div>
+                    {/if}
                 {else}
                 <p>  Vous êtes déjà inscrits ? 
                     <br><br> <br>

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-12-22 21:46:57
+/* Smarty version 3.1.34-dev-7, created on 2020-12-23 17:19:53
   from 'C:\projetWEB\codes\templates\formulaire_candidature.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5fe269515d5131_89227121',
+  'unifunc' => 'content_5fe37c399393d5_20770794',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '21771375d4e8c2ffa9c902722f08180574156fd3' => 
     array (
       0 => 'C:\\projetWEB\\codes\\templates\\formulaire_candidature.tpl',
-      1 => 1608673578,
+      1 => 1608743991,
       2 => 'file',
     ),
   ),
@@ -20,8 +20,9 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5fe269515d5131_89227121 (Smarty_Internal_Template $_smarty_tpl) {
-if ((isset($_smarty_tpl->tpl_vars['user']->value))) {?>
+function content_5fe37c399393d5_20770794 (Smarty_Internal_Template $_smarty_tpl) {
+?>
+
 
 <!doctype html>
 <html>
@@ -104,6 +105,8 @@ if ((isset($_smarty_tpl->tpl_vars['user']->value))) {?>
         
     </head>
     <body>
+    <?php if ((isset($_smarty_tpl->tpl_vars['user']->value))) {?>
+        <?php if (($_smarty_tpl->tpl_vars['candidat']->value == 1)) {?>
         <div class="fadeIn H">
             <h1> Candidature au festival : </h1>
         </div>
@@ -229,26 +232,28 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
             
                 <br>
 
-                <label class = "fadeIn second"> Présentez vous : * </label>
-                <input  class = "fadeIn second"
-                        type = "text"
+                <label class = "fadeIn second"> Présentez vous (<500 caractères) : * </label>
+                <textarea  class = "fadeIn second"
+                        type="text"
+                        maxlength = 500
                         name = "presTexte"
                         placeholder="Ex : Notre groupe est né lors d'une rencontre entre ..."
                         value = "<?php echo (($tmp = @$_smarty_tpl->tpl_vars['presTexte']->value)===null||$tmp==='' ? '' : $tmp);?>
 "
-                        required> <br> <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['presTexte'])===null||$tmp==='' ? '' : $tmp);?>
+                        required></textarea> <br> <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['presTexte'])===null||$tmp==='' ? '' : $tmp);?>
  </span> <br>
-            
+
                 <br>
 
-                <label class = "fadeIn third"> Votre expérience scénique : * </label>
-                <input  class = "fadeIn third"
+                <label class = "fadeIn third"> Votre expérience scénique (<500 caractères) : * </label>
+                <textarea  class = "fadeIn third"
                         type = "text"
+                        maxlength = 500
                         name = "expScenique"
                         placeholder="Ex : Le groupe participera a son 100ème concert..."
                         value = "<?php echo (($tmp = @$_smarty_tpl->tpl_vars['expScenique']->value)===null||$tmp==='' ? '' : $tmp);?>
 "
-                        required> <br> <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['expScenique'])===null||$tmp==='' ? '' : $tmp);?>
+                        required></textarea> <br> <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['expScenique'])===null||$tmp==='' ? '' : $tmp);?>
  </span> <br>
            
                 <br>
@@ -379,14 +384,14 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                 <input  class = "fadeIn fourth"
                         name = "dossierPresse"
                         type="file"> 
-                <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['dp'])===null||$tmp==='' ? '' : $tmp);?>
-
+                <br>
+                <span class="erreur">  <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['dp'])===null||$tmp==='' ? '' : $tmp);?>
+ </span>
 
                 <input  type = "hidden"
                         name ="MAX_FILE_SIZE"
                         value ="25000000">
-                <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['dp'])===null||$tmp==='' ? '' : $tmp);?>
-
+                
 
                 <br>
                 <br>
@@ -396,14 +401,14 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                         required
                         name = "ficheTechnique"
                         type="file">
-                <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['ft'])===null||$tmp==='' ? '' : $tmp);?>
-
+                <br>
+                <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['ft'])===null||$tmp==='' ? '' : $tmp);?>
+ </span>
 
                 <input  type = "hidden"
                         name ="MAX_FILE_SIZE"
                         value ="25000000">
-                <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['ft'])===null||$tmp==='' ? '' : $tmp);?>
-
+                
 
                 <br>    
                 <br>
@@ -413,14 +418,14 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                         required
                         name = "sacem"
                         type="file">
-                <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['sacem'])===null||$tmp==='' ? '' : $tmp);?>
-
+                <br>
+                <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['sacem'])===null||$tmp==='' ? '' : $tmp);?>
+ </span>
                 <input  type = "hidden"
                         name ="MAX_FILE_SIZE"
                         value ="25000000">
                         
-                <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['sacem'])===null||$tmp==='' ? '' : $tmp);?>
-
+               
 
                 <br>
                 <br>
@@ -430,14 +435,15 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                 <input  class = "fadeIn fourth"
                         required
                         name = "photoGrp1"
-                        type = "file">   <br>  <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['grp1'])===null||$tmp==='' ? '' : $tmp);?>
+                        type = "file">   
+                <br>  <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['photoGrp1'])===null||$tmp==='' ? '' : $tmp);?>
  </span> <br>
 
                 <br>
                 <input  class = "fadeIn fourth"
                         required
                         name = "photoGrp2"
-                        type = "file"> <br>  <span class="erreur">  <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['grp2'])===null||$tmp==='' ? '' : $tmp);?>
+                        type = "file"> <br>  <span class="erreur">  <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['photoGrp2'])===null||$tmp==='' ? '' : $tmp);?>
  </span> <br>
 
                 <br>
@@ -460,7 +466,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                         required
                         name = "mus3"
                         type = "file">
-                <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['mus3'])===null||$tmp==='' ? '' : $tmp);?>
+                <br> <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['mus3'])===null||$tmp==='' ? '' : $tmp);?>
  </span>
            
                 <input type ="submit">
@@ -471,26 +477,41 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 
 </form>
 
-    </body>
-</html>
 
-
-
+        <?php } else { ?> 
+        <div class="fadeIn H">
+                <h1> Vous avez déjà fait une candidature.</h1>
+        
+       
+        <br>
+        
+                 <a href = "profil">Voir ma candidature</a>
+        </div>
+         <?php }?>
 
 
 <?php } else { ?>
 
-<!doctype html>
-<html>
-    <head>
-            <meta name= "viewport" content="width=device-width, initial-scale=1">
-            <title>Candidature</title>
-    </head>
-    <body>
 
-        <h1> Vous devez être inscrits et connectés sur le site pour accéder à cette page. </h1>
+        
+        <div class="fadeIn H">
+                <h1> Vous devez être connecté pour pouvoir candidater.</h1>
+        
+       
+        <br>
+        
+                 <a href = "login"> Se connecter</a>
+        </div>
+         <br>
+        <div class="img">
+                <img src="../images/neo_et_sa_mere.gif">
+        </div>
+            
+        
+
+        
+<?php }?>
     </body>
 </html>
 <?php }
-}
 }

@@ -23,6 +23,7 @@ body {
   height: 130px;
 }
 
+
 /* STRUCTURE */
 
 .wrapper {
@@ -188,7 +189,12 @@ input[type=submit]:active {
     animation-delay: 1.2s;
   }
   
-h1, h2, h3
+h1
+{
+  color : white;
+}
+
+h2, h3
 {
   color : black;
 }

@@ -251,6 +251,7 @@ Flight::route('POST /login', function(){
 
           $_SESSION['user'] = $compte[4];
           $_SESSION['mail'] = $compte[2];
+          $_SESSION['candidat'] = $compte[6];
 
         }
 
@@ -341,14 +342,27 @@ Flight::route('POST /login', function(){
     $ulrFB = $_POST['facebook'];
     $urlSC = $_POST['soundcloud'];
     $urlYT = $_POST['youTube'];
-    
-    if (isset ($_POST['nomMembre'])){
-      $nomMembre = $_POST['nomMembre'];
-      $prenomMembre = $_POST['prenomMembre'];
-      $instrumentMembre = $_POST['instrumentMembre'];
-      }
-
-
+    $nomMembre = $_POST['nomMembre'];
+    $prenomMembre = $_POST['prenomMembre'];
+    $instrumentMembre = $_POST['instrumentMembre'];
+    if($_POST['statut']=="Oui"){
+      $statue=0;
+    }
+    else{
+      $statue=1;
+    }
+    if($_POST['sacem']=="Oui"){
+      $sacem=0;
+    }
+    else{
+      $sacem=1;
+    }
+    if($_POST['producteur']=="Oui"){
+      $producteur=0;
+    }
+    else{
+      $producteur=1;
+    }
     // Test sur le nom du groupe :
 
       //Test Côté client :
@@ -553,7 +567,7 @@ Flight::route('POST /login', function(){
 
       if (!is_numeric($cp)){
         $erreur = True;
-        $messages['codePostal'] = "(Serveur) Veuillez saisir un code postal valide.";
+        $messages['cp'] = "(Serveur) Veuillez saisir un code postal valide.";
         $_POST['codePostal'];
       }
 
@@ -756,32 +770,31 @@ Flight::route('POST /login', function(){
         // Test Côté Client :  
 
         // Test Côté Serveur : 
-          if (isset($_FILES['ficheTechnique']) AND $_FILES['ficheTechnique']['error'] == 0){
+          if (isset($_FILES['ficheTechnique']) AND $codeErrFT == 0){
             
-            if ($_FILES['ficheTechnique']['size']<= 1500000){
+            if ($sizeFT<= 1500000){
 
-              $infosfichier = pathinfo($_FILES['ficheTechnique']['name']);
+              $infosfichier = pathinfo($nomWebFT);
               $extension_fichier = $infosfichier['extension'];
-              $extension_verif = array('.pdf','.txt','.odt');
+              $extension_verif = array('pdf','txt','odt');
               if (in_array($extension_fichier,$extension_verif)){
-                move_uploaded_file($_FILES['ficheTechnique']['tmp_name'],"../data/upload".basename($_FILES['ficheTechnique']['name']));
-                echo "Envoie effectué";
+                move_uploaded_file($nomTmpFT,"../data/upload".basename($nomWebFT));
               }
               else {
                 $erreur = True;
-                echo "ERREUR extension";
+                $messages['ft'] = "Veuillez joindre un fichier au format PDF.";
               }
 
             }
             else{
               $erreur = True;
-              echo "Fichier trop lourd";
+              $messages['ft'] = "Fichier trop lourd";
             }
          
           }
         else{
           $erreur = True;
-          echo "Erreur lors de l'upload du fichier.";
+          $messages['ft'] = "Erreur lors de l'upload du fichier.";
         }
 
          
@@ -799,10 +812,9 @@ Flight::route('POST /login', function(){
 
             $infosfichier = pathinfo($nomWebSacem);
             $extension_fichier = $infosfichier['extension'];
-            $extension_verif = array('.pdf','.txt','.odt');
+            $extension_verif = array('pdf','txt','odt');
             if (in_array($extension_fichier,$extension_verif)){
-              move_uploaded_file($_FILES['sacem']['tmp_name'],"../data/upload".basename($_FILES['sacem']['name']));
-              echo "Envoie effectué";
+              move_uploaded_file($nomTmpSacem,"../data/upload".basename($nomWebSacem));
             }
             else {
               $erreur = True;
@@ -812,7 +824,7 @@ Flight::route('POST /login', function(){
           }
           else{
             $erreur = True;
-            $messages['sacem'] = "Fichier bien trop lourd";
+            $messages['sacem'] = "Fichier trop lourd";
           }
        
         }
@@ -827,43 +839,108 @@ Flight::route('POST /login', function(){
       $nomWebDp = $_FILES['dossierPresse']['name'];
       $sizeDp = $_FILES['dossierPresse']['size'];
       $nomTmpDp = $_FILES['dossierPresse']['tmp_name'];
-      $codeErrDp = $_FILES['dossierPresse']['error'];   
+      $codeErrDp = $_FILES['dossierPresse']['error'];
       
-      // Fichier photoGrp1.jpg
-      $nomWebGrp1 = $_FILES['photoGrp1']['name'];
-      $sizeGrp1 = $_FILES['photoGrp1']['size'];
-      $nomTmpGrp1 = $_FILES['photoGrp1']['tmp_name'];
-      $codeErrGrp1 = $_FILES['photoGrp1']['error'];  
+        // Test Côté Serveur : 
+        if(!empty($_FILES['dossierPresse']['name'])){
+          if (isset($_FILES['dossierPresse']) AND $codeErrDp == 0){
+            if ($sizeDp<= 1500000){
+              $infosfichier = pathinfo($nomWebDp);
+              $extension_fichier = $infosfichier['extension'];
+              $extension_verif = 'pdf';
+              if ($extension_fichier==$extension_verif){
+                move_uploaded_file($nomTmpDp,"../data/upload".basename($nomWebDp));
+              }
+              else {
+                $erreur = True;
+                $messages['dp'] = "Veuillez joindre un fichier au format PDF.";
+              }
 
-      // Fichier photoGrp2.jpg
-      $nomWebGrp2 = $_FILES['photoGrp2']['name'];
-      $sizeGrp2 = $_FILES['photoGrp2']['size'];
-      $nomTmpGrp2 = $_FILES['photoGrp2']['tmp_name'];
-      $codeErrGrp2 = $_FILES['photoGrp2']['error'];
+            }
+            else{
+              $erreur = True;
+              $messages['dp'] = "Fichier trop lourd";
+            }
+          }
+          else{
+            $erreur = True;
+            $messages['dp'] = "Erreur lors de l'upload du fichier.";
+          }
+      }
+      // Fichier photoGrp1.jpg
+
+      for($i=1;$i<=2;$i++){
+        $nomWebGrp[$i] = $_FILES["photoGrp$i"]['name'];
+        $sizeGrp[$i] = $_FILES["photoGrp$i"]['size'];
+        $nomTmpGrp[$i] = $_FILES["photoGrp$i"]['tmp_name'];
+        $codeErrGrp[$i]= $_FILES["photoGrp$i"]['error'];
+
+          // Test Côté Serveur : 
+          if (isset($_FILES["photoGrp$i"]) AND $codeErrGrp[$i] == 0){
+              
+            if ($sizeGrp[$i] <= 6000000){
+
+              $infosfichier = pathinfo($nomWebGrp[$i]);
+              $extension_fichier = pathinfo($nomWebGrp[$i], PATHINFO_EXTENSION); //infosfichier['extension'];
+              $extension_verif = array('png','jpeg','jpg','gif');
+              if (in_array($extension_fichier,$extension_verif)){
+                move_uploaded_file($nomTmpGrp[$i],"../data/upload".basename($nomWebGrp[$i]));
+                echo "Envoie effectué";
+              }
+              else {
+                $erreur = True;
+                $messages["photoGrp$i"] = "Veuillez joindre un fichier au format .png, .jpeg ou .jpg.";
+              }
+
+            }
+            else{
+              $erreur = True;
+              $messages["photoGrp$i"] = "Fichier bien trop lourd";
+            }
+        
+          }
+        else{
+          $erreur = True;
+          $messages["photoGrp$i"] = "Erreur lors de l'upload du fichier.";
+        }  
+      }
       
       // Fichier mus1.mp3
-      $nomWebmus1 = $_FILES['mus1']['name'];
-      $sizemus1 = $_FILES['mus1']['size'];
-      $nomTmpmus1 = $_FILES['mus1']['tmp_name'];
-      $codeErrmus1 = $_FILES['mus1']['error'];  
+      for($i=1;$i<=3;$i++){
+        $nomWebmus[$i] = $_FILES["mus$i"]['name'];
+        $sizemus[$i] = $_FILES["mus$i"]['size'];
+        $nomTmpmus[$i] = $_FILES["mus$i"]['tmp_name'];
+        $codeErrmus[$i] = $_FILES["mus$i"]['error'];  
 
-      // Fichier mus2.mp3
-      $nomWebmus2 = $_FILES['mus2']['name'];
-      $sizemus2 = $_FILES['mus2']['size'];
-      $nomTmpmus2 = $_FILES['mus2']['tmp_name'];
-      $codeErrmus2 = $_FILES['mus2']['error'];  
+        if (isset($_FILES["mus$i"]) AND $codeErrmus[$i] == 0){
+              
+          if ($sizemus[$i] <= 20000000){
 
-      // Fichier mus3.mp3
-      $nomWebmus3 = $_FILES['mus3']['name'];
-      $sizemus3 = $_FILES['mus3']['size'];
-      $nomTmpmus3 = $_FILES['mus3']['tmp_name'];
-      $codeErrmus3 = $_FILES['mus3']['error'];  
+            $infosfichier = pathinfo($nomWebmus[$i]);
+            $extension_fichier = pathinfo($nomWebmus[$i], PATHINFO_EXTENSION); //infosfichier['extension'];
+            $extension_verif = 'mp3';
+            if ($extension_fichier==$extension_verif){
+              move_uploaded_file($nomTmpmus[$i],"../data/upload".basename($nomWebmus[$i]));
+              echo "Envoie effectué";
+            }
+            else {
+              $erreur = True;
+              $messages["mus$i"] = "Veuillez joindre un fichier au format .mp3.";
+            }
+
+          }
+          else{
+            $erreur = True;
+            $messages["mus$i"] = "Fichier bien trop lourd";
+          }
+      
+        }
+        else{
+          $erreur = True;
+          $messages["mus$i"] = "Erreur lors de l'upload du fichier.";
+        }
+      }
     }
-
-
-
-
-
 
     if ($erreur){
 
@@ -880,6 +957,87 @@ Flight::route('POST /login', function(){
     }
   
     else{
+      /*
+      $db = Flight::get('db');
+      $idDep = $db -> query("SELECT id FROM departements WHERE nom=$_POST['dep']);
+      $idScene = $db -> query("SELECT id FROM scenes WHERE type=$_POST['scene']);
+      $iduser = $db -> query("SELECT id FROM utilisateurs WHERE mail=$_SESSION['mail']);
+      $req = $db -> prepare("
+                            INSERT INTO 
+                              candidatures(nomGroupe,id_departement,id_scene,id_utilisateur,villeRepresentant,codePostalRepresentant,telRepresentant,styleMusique,anneeCreation,presentationTexte,expScenique,webFacebook,soundcloud,youtube,associatif,sacem,producteur,dossierPresse,ficheTechnique,docSacem) 
+                            VALUES 
+                              (:nomGroupe,:id_departement,:id_scene,:id_utilisateur,:villeRepresentant,:codePostalRepresentant,:telRepresentant,:styleMusique,:anneeCreation,:presentationTexte,:expScenique,:webFacebook,:soundcloud,:youtube,:associatif,:sacem,:producteur,:dossierPresse,:ficheTechnique,:docSacem)
+                            ");
+      $req -> bindParam(':nomGroupe',$nomGrp);
+      $req -> bindParam(':id_departement',$idDep);
+      $req -> bindParam(':id_scene',$idScene);
+      $req -> bindParam(':id_utilisateur',$iduser);
+      $req -> bindParam(':villeRepresentant',$villeRep);
+      $req -> bindParam(':codePostalRepresentant',$cp);
+      $req -> bindParam(':telRepresentant',$tel);
+      $req -> bindParam(':styleMusique',$styleMus);
+      $req -> bindParam(':anneeCreation',$anneeCrea);
+      $req -> bindParam(':presentationTexte',$presTexte);
+      $req -> bindParam(':expScenique',$expScenique);
+      $req -> bindParam(':webFacebook',$ulrFB);
+      $req -> bindParam(':soundcloud',$urlSC);
+      $req -> bindParam(':youtube',$urlYT);
+      $req -> bindParam(':associatif',$statut);
+      $req -> bindParam(':sacem',$sacem);
+      $req -> bindParam(':producteur',$producteur);
+      $req -> bindParam(':dossierPresse',$nomWebDp);
+      $req -> bindParam(':ficheTechnique',$nomWebFT);
+      $req -> bindParam(':docSacem',$nomWebSacem);
+      $req -> execute();
+      
+      $idCandidature = $db -> query("SELECT id FROM candidatures WHERE id_utilisateur=$iduser);
+      $reqMembres = $db -> prepare ("
+                                    INSERT INTO
+                                        membres(nom,prenom,instrument,id_candidature)
+                                    VALUES
+                                        (:nom,:prenom,:instrument,:id_candidature)
+                                    ");
+      for($i=1;$i<$POST['nomMembre'].length;$i++){
+        $reqMembres -> bindParam(':nom',$nomMembre[$i]);
+        $reqMembres -> bindParam(':prenom',$prenomMembre[$i]);
+        $reqMembres -> bindParam(':instrument',$instrumentMembre[$i]);
+        $reqMembres -> bindParam(':id_candidature',$idCandidature);
+        $reqMembres -> execute();
+      }
+
+      $reqPhoto = $db -> prepare ("
+                                    INSERT INTO
+                                        photos(nomfichier,id_candidature)
+                                    VALUES
+                                        (:nomfichier,:id_candidature)
+                                    ");
+      for($i=1;$i<=2;$i++){
+        $reqPhoto -> bindParam(':nomfichier',$$nomWebGrp[$i]);
+        $reqPhoto -> bindParam(':id_candidature',$idCandidature);
+        $reqPhoto -> execute();
+      }
+
+      $reqMus = $db -> prepare ("
+                                    INSERT INTO
+                                        mp3s(nomfichier,id_candidature)
+                                    VALUES
+                                        (:nomfichier,:id_candidature)
+                                    ");
+      for($i=1;$i<=3;$i++){
+        $reqMus -> bindParam(':nomfichier',$nomWebmus[$i]);
+        $reqMus -> bindParam(':id_candidature',$idCandidature);
+        $reqMus -> execute();
+      }
+      
+      $reqUser = $db -> prepare ("
+                                  UPDATE utilisateurs
+                                  SET candidat = '0'
+                                  WHERE id=$iduser
+                                ");
+      $reqUser -> execute();
+      $_SESSION['candidat']=0;
+      */
+      
       Flight::redirect("/");
     }
   });

@@ -20,6 +20,7 @@ Flight::set("db",$db);
 
 if(isset($_SESSION['user'])){
     Flight::view() -> assign('user',$_SESSION['user']);
+    Flight::view() -> assign('candidat',$_SESSION['candidat']);
 }
 
 Flight::start();
