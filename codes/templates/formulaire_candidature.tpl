@@ -1,5 +1,5 @@
 
-{if isset ($user)}
+
 
 <!doctype html>
 <html>
@@ -80,6 +80,7 @@
         {/literal}
     </head>
     <body>
+    {if isset ($user)}
         <div class="fadeIn H">
             <h1> Candidature au festival : </h1>
         </div>
@@ -395,8 +396,6 @@
 
 </form>
 
-    </body>
-</html>
 
 
 
@@ -404,15 +403,15 @@
 
 {else}
 
-<!doctype html>
-<html>
-    <head>
-            <meta name= "viewport" content="width=device-width, initial-scale=1">
-            <title>Candidature</title>
-    </head>
-    <body>
 
-        <h1> Vous devez être inscrits et connectés sur le site pour accéder à cette page. </h1>
+        
+        
+        <h1> Vous devez être connecté pour pouvoir candidater.</h1>
+         <p> <a href = "login" class="btns"> Se connecter</a></p>
+        <img src="../images/neo_et_sa_mere.gif">
+      
+            
+        
+{/if}
     </body>
 </html>
-{/if}

@@ -27,7 +27,7 @@ body {
 #formContent {
   -webkit-border-radius: 10px 10px 10px 10px;
   border-radius: 10px 10px 10px 10px;
-  background: #fff;
+  background: rgb(194, 225, 255);
   padding: 30px;
   width: 90%;
   max-width: 450px;
@@ -36,7 +36,6 @@ body {
   box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
   text-align: center;
 }
-
 /* FORM TYPOGRAPHY*/
 
 input[type=submit] {
@@ -201,4 +200,10 @@ input[type=password],[type=text],[type=number],[type=tel],[type=url],[type=file]
 
 * {
   box-sizing: border-box;
+}
+
+
+.css
+{
+  background-color: #56bbed80;
 }
