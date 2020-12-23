@@ -747,19 +747,81 @@ Flight::route('POST /login', function(){
     $erreur = True;
 
     if(isset(Flight::request()->files)){
-  
+
       // Fichier FicheTechnique.pdf
       $nomWebFT = $_FILES['ficheTechnique']['name'];
       $sizeFT = $_FILES['ficheTechnique']['size'];
       $nomTmpFT = $_FILES['ficheTechnique']['tmp_name'];
       $codeErrFT = $_FILES['ficheTechnique']['error'];
-      
-      // Fichier DocumentSACEM.pdf
+        // Test Côté Client :  
 
+        // Test Côté Serveur : 
+          if (isset($_FILES['ficheTechnique']) AND $_FILES['ficheTechnique']['error'] == 0){
+            
+            if ($_FILES['ficheTechnique']['size']<= 1500000){
+
+              $infosfichier = pathinfo($_FILES['ficheTechnique']['name']);
+              $extension_fichier = $infosfichier['extension'];
+              $extension_verif = array('.pdf','.txt','.odt');
+              if (in_array($extension_fichier,$extension_verif)){
+                move_uploaded_file($_FILES['ficheTechnique']['tmp_name'],"../data/upload".basename($_FILES['ficheTechnique']['name']));
+                echo "Envoie effectué";
+              }
+              else {
+                $erreur = True;
+                echo "ERREUR extension";
+              }
+
+            }
+            else{
+              $erreur = True;
+              echo "Fichier trop lourd";
+            }
+         
+          }
+        else{
+          $erreur = True;
+          echo "Erreur lors de l'upload du fichier.";
+        }
+
+         
+
+      // Fichier DocumentSACEM.pdf
       $nomWebSacem = $_FILES['sacem']['name'];
       $sizeSacem = $_FILES['sacem']['size'];
       $nomTmpSacem = $_FILES['sacem']['tmp_name'];
       $codeErrSacem = $_FILES['sacem']['error'];
+
+        // Test Côté Serveur : 
+        if (isset($_FILES['sacem']) AND $codeErrSacem == 0){
+            
+          if ($sizeSacem<= 1500000){
+
+            $infosfichier = pathinfo($nomWebSacem);
+            $extension_fichier = $infosfichier['extension'];
+            $extension_verif = array('.pdf','.txt','.odt');
+            if (in_array($extension_fichier,$extension_verif)){
+              move_uploaded_file($_FILES['sacem']['tmp_name'],"../data/upload".basename($_FILES['sacem']['name']));
+              echo "Envoie effectué";
+            }
+            else {
+              $erreur = True;
+              $messages['sacem'] = "Veuillez joindre un fichier au format PDF.";
+            }
+
+          }
+          else{
+            $erreur = True;
+            $messages['sacem'] = "Fichier bien trop lourd";
+          }
+       
+        }
+      else{
+        $erreur = True;
+        $messages['sacem'] = "Erreur lors de l'upload du fichier.";
+      }
+
+
 
       // Fichier DossierPresse.pdf
       $nomWebDp = $_FILES['dossierPresse']['name'];
@@ -797,6 +859,12 @@ Flight::route('POST /login', function(){
       $nomTmpmus3 = $_FILES['mus3']['tmp_name'];
       $codeErrmus3 = $_FILES['mus3']['error'];  
     }
+
+
+
+
+
+
     if ($erreur){
 
       Flight::view()->assign('messages',$messages);
