@@ -347,6 +347,8 @@ Flight::route('POST /login', function(){
       $prenomMembre = $_POST['prenomMembre'];
       $instrumentMembre = $_POST['instrumentMembre'];
       }
+
+
     // Test sur le nom du groupe :
 
       //Test Côté client :
@@ -369,6 +371,7 @@ Flight::route('POST /login', function(){
       if (strlen($nomGrp)>30){
         $erreur = True;
         $messages['nomGrp'] = "(Serveur) Veuillez saisir un nom plus court (-30 caractères)";
+        $_POST['nomGrp'];
       }
 
  // Test Sur l'année :
@@ -380,37 +383,47 @@ Flight::route('POST /login', function(){
       $erreur = True;
       $messages['anneeCrea'] = " (Client) Veuillez saisir une année.";
     }
-
+    
+    if (!is_numeric($fannee)){
+      $erreur = True;
+      $messages['anneeCrea'] = "(Client)Veuillez saisir une année valide.";
+      $_POST['annee'];
+    }
     if((strlen($fannee)<4) or (strlen($fannee)>4)){
       $erreur = True;
-      $messages['anneeCrea'] = " (Client) Veuillez saisir une année valide toast.";
+      $messages['anneeCrea'] = " (Client) Veuillez saisir une année valide.";
+      $_POST['annee'];
     }
     
     if ((intval($fannee)>=1930) or (intval($fannee)<=2021)){
       $erreur = True;
       $messages['anneeCrea'] = " (Client) Veuillez saisir une année entre 1930 et 2021";
+      $_POST['annee'];
     }
     // Test côté Serveur : 
 
 
     if(empty($anneeCrea)){
       $erreur = True;
-      $messages['anneeCrea'] = "Veuillez saisir une année.";
+      $messages['anneeCrea'] = "(Serveur) Veuillez saisir une année.";
     }
 
     if (!is_numeric($anneeCrea)){
       $erreur = True;
-      $messages['anneeCrea'] = "Veuillez saisir une année valide.";
+      $messages['anneeCrea'] = "(Serveur)Veuillez saisir une année valide.";
+      $_POST['annee'];
     }
 
     if ((strlen($anneeCrea) > 4) or (strlen($anneeCrea) < 4)){
       $erreur = True;
-      $messages['anneeCrea'] = "L'année est incorrecte, veuillez rééssayer";
+      $messages['anneeCrea'] = "(Serveur) L'année est incorrecte, veuillez rééssayer";
+      $_POST['annee'];
     }
 
     if ((intval($anneeCrea)>=1930) or (intval($anneeCrea)<=2021)){
       $erreur = True;
-      $messages['anneeCrea'] = " (Client) Veuillez saisir une année entre 1930 et 2021";
+      $messages['anneeCrea'] = "(Serveur) Veuillez saisir une année entre 1930 et 2021";
+      $_POST['annee'];
     }
     
   // Test sur l'URL Facebook ou site :
@@ -426,6 +439,7 @@ Flight::route('POST /login', function(){
         if(!filter_var($furlFB, FILTER_VALIDATE_URL)){
             $erreur = True;
             $messages['urlFB'] = "<br>(Client) Veuillez saisir une URL valide.";
+            $_POST['facebook'];
         }
       }  
     // Test Côté Serveur : 
@@ -437,6 +451,7 @@ Flight::route('POST /login', function(){
         if(!filter_var($urlFB, FILTER_VALIDATE_URL)){
             $erreur = True;
             $messages['urlFB'] = "<br>(Serveur) Veuillez saisir une URL valide.";
+            $_POST['facebook'];
         }
       }
 
@@ -452,7 +467,6 @@ Flight::route('POST /login', function(){
     else {
       if((!filter_var($furlSC, FILTER_VALIDATE_URL)) or (strpos($furlSC,'soundcloud')==FALSE)){
           $erreur = True;
-          echo "ERREUR";
           $messages['urlSC'] = "<br>(Client) Veuillez saisir une URL Soundclound valide.";
           $_POST['soundcloud']="";
       }
@@ -461,14 +475,41 @@ Flight::route('POST /login', function(){
     if(empty($urlSC)){
       $erreur = True;
       $messages['urlSC'] = "<br>(Serveur) Veuillez saisir une URL SoundCloud.";
-      $_POST['soundcloud']="";
     }
     else {
       if((!filter_var($urlSC, FILTER_VALIDATE_URL)) or (strpos($urlSC,'soundcloud')==FALSE)){
           $erreur = True;
-          echo "ERREUR";
           $messages['urlSC'] = "<br>(Serveur) Veuillez saisir une URL Soundcloud valide.";
           $_POST['soundcloud']="";
+      }
+    }
+
+  // Test sur l'URL YouTube:
+
+    // Test Côté Client :
+    $furlYT = Flight::request()->data->youTube;
+    if(empty($furlYT)){
+      $erreur = True;
+      $messages['urlYT'] = "<br>(Client) Veuillez saisir une URL YouTube.";
+      $_POST['youTube']="";
+    }
+    else {
+      if((!filter_var($furlYT, FILTER_VALIDATE_URL)) or (strpos($furlYT,'youtube')==FALSE)){
+          $erreur = True;
+          $messages['urlYT'] = "<br>(Client) Veuillez saisir une URL YouTube valide.";
+          $_POST['youTube']="";
+      }
+    }  
+  // Test Côté Serveur : 
+    if(empty($urlYT)){
+      $erreur = True;
+      $messages['urlYT'] = "<br>(Serveur) Veuillez saisir une URL YouTube.";
+    }
+    else {
+      if((!filter_var($urlYT, FILTER_VALIDATE_URL)) or (strpos($urlYT,'youtube')==FALSE)){
+          $erreur = True;
+          $messages['urlYT'] = "<br>(Serveur) Veuillez saisir une URL YouTube valide.";
+          $_POST['youTube']="";
       }
     }
 
@@ -478,36 +519,231 @@ Flight::route('POST /login', function(){
 
 
 
-    // Test sur le code Postal
-    $fcp = Flight::request()->data->codePostal;
-    $lenfcp = strlen($fcp);
-
-    if (empty ($cp)){
-      $erreur = True;
-      $messages['cp'] = "Veuillez saisir un code postal.";
-    }
-    if (empty($fcp)){
-      $erreur = True;
-      $message['cp'] = "Veuillez saisir un code postal.";
-    }
-    if($lenfcp <= 4 && $lenfcp >=5){
-      $erreur = True;
-      $messages['cp'] = "Veuillez saisir un code postal valide.";
-    }
-
-    // Test sur la présentation du texte
+  // Test sur le code Postal :
     
-    if (empty ($presTexte)){
-      $erreur = True;
-      $messages['presTexte'] = "Veuillez présenter votre groupe (500 car. max)";
-    }
+    // Test Côté Client : 
 
-    if (strlen($presTexte) > 500){
-      $erreur = True;
-      $messages['presTexte'] = "Votre texte dépasse les 500 caractères.";
-    }
+      $fcp = Flight::request()->data->codePostal;
 
-    // TEST SUR LES CHAMPS VIDES 
+      if (empty ($fcp)){
+        $erreur = True;
+        $messages['cp'] = "(Client) Veuillez saisir un code postal.";
+
+      }
+
+      if((strlen($fcp) < 4) or (strlen($fcp) >5)){
+        $erreur = True;
+        $messages['cp'] = "(Client) Veuillez saisir un code postal valide (entre 5 et 6 chiffres).";
+        $_POST['codePostal'] = "";
+      }
+
+      if (!is_numeric($fcp)){
+        $erreur = True;
+        $messages['codePostal'] = "(Client) Veuillez saisir un code postal valide.";
+        $_POST['codePostal'];
+      }
+  
+
+    // Test Côté Serveur  
+      if (empty($cp)){
+        $erreur = True;
+        $message['cp'] = "(Serveur) Veuillez saisir un code postal.";
+        $_POST['codePostal'] = "";
+      }
+
+      if (!is_numeric($cp)){
+        $erreur = True;
+        $messages['codePostal'] = "(Serveur) Veuillez saisir un code postal valide.";
+        $_POST['codePostal'];
+      }
+
+      if((strlen($cp) < 4) or (strlen($cp) > 5)){
+        $erreur = True;
+        $messages['cp'] = "(Serveur) Veuillez saisir un code postal valide (entre 5 et 6 chiffres).";
+        $_POST['codePostal'] = "";
+      }
+      
+
+
+    // Test sur la présentation du texte :
+
+      // Test Côté Client :
+      
+      $fpresTexte = Flight::request()->data->presTexte;
+
+      if (empty ($fpresTexte)){
+        $erreur = True;
+        $messages['presTexte'] = "(Client) Veuillez présenter votre groupe. (500 car. max)";
+      }
+
+      if (is_numeric($fpresTexte)){
+        $erreur = True;
+        $messages['presTexte'] = "(Client) Utilisez des lettres !";
+        $_POST['presTexte'];
+      }
+
+      if (strlen($fpresTexte) > 500){
+        $erreur = True;
+        $messages['presTexte'] = "(Client) Votre texte dépasse les 500 caractères.";
+        $_POST['presTexte'];
+      }
+
+      // Test Côté Serveur :
+
+      if (empty ($presTexte)){
+        $erreur = True;
+        $messages['presTexte'] = "(Serveur) Veuillez présenter votre groupe. (500 car. max)";
+      }
+
+      if (is_numeric($presTexte)){
+        $erreur = True;
+        $messages['presTexte'] = "(Serveur) Utilisez des lettres !";
+        $_POST['presTexte'];
+      }
+
+      if (strlen($presTexte) > 500){
+        $erreur = True;
+        $messages['presTexte'] = "(Serveur) Votre texte dépasse les 500 caractères.";
+        $_POST['presTexte'];
+      }
+
+      
+    // Test sur la présentation du texte :
+     
+      // Test Côté Client :
+      
+      $fexpScenique = Flight::request()->data->expScenique;
+
+      if (empty ($fexpScenique)){
+        $erreur = True;
+        $messages['expScenique'] = "(Client) Veuillez présenter votre expérience scénique. (500 car. max)";
+      }
+      if (is_numeric($fexpScenique)){
+        $erreur = True;
+        $messages['expScenique'] = "(Client) Utilisez des lettres !";
+        $_POST['expScenique'];
+      }
+
+      if (strlen($fexpScenique) > 500){
+        $erreur = True;
+        $messages['expScenique'] = "(Client) Votre texte dépasse les 500 caractères.";
+        $_POST['expScenique'];
+      }
+
+      // Test Côté Serveur :
+
+      if (empty ($expScenique)){
+        $erreur = True;
+        $messages['expScenique'] = "(Serveur) Veuillez présenter votre expérience scénique. (500 car. max)";
+      }
+
+      if (is_numeric($expScenique)){
+        $erreur = True;
+        $messages['expScenique'] = "(Serveur) Utilisez des lettres !";
+        $_POST['expScenique'];
+      }
+
+      if (strlen($expScenique) > 500){
+        $erreur = True;
+        $messages['expScenique'] = "(Serveur) Votre texte dépasse les 500 caractères.";
+        $_POST['expScenique'];
+      }
+    
+    // Test sur le style musical : 
+      // Test Côté Client : 
+      $fvilleRep = Flight::request()->data->ville;
+
+      if (empty ($fvilleRep)){
+        $erreur = True;
+        $messages['villeRep'] = "(Client) Saisissez votre ville.";
+      }
+
+      if (is_numeric($fvilleRep)){
+        $erreur = True;
+        $messages['villeRep'] = "(Client) Utilisez des lettres !";
+        $_POST['ville'];
+      }
+      // Test Côté Serveur :
+
+      if (empty ($villeRep)){
+        $erreur = True;
+        $messages['villeRep'] = "(Serveur) Saisissez votre ville.";
+      }
+
+      if (is_numeric($villeRep)){
+        $erreur = True;
+        $messages['villeRep'] = "(Serveur) Utilisez des lettres !";
+        $_POST['ville'];
+      }
+
+    // Test sur la ville : 
+      // Test Côté Client : 
+      $fstyleMus = Flight::request()->data->styleMus;
+
+      if (empty ($fstyleMus)){
+        $erreur = True;
+        $messages['styleMus'] = "(Client) Veuillez présenter votre expérience scénique (500 car. max)";
+      }
+
+      if (is_numeric($fstyleMus)){
+        $erreur = True;
+        $messages['styleMus'] = "(Client) Utilisez des lettres !";
+        $_POST['styleMus'];
+      }
+      // Test Côté Serveur :
+
+      if (empty ($styleMus)){
+        $erreur = True;
+        $messages['styleMus'] = "(Serveur) Veuillez présenter votre style musical.";
+      }
+
+      if (is_numeric($styleMus)){
+        $erreur = True;
+        $messages['styleMus'] = "(Serveur) Utilisez des lettres !";
+        $_POST['styleMus'];
+      }
+
+
+ // Test sur le Tel : 
+      // Test Côté Client : 
+      $ftel = Flight::request()->data->tel;
+
+      if (empty ($ftel)){
+        $erreur = True;
+        $messages['tel'] = "(Client) Veuillez saisir votre N° de téléphone.";
+      }
+
+      if (!is_numeric($ftel)){
+        $erreur = True;
+        $messages['tel'] = "(Client) Utilisez des chiffres !";
+        $_POST['tel'];
+      }
+
+      if ((strlen(trim($ftel))>10) or (strlen(trim($ftel))<10) ){
+        $erreur = True;
+        $messages['tel'] = "(Client) N° Incorrect, Réessayez avec un N° de téléphone au bon format !";
+        $_POST['tel'];        
+      }
+      // Test Côté Serveur :
+
+      if (empty ($tel)){
+        $erreur = True;
+        $messages['tel'] = "(Serveur) Veuillez saisir votre N° de téléphone";
+      }
+
+      if (!is_numeric($tel)){
+        $erreur = True;
+        $messages['tel'] = "(Serveur) Utilisez des chiffres !";
+        $_POST['tel'];
+      }
+
+      if ((strlen(trim($tel))>10) or (strlen(trim($tel))<10) ){
+        $erreur = True;
+        $messages['tel'] = "(Serveur) N° Incorrect, Réessayez avec un N° de téléphone au bon format !";
+        $_POST['tel'];        
+      }
+
+
     $erreur = True;
 
     if(isset(Flight::request()->files)){
@@ -569,6 +805,7 @@ Flight::route('POST /login', function(){
       $reqScenes=$db->query("SELECT s.type FROM scenes s ");
       Flight::view()->assign('reqDep',$reqDep);
       Flight::view()->assign('reqScenes',$reqScenes);
+      Flight::view()->assign('$_FILES',$_FILES);
       Flight::render("formulaire_candidature.tpl",$_POST);
       
   

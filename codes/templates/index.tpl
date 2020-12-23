@@ -27,11 +27,11 @@
 
                 {else}
                 <p>  Vous êtes déjà inscrits ? 
-                    <br><br>
+                    <br><br> <br>
                     <a href="login" class="btns"> Connectez vous </a> </p> 
-                    <br> <br> 
+                    <br> 
                     <p> OU <p> 
-                    <br> <br>
+                    <br> 
                 <p> <a href = "register" class="btns"> Inscrivez vous </a> <br> Vous verrez, c'est cool !  </p>
                 {/if}
         </div>
