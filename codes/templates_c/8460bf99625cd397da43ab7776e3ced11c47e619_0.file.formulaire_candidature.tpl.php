@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-12-22 23:55:11
+/* Smarty version 3.1.34-dev-7, created on 2020-12-23 00:35:56
   from 'C:\public_html\codes\templates\formulaire_candidature.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5fe2875f030878_09573135',
+  'unifunc' => 'content_5fe290ecac3d17_84020678',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '8460bf99625cd397da43ab7776e3ced11c47e619' => 
     array (
       0 => 'C:\\public_html\\codes\\templates\\formulaire_candidature.tpl',
-      1 => 1608681308,
+      1 => 1608683755,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5fe2875f030878_09573135 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5fe290ecac3d17_84020678 (Smarty_Internal_Template $_smarty_tpl) {
 if ((isset($_smarty_tpl->tpl_vars['user']->value))) {?>
 
 <!doctype html>
@@ -232,6 +232,8 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                 <label class = "fadeIn second"> Présentez vous : * </label>
                 <input  class = "fadeIn second"
                         type = "text"
+                        size = "150"
+                        style="height:600px;"
                         name = "presTexte"
                         placeholder="Ex : Notre groupe est né lors d'une rencontre entre ..."
                         value = "<?php echo (($tmp = @$_smarty_tpl->tpl_vars['presTexte']->value)===null||$tmp==='' ? '' : $tmp);?>

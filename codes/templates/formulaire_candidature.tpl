@@ -179,6 +179,7 @@
                 <label class = "fadeIn second"> Présentez vous : * </label>
                 <input  class = "fadeIn second"
                         type = "text"
+                        size = "150"
                         name = "presTexte"
                         placeholder="Ex : Notre groupe est né lors d'une rencontre entre ..."
                         value = "{$presTexte|default:''}"

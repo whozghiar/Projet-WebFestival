@@ -73,7 +73,7 @@ input[type=submit]:active {
   transform: scale(0.95);
 }
 
-input[type=email],[type=password],[type=text],[type=number],[type=tel],[type=url],[type=file]{
+input[type=password],[type=text],[type=number],[type=tel],[type=url],[type=file]{
   background-color: #f6f6f6ab;
   border: none;
   color: #0d0d0d;
@@ -81,7 +81,7 @@ input[type=email],[type=password],[type=text],[type=number],[type=tel],[type=url
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: 11px;
   margin: 5px;
   width: 85%;
   border: 2px solid #f6f6f63a;
@@ -95,14 +95,6 @@ input[type=email],[type=password],[type=text],[type=number],[type=tel],[type=url
 }
 
 
-input[type=mail]:focus,input[type=password]:focus {
-  background-color: #fff;
-  border-bottom: 2px solid #5fbae9;
-}
-
-input[type=mail]::placeholder,input[type=password]:placeholder {
-  color: #cccccc;
-}
 
 /* Simple CSS3 Fade-in-down Animation */
 .fadeInDown {
