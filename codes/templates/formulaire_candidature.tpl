@@ -10,9 +10,15 @@
         {literal}
             <script type="text/JavaScript">
                 <!--
-                function ajouter() // Ajoute une ligne de champs
+                function ajouter(nbmembre) // Ajoute une ligne de champs
                 {
-		if ( typeof this.i == 'undefined' ) this.i = 2;
+		if ( typeof this.i == 'undefined' ) {
+                        if (nbmembre!= 'undefined'){
+                                this.i=nbmembre+1;
+                        }else{
+                             this.i = 2;  
+                        }
+                }
       
  
                 var doc = document.getElementById('membres'); //élément parent
@@ -58,19 +64,47 @@
                 }
 
                 
-                function supprimer(){
+                function supprimer(nbmembre){
+
+                if ( typeof this.i == 'undefined' ) {
+                        if (nbmembre!= 'undefined'){
+                                this.i=nbmembre+1;
+                        }
+                }
+                if ( typeof this.nb == 'undefined' ) {
+                        if (nbmembre!= 'undefined'){
+                                this.nb=nbmembre;
+                        }else{
+                                nb=1;
+                        }
+                }
                         var doc = document.getElementById('membres');
                         if(doc.childElementCount!=4){
-                                if(doc.childElementCount==33){
-                                        for(var j=0;j<5;j++){
-                                                doc.removeChild(doc.lastChild);
+                                if((nb==i-1)|((nb==8))){
+                                        if(i>=10){
+                                                for(var j=0;j<9;j++){
+                                                        doc.removeChild(doc.lastChild);
+                                                }
+                                                i=8;
+                                        }else{
+                                                for(var j=0;j<8;j++){
+                                                        doc.removeChild(doc.lastChild);
+                                                }
+                                                i--;
                                         }
-                                        i=8;
+                                        nb--;
                                 }else{
-                                        for(var j=0;j<4;j++){
-                                                doc.removeChild(doc.lastChild);
+                                        if(i>=10){
+                                                for(var j=0;j<5;j++){
+                                                        doc.removeChild(doc.lastChild);
+                                                }
+                                                i=8;
+                                        }else{
+                                                for(var j=0;j<4;j++){
+                                                        doc.removeChild(doc.lastChild);
+                                                }
+                                                i--;
                                         }
-                                        i--;
                                 }
                         } 
                 }
@@ -231,28 +265,58 @@
                 
                 <label class = "fadeIn third"> Membres </label>
                 <div id="membres">
-                        <label> Membre n°1 * </label>
-                        <input
-                        type = "text"
-                        name ="nomMembre[1]"
-                        placeholder="Nom"
-                        value = "{$nomMembre[1]|default:''}"
-                        required>
-                        <input
-                        type = "text"
-                        name ="prenomMembre[1]"
-                        placeholder="Prenom"
-                        value = "{$prenomMembre[1]|default:''}"
-                        required>
-                        <input
-                        type = "text"
-                        name ="instrumentMembre[1]"
-                        placeholder="Instrument"
-                        value = "{$instrumentMembre[1]|default:''}"
-                        required>
+                        {if isset ($membreLength)}
+                                {for $i=1 to $membreLength}
+                                        <label> Membre n°{$i} * </label>
+                                        <input
+                                        type = "text"
+                                        name ="nomMembre[{$i}]"
+                                        placeholder="Nom"
+                                        value = "{$nomMembre[{$i}]|default:''}"
+                                        required>
+                                        <input
+                                        type = "text"
+                                        name ="prenomMembre[{$i}]"
+                                        placeholder="Prenom"
+                                        value = "{$prenomMembre[{$i}]|default:''}"
+                                        required>
+                                        <input
+                                        type = "text"
+                                        name ="instrumentMembre[{$i}]"
+                                        placeholder="Instrument"
+                                        value = "{$instrumentMembre[{$i}]|default:''}"
+                                        required>
+                                {/for}
+                        {else}
+                                <label> Membre n°1 * </label>
+                                <input
+                                type = "text"
+                                name ="nomMembre[1]"
+                                placeholder="Nom"
+                                value = "{$nomMembre[1]|default:''}"
+                                required>
+                                <input
+                                type = "text"
+                                name ="prenomMembre[1]"
+                                placeholder="Prenom"
+                                value = "{$prenomMembre[1]|default:''}"
+                                required>
+                                <input
+                                type = "text"
+                                name ="instrumentMembre[1]"
+                                placeholder="Instrument"
+                                value = "{$instrumentMembre[1]|default:''}"
+                                required>
+                        {/if}
 		</div>
-                <input type="button" value="Ajouter un membre" onClick="javascript:ajouter()">
-                <input type="button" value="Supprimer un membre" onClick="javascript:supprimer()">
+                <br> <span class="erreur"> {$messages.nomMembre|default:''} {$messages.prenomMembre|default:''} {$messages.instrumentMembre|default:''}</span> <br>
+                {if isset ($membreLength)}
+                <input type="button" value="Ajouter un membre" onClick="javascript:ajouter({$membreLength})">
+                <input type="button" value="Supprimer un membre" onClick="javascript:supprimer({$membreLength})">
+                {else}
+                <input type="button" value="Ajouter un membre" onClick="javascript:ajouter('undefined')">
+                <input type="button" value="Supprimer un membre" onClick="javascript:supprimer('undefined')">      
+                {/if}
                 <br>
                 <br>
                 

@@ -345,6 +345,24 @@ Flight::route('POST /login', function(){
     $nomMembre = $_POST['nomMembre'];
     $prenomMembre = $_POST['prenomMembre'];
     $instrumentMembre = $_POST['instrumentMembre'];
+
+    for($i=1;$i<=sizeof($nomMembre);$i++){
+      if (empty($nomMembre[$i])){
+        $erreur = True; 
+        $messages['nomMembre'] = "(Serveur) Veuillez saisir un nom de membre";
+      }
+      if (empty($prenomMembre[$i])){
+        $erreur = True; 
+        $messages['prenomMembre'] = "(Serveur) Veuillez saisir un prenom de membre";
+      }
+      if (empty($instrumentMembre[$i])){
+        $erreur = True; 
+        $messages['instrumentMembre'] = "(Serveur) Veuillez saisir un instrument";
+      }
+
+    }
+
+    //Statut, sacem et producteur
     if($_POST['statut']=="Oui"){
       $statue=0;
     }
@@ -953,6 +971,7 @@ Flight::route('POST /login', function(){
       Flight::view()->assign('reqDep',$reqDep);
       Flight::view()->assign('reqScenes',$reqScenes);
       Flight::view()->assign('$_FILES',$_FILES);
+      Flight::view()->assign('membreLength',sizeof($nomMembre));
       Flight::render("formulaire_candidature.tpl",$_POST);
       
   
