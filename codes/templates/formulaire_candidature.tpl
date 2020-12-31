@@ -138,9 +138,9 @@
                                 type = "text"
                                 name = "dep" required> 
 
-                            <option selected> Autre
                                 {foreach $reqDep item=ligne}
-                                    <option> {$ligne[0]}
+                                    <option selected> {$ligne[0]}
+                                    
                                 {/foreach}
                         </select>
            
@@ -309,14 +309,9 @@
                                 required>
                         {/if}
 		</div>
-                <br> <span class="erreur"> {$messages.nomMembre|default:''} {$messages.prenomMembre|default:''} {$messages.instrumentMembre|default:''}</span> <br>
-                {if isset ($membreLength)}
-                <input type="button" value="Ajouter un membre" onClick="javascript:ajouter({$membreLength})">
-                <input type="button" value="Supprimer un membre" onClick="javascript:supprimer({$membreLength})">
-                {else}
-                <input type="button" value="Ajouter un membre" onClick="javascript:ajouter('undefined')">
-                <input type="button" value="Supprimer un membre" onClick="javascript:supprimer('undefined')">      
-                {/if}
+                <span class="erreur"> {$messages.membre|default:''} </span>
+                <input type="button" value="Ajouter un membre" onClick="javascript:ajouter({if isset ($membreLength)} {$membreLength} {else} 'undefined' {/if})">
+                <input type="button" value="Supprimer un membre" onClick="javascript:supprimer({if isset ($membreLength)} {$membreLength} {else} 'undefined' {/if})">
                 <br>
                 <br>
                 

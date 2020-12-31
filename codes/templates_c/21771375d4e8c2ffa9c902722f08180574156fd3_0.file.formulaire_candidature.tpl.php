@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-12-23 17:19:53
+/* Smarty version 3.1.34-dev-7, created on 2020-12-31 14:07:37
   from 'C:\projetWEB\codes\templates\formulaire_candidature.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5fe37c399393d5_20770794',
+  'unifunc' => 'content_5feddb2929a910_18155361',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '21771375d4e8c2ffa9c902722f08180574156fd3' => 
     array (
       0 => 'C:\\projetWEB\\codes\\templates\\formulaire_candidature.tpl',
-      1 => 1608743991,
+      1 => 1609423648,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5fe37c399393d5_20770794 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5feddb2929a910_18155361 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 
 
@@ -34,9 +34,15 @@ function content_5fe37c399393d5_20770794 (Smarty_Internal_Template $_smarty_tpl)
             <?php echo '<script'; ?>
  type="text/JavaScript">
                 <!--
-                function ajouter() // Ajoute une ligne de champs
+                function ajouter(nbmembre) // Ajoute une ligne de champs
                 {
-		if ( typeof this.i == 'undefined' ) this.i = 2;
+		if ( typeof this.i == 'undefined' ) {
+                        if (nbmembre!= 'undefined'){
+                                this.i=nbmembre+1;
+                        }else{
+                             this.i = 2;  
+                        }
+                }
       
  
                 var doc = document.getElementById('membres'); //élément parent
@@ -82,19 +88,47 @@ function content_5fe37c399393d5_20770794 (Smarty_Internal_Template $_smarty_tpl)
                 }
 
                 
-                function supprimer(){
+                function supprimer(nbmembre){
+
+                if ( typeof this.i == 'undefined' ) {
+                        if (nbmembre!= 'undefined'){
+                                this.i=nbmembre+1;
+                        }
+                }
+                if ( typeof this.nb == 'undefined' ) {
+                        if (nbmembre!= 'undefined'){
+                                this.nb=nbmembre;
+                        }else{
+                                nb=1;
+                        }
+                }
                         var doc = document.getElementById('membres');
                         if(doc.childElementCount!=4){
-                                if(doc.childElementCount==33){
-                                        for(var j=0;j<5;j++){
-                                                doc.removeChild(doc.lastChild);
+                                if((nb==i-1)|((nb==8))){
+                                        if(i>=10){
+                                                for(var j=0;j<9;j++){
+                                                        doc.removeChild(doc.lastChild);
+                                                }
+                                                i=8;
+                                        }else{
+                                                for(var j=0;j<8;j++){
+                                                        doc.removeChild(doc.lastChild);
+                                                }
+                                                i--;
                                         }
-                                        i=8;
+                                        nb--;
                                 }else{
-                                        for(var j=0;j<4;j++){
-                                                doc.removeChild(doc.lastChild);
+                                        if(i>=10){
+                                                for(var j=0;j<5;j++){
+                                                        doc.removeChild(doc.lastChild);
+                                                }
+                                                i=8;
+                                        }else{
+                                                for(var j=0;j<4;j++){
+                                                        doc.removeChild(doc.lastChild);
+                                                }
+                                                i--;
                                         }
-                                        i--;
                                 }
                         } 
                 }
@@ -131,15 +165,15 @@ function content_5fe37c399393d5_20770794 (Smarty_Internal_Template $_smarty_tpl)
                                 type = "text"
                                 name = "dep" required> 
 
-                            <option selected> Autre
                                 <?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['reqDep']->value, 'ligne');
 $_smarty_tpl->tpl_vars['ligne']->do_else = true;
 if ($_from !== null) foreach ($_from as $_smarty_tpl->tpl_vars['ligne']->value) {
 $_smarty_tpl->tpl_vars['ligne']->do_else = false;
 ?>
-                                    <option> <?php echo $_smarty_tpl->tpl_vars['ligne']->value[0];?>
+                                    <option selected> <?php echo $_smarty_tpl->tpl_vars['ligne']->value[0];?>
 
+                                    
                                 <?php
 }
 $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
@@ -258,7 +292,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
            
                 <br>
 
-                <label class = "fadeIn third"> Lien vers votre site ou page Facebook/Twitter. * </label>
+                <label class = "fadeIn third"> Lien vers votre site ou page Facebook|Twitter. * </label>
                 <input  class = "fadeIn third"
                         type = "url"
                         name ="facebook"
@@ -295,31 +329,81 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                 
                 <label class = "fadeIn third"> Membres </label>
                 <div id="membres">
-                        <label> Membre n°1 * </label>
-                        <input
-                        type = "text"
-                        name ="nomMembre[1]"
-                        placeholder="Nom"
-                        value = "<?php echo (($tmp = @$_smarty_tpl->tpl_vars['nomMembre']->value[1])===null||$tmp==='' ? '' : $tmp);?>
+                        <?php if ((isset($_smarty_tpl->tpl_vars['membreLength']->value))) {?>
+                                <?php
+$_smarty_tpl->tpl_vars['i'] = new Smarty_Variable(null, $_smarty_tpl->isRenderingCache);$_smarty_tpl->tpl_vars['i']->step = 1;$_smarty_tpl->tpl_vars['i']->total = (int) ceil(($_smarty_tpl->tpl_vars['i']->step > 0 ? $_smarty_tpl->tpl_vars['membreLength']->value+1 - (1) : 1-($_smarty_tpl->tpl_vars['membreLength']->value)+1)/abs($_smarty_tpl->tpl_vars['i']->step));
+if ($_smarty_tpl->tpl_vars['i']->total > 0) {
+for ($_smarty_tpl->tpl_vars['i']->value = 1, $_smarty_tpl->tpl_vars['i']->iteration = 1;$_smarty_tpl->tpl_vars['i']->iteration <= $_smarty_tpl->tpl_vars['i']->total;$_smarty_tpl->tpl_vars['i']->value += $_smarty_tpl->tpl_vars['i']->step, $_smarty_tpl->tpl_vars['i']->iteration++) {
+$_smarty_tpl->tpl_vars['i']->first = $_smarty_tpl->tpl_vars['i']->iteration === 1;$_smarty_tpl->tpl_vars['i']->last = $_smarty_tpl->tpl_vars['i']->iteration === $_smarty_tpl->tpl_vars['i']->total;?>
+                                        <label> Membre n°<?php echo $_smarty_tpl->tpl_vars['i']->value;?>
+ * </label>
+                                        <input
+                                        type = "text"
+                                        name ="nomMembre[<?php echo $_smarty_tpl->tpl_vars['i']->value;?>
+]"
+                                        placeholder="Nom"
+                                        value = "<?php ob_start();
+echo $_smarty_tpl->tpl_vars['i']->value;
+$_prefixVariable1 = ob_get_clean();
+echo (($tmp = @$_smarty_tpl->tpl_vars['nomMembre']->value[$_prefixVariable1])===null||$tmp==='' ? '' : $tmp);?>
 "
-                        required>
-                        <input
-                        type = "text"
-                        name ="prenomMembre[1]"
-                        placeholder="Prenom"
-                        value = "<?php echo (($tmp = @$_smarty_tpl->tpl_vars['prenomMembre']->value[1])===null||$tmp==='' ? '' : $tmp);?>
+                                        required>
+                                        <input
+                                        type = "text"
+                                        name ="prenomMembre[<?php echo $_smarty_tpl->tpl_vars['i']->value;?>
+]"
+                                        placeholder="Prenom"
+                                        value = "<?php ob_start();
+echo $_smarty_tpl->tpl_vars['i']->value;
+$_prefixVariable2 = ob_get_clean();
+echo (($tmp = @$_smarty_tpl->tpl_vars['prenomMembre']->value[$_prefixVariable2])===null||$tmp==='' ? '' : $tmp);?>
 "
-                        required>
-                        <input
-                        type = "text"
-                        name ="instrumentMembre[1]"
-                        placeholder="Instrument"
-                        value = "<?php echo (($tmp = @$_smarty_tpl->tpl_vars['instrumentMembre']->value[1])===null||$tmp==='' ? '' : $tmp);?>
+                                        required>
+                                        <input
+                                        type = "text"
+                                        name ="instrumentMembre[<?php echo $_smarty_tpl->tpl_vars['i']->value;?>
+]"
+                                        placeholder="Instrument"
+                                        value = "<?php ob_start();
+echo $_smarty_tpl->tpl_vars['i']->value;
+$_prefixVariable3 = ob_get_clean();
+echo (($tmp = @$_smarty_tpl->tpl_vars['instrumentMembre']->value[$_prefixVariable3])===null||$tmp==='' ? '' : $tmp);?>
 "
-                        required>
+                                        required>
+                                <?php }
+}
+?>
+                        <?php } else { ?>
+                                <label> Membre n°1 * </label>
+                                <input
+                                type = "text"
+                                name ="nomMembre[1]"
+                                placeholder="Nom"
+                                value = "<?php echo (($tmp = @$_smarty_tpl->tpl_vars['nomMembre']->value[1])===null||$tmp==='' ? '' : $tmp);?>
+"
+                                required>
+                                <input
+                                type = "text"
+                                name ="prenomMembre[1]"
+                                placeholder="Prenom"
+                                value = "<?php echo (($tmp = @$_smarty_tpl->tpl_vars['prenomMembre']->value[1])===null||$tmp==='' ? '' : $tmp);?>
+"
+                                required>
+                                <input
+                                type = "text"
+                                name ="instrumentMembre[1]"
+                                placeholder="Instrument"
+                                value = "<?php echo (($tmp = @$_smarty_tpl->tpl_vars['instrumentMembre']->value[1])===null||$tmp==='' ? '' : $tmp);?>
+"
+                                required>
+                        <?php }?>
 		</div>
-                <input type="button" value="Ajouter un membre" onClick="javascript:ajouter()">
-                <input type="button" value="Supprimer un membre" onClick="javascript:supprimer()">
+                <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['membre'])===null||$tmp==='' ? '' : $tmp);?>
+ </span>
+                <input type="button" value="Ajouter un membre" onClick="javascript:ajouter(<?php if ((isset($_smarty_tpl->tpl_vars['membreLength']->value))) {?> <?php echo $_smarty_tpl->tpl_vars['membreLength']->value;?>
+ <?php } else { ?> 'undefined' <?php }?>)">
+                <input type="button" value="Supprimer un membre" onClick="javascript:supprimer(<?php if ((isset($_smarty_tpl->tpl_vars['membreLength']->value))) {?> <?php echo $_smarty_tpl->tpl_vars['membreLength']->value;?>
+ <?php } else { ?> 'undefined' <?php }?>)">
                 <br>
                 <br>
                 
@@ -513,5 +597,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 <?php }?>
     </body>
 </html>
+
+        
 <?php }
 }

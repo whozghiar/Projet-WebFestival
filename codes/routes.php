@@ -347,27 +347,18 @@ Flight::route('POST /login', function(){
     $instrumentMembre = $_POST['instrumentMembre'];
 
     for($i=1;$i<=sizeof($nomMembre);$i++){
-      if (empty($nomMembre[$i])){
+      if (empty($nomMembre[$i]) or empty($prenomMembre[$i]) or empty($instrumentMembre[$i])){
         $erreur = True; 
-        $messages['nomMembre'] = "(Serveur) Veuillez saisir un nom de membre";
+        $messages['membre'] = "(Serveur) Veuillez completer tous les champs des membres";
       }
-      if (empty($prenomMembre[$i])){
-        $erreur = True; 
-        $messages['prenomMembre'] = "(Serveur) Veuillez saisir un prenom de membre";
-      }
-      if (empty($instrumentMembre[$i])){
-        $erreur = True; 
-        $messages['instrumentMembre'] = "(Serveur) Veuillez saisir un instrument";
-      }
-
     }
 
     //Statut, sacem et producteur
     if($_POST['statut']=="Oui"){
-      $statue=0;
+      $statut=0;
     }
     else{
-      $statue=1;
+      $statut=1;
     }
     if($_POST['sacem']=="Oui"){
       $sacem=0;
@@ -403,7 +394,7 @@ Flight::route('POST /login', function(){
       if (strlen($nomGrp)>30){
         $erreur = True;
         $messages['nomGrp'] = "(Serveur) Veuillez saisir un nom plus court (-30 caractères)";
-        $_POST['nomGrp'];
+        $_POST['nomGrp']="";
       }
 
  // Test Sur l'année :
@@ -419,18 +410,18 @@ Flight::route('POST /login', function(){
     if (!is_numeric($fannee)){
       $erreur = True;
       $messages['anneeCrea'] = "(Client)Veuillez saisir une année valide.";
-      $_POST['annee'];
+      $_POST['annee']="";
     }
     if((strlen($fannee)<4) or (strlen($fannee)>4)){
       $erreur = True;
       $messages['anneeCrea'] = " (Client) Veuillez saisir une année valide.";
-      $_POST['annee'];
+      $_POST['annee']="";
     }
     
-    if ((intval($fannee)>=1930) or (intval($fannee)<=2021)){
+    if ((intval($fannee)<=1930) or (intval($fannee)>=2021)){
       $erreur = True;
       $messages['anneeCrea'] = " (Client) Veuillez saisir une année entre 1930 et 2021";
-      $_POST['annee'];
+      $_POST['annee']="";
     }
     // Test côté Serveur : 
 
@@ -443,19 +434,19 @@ Flight::route('POST /login', function(){
     if (!is_numeric($anneeCrea)){
       $erreur = True;
       $messages['anneeCrea'] = "(Serveur)Veuillez saisir une année valide.";
-      $_POST['annee'];
+      $_POST['annee']="";
     }
 
     if ((strlen($anneeCrea) > 4) or (strlen($anneeCrea) < 4)){
       $erreur = True;
       $messages['anneeCrea'] = "(Serveur) L'année est incorrecte, veuillez rééssayer";
-      $_POST['annee'];
+      $_POST['annee']="";
     }
 
-    if ((intval($anneeCrea)>=1930) or (intval($anneeCrea)<=2021)){
+    if ((intval($anneeCrea)<=1930) and (intval($anneeCrea)>=2021)){
       $erreur = True;
       $messages['anneeCrea'] = "(Serveur) Veuillez saisir une année entre 1930 et 2021";
-      $_POST['annee'];
+      $_POST['annee']="";
     }
     
   // Test sur l'URL Facebook ou site :
@@ -466,13 +457,12 @@ Flight::route('POST /login', function(){
       if(empty($furlFB)){
         $erreur = True;
         $messages['urlFB'] = "<br>(Client) Veuillez saisir une URL Facebook.";
-        echo "test1";
       }
       else {
         if(!filter_var($furlFB, FILTER_VALIDATE_URL)){
             $erreur = True;
             $messages['urlFB'] = "<br>(Client) Veuillez saisir une URL valide.";
-            $_POST['facebook'];
+            $_POST['facebook']="";
         }
       }  
     // Test Côté Serveur : 
@@ -485,7 +475,7 @@ Flight::route('POST /login', function(){
         if(!filter_var($urlFB, FILTER_VALIDATE_URL)){
             $erreur = True;
             $messages['urlFB'] = "<br>(Serveur) Veuillez saisir une URL valide.";
-            $_POST['facebook'];
+            $_POST['facebook']="";
         }
       }
 
@@ -493,59 +483,42 @@ Flight::route('POST /login', function(){
 
     // Test Côté Client :
     $furlSC = Flight::request()->data->soundcloud;
-    if(empty($furlSC)){
-      $erreur = True;
-      $messages['urlSC'] = "<br>(Client) Veuillez saisir une URL Soundcloud.";
-      $_POST['soundcloud']="";
-    }
-    else {
+   
+    if(!empty($furlSC)){
       if((!filter_var($furlSC, FILTER_VALIDATE_URL)) or (strpos($furlSC,'soundcloud')==FALSE)){
           $erreur = True;
           $messages['urlSC'] = "<br>(Client) Veuillez saisir une URL Soundclound valide.";
           $_POST['soundcloud']="";
-      }
-    }  
+    }}
   // Test Côté Serveur : 
-    if(empty($urlSC)){
-      $erreur = True;
-      $messages['urlSC'] = "<br>(Serveur) Veuillez saisir une URL SoundCloud.";
-    }
-    else {
+    if (!empty($urlSC)){
       if((!filter_var($urlSC, FILTER_VALIDATE_URL)) or (strpos($urlSC,'soundcloud')==FALSE)){
           $erreur = True;
           $messages['urlSC'] = "<br>(Serveur) Veuillez saisir une URL Soundcloud valide.";
           $_POST['soundcloud']="";
-      }
-    }
+      }}
+    
 
   // Test sur l'URL YouTube:
 
     // Test Côté Client :
     $furlYT = Flight::request()->data->youTube;
-    if(empty($furlYT)){
-      $erreur = True;
-      $messages['urlYT'] = "<br>(Client) Veuillez saisir une URL YouTube.";
-      $_POST['youTube']="";
-    }
-    else {
+    if(!empty($furlYT)){
       if((!filter_var($furlYT, FILTER_VALIDATE_URL)) or (strpos($furlYT,'youtube')==FALSE)){
           $erreur = True;
           $messages['urlYT'] = "<br>(Client) Veuillez saisir une URL YouTube valide.";
           $_POST['youTube']="";
       }
-    }  
-  // Test Côté Serveur : 
-    if(empty($urlYT)){
-      $erreur = True;
-      $messages['urlYT'] = "<br>(Serveur) Veuillez saisir une URL YouTube.";
     }
-    else {
+  // Test Côté Serveur : 
+    if (!empty($urlYT)){
       if((!filter_var($urlYT, FILTER_VALIDATE_URL)) or (strpos($urlYT,'youtube')==FALSE)){
           $erreur = True;
           $messages['urlYT'] = "<br>(Serveur) Veuillez saisir une URL YouTube valide.";
           $_POST['youTube']="";
       }
     }
+    
 
 
 
@@ -574,7 +547,7 @@ Flight::route('POST /login', function(){
       if (!is_numeric($fcp)){
         $erreur = True;
         $messages['codePostal'] = "(Client) Veuillez saisir un code postal valide.";
-        $_POST['codePostal'];
+        $_POST['codePostal']="";
       }
   
 
@@ -588,7 +561,7 @@ Flight::route('POST /login', function(){
       if (!is_numeric($cp)){
         $erreur = True;
         $messages['cp'] = "(Serveur) Veuillez saisir un code postal valide.";
-        $_POST['codePostal'];
+        $_POST['codePostal']="";
       }
 
       if((strlen($cp) < 4) or (strlen($cp) > 5)){
@@ -613,13 +586,13 @@ Flight::route('POST /login', function(){
       if (is_numeric($fpresTexte)){
         $erreur = True;
         $messages['presTexte'] = "(Client) Utilisez des lettres !";
-        $_POST['presTexte'];
+        $_POST['presTexte']="";
       }
 
       if (strlen($fpresTexte) > 500){
         $erreur = True;
         $messages['presTexte'] = "(Client) Votre texte dépasse les 500 caractères.";
-        $_POST['presTexte'];
+        $_POST['presTexte']="";
       }
 
       // Test Côté Serveur :
@@ -632,13 +605,13 @@ Flight::route('POST /login', function(){
       if (is_numeric($presTexte)){
         $erreur = True;
         $messages['presTexte'] = "(Serveur) Utilisez des lettres !";
-        $_POST['presTexte'];
+        $_POST['presTexte']="";
       }
 
       if (strlen($presTexte) > 500){
         $erreur = True;
         $messages['presTexte'] = "(Serveur) Votre texte dépasse les 500 caractères.";
-        $_POST['presTexte'];
+        $_POST['presTexte']="";
       }
 
       
@@ -655,13 +628,13 @@ Flight::route('POST /login', function(){
       if (is_numeric($fexpScenique)){
         $erreur = True;
         $messages['expScenique'] = "(Client) Utilisez des lettres !";
-        $_POST['expScenique'];
+        $_POST['expScenique']="";
       }
 
       if (strlen($fexpScenique) > 500){
         $erreur = True;
         $messages['expScenique'] = "(Client) Votre texte dépasse les 500 caractères.";
-        $_POST['expScenique'];
+        $_POST['expScenique']="";
       }
 
       // Test Côté Serveur :
@@ -674,13 +647,13 @@ Flight::route('POST /login', function(){
       if (is_numeric($expScenique)){
         $erreur = True;
         $messages['expScenique'] = "(Serveur) Utilisez des lettres !";
-        $_POST['expScenique'];
+        $_POST['expScenique']="";
       }
 
       if (strlen($expScenique) > 500){
         $erreur = True;
         $messages['expScenique'] = "(Serveur) Votre texte dépasse les 500 caractères.";
-        $_POST['expScenique'];
+        $_POST['expScenique']="";
       }
     
     // Test sur le style musical : 
@@ -695,7 +668,7 @@ Flight::route('POST /login', function(){
       if (is_numeric($fvilleRep)){
         $erreur = True;
         $messages['villeRep'] = "(Client) Utilisez des lettres !";
-        $_POST['ville'];
+        $_POST['ville']="";
       }
       // Test Côté Serveur :
 
@@ -707,7 +680,7 @@ Flight::route('POST /login', function(){
       if (is_numeric($villeRep)){
         $erreur = True;
         $messages['villeRep'] = "(Serveur) Utilisez des lettres !";
-        $_POST['ville'];
+        $_POST['ville']="";
       }
 
     // Test sur la ville : 
@@ -722,7 +695,7 @@ Flight::route('POST /login', function(){
       if (is_numeric($fstyleMus)){
         $erreur = True;
         $messages['styleMus'] = "(Client) Utilisez des lettres !";
-        $_POST['styleMus'];
+        $_POST['styleMus']="";
       }
       // Test Côté Serveur :
 
@@ -734,7 +707,7 @@ Flight::route('POST /login', function(){
       if (is_numeric($styleMus)){
         $erreur = True;
         $messages['styleMus'] = "(Serveur) Utilisez des lettres !";
-        $_POST['styleMus'];
+        $_POST['styleMus']="";
       }
 
 
@@ -750,13 +723,13 @@ Flight::route('POST /login', function(){
       if (!is_numeric($ftel)){
         $erreur = True;
         $messages['tel'] = "(Client) Utilisez des chiffres !";
-        $_POST['tel'];
+        $_POST['tel']="";
       }
 
       if ((strlen(trim($ftel))>10) or (strlen(trim($ftel))<10) ){
         $erreur = True;
         $messages['tel'] = "(Client) N° Incorrect, Réessayez avec un N° de téléphone au bon format !";
-        $_POST['tel'];        
+        $_POST['tel']="";        
       }
       // Test Côté Serveur :
 
@@ -768,17 +741,16 @@ Flight::route('POST /login', function(){
       if (!is_numeric($tel)){
         $erreur = True;
         $messages['tel'] = "(Serveur) Utilisez des chiffres !";
-        $_POST['tel'];
+        $_POST['tel']="";
       }
 
       if ((strlen(trim($tel))>10) or (strlen(trim($tel))<10) ){
         $erreur = True;
         $messages['tel'] = "(Serveur) N° Incorrect, Réessayez avec un N° de téléphone au bon format !";
-        $_POST['tel'];        
+        $_POST['tel']="";        
       }
 
 
-    $erreur = True;
 
     if(isset(Flight::request()->files)){
 
@@ -887,7 +859,7 @@ Flight::route('POST /login', function(){
             $messages['dp'] = "Erreur lors de l'upload du fichier.";
           }
       }
-      // Fichier photoGrp1.jpg
+      // Fichier photoGrp.jpg
 
       for($i=1;$i<=2;$i++){
         $nomWebGrp[$i] = $_FILES["photoGrp$i"]['name'];
@@ -905,7 +877,6 @@ Flight::route('POST /login', function(){
               $extension_verif = array('png','jpeg','jpg','gif');
               if (in_array($extension_fichier,$extension_verif)){
                 move_uploaded_file($nomTmpGrp[$i],"../data/upload/upload ".basename($nomWebGrp[$i]));
-                echo "Envoie effectué";
               }
               else {
                 $erreur = True;
@@ -925,7 +896,7 @@ Flight::route('POST /login', function(){
         }  
       }
       
-      // Fichier mus1.mp3
+      // Fichier mus.mp3
       for($i=1;$i<=3;$i++){
         $nomWebmus[$i] = $_FILES["mus$i"]['name'];
         $sizemus[$i] = $_FILES["mus$i"]['size'];
@@ -941,7 +912,6 @@ Flight::route('POST /login', function(){
             $extension_verif = 'mp3';
             if ($extension_fichier==$extension_verif){
               move_uploaded_file($nomTmpmus[$i],"../data/upload/upload ".basename($nomWebmus[$i]));
-              echo "Envoie effectué";
             }
             else {
               $erreur = True;
@@ -961,7 +931,6 @@ Flight::route('POST /login', function(){
         }
       }
     }
-
     if ($erreur){
 
       Flight::view()->assign('messages',$messages);
@@ -972,27 +941,34 @@ Flight::route('POST /login', function(){
       Flight::view()->assign('reqScenes',$reqScenes);
       Flight::view()->assign('$_FILES',$_FILES);
       Flight::view()->assign('membreLength',sizeof($nomMembre));
+      
       Flight::render("formulaire_candidature.tpl",$_POST);
       
   
     }
   
     else{
-      /*
       $db = Flight::get('db');
-      $idDep = $db -> query("SELECT id FROM departements WHERE nom=$_POST['dep']);
-      $idScene = $db -> query("SELECT id FROM scenes WHERE type=$_POST['scene']);
-      $iduser = $db -> query("SELECT id FROM utilisateurs WHERE mail=$_SESSION['mail']);
-      $req = $db -> prepare("
+      $ReqIDDep = $db->prepare("SELECT id FROM departements WHERE nom=:nom");
+      $ReqIDDep -> execute(array(':nom' => "$dep"));
+      $idDep = $ReqIDDep -> fetchAll();
+      $ReqidScene = $db->prepare("SELECT s.id FROM scenes s WHERE s.type=:scene");
+      $ReqidScene -> execute(array(':scene' => "$scene"));
+      $idScene = $ReqidScene -> fetchAll();
+      $mail = $_SESSION['mail'];
+      $Reqiduser = $db->prepare("SELECT id FROM utilisateurs WHERE mail=:mail");
+      $Reqiduser -> execute(array(':mail' => "$mail"));
+      $iduser = $Reqiduser -> fetchAll();
+      $req = $db->prepare("
                             INSERT INTO 
                               candidatures(nomGroupe,id_departement,id_scene,id_utilisateur,villeRepresentant,codePostalRepresentant,telRepresentant,styleMusique,anneeCreation,presentationTexte,expScenique,webFacebook,soundcloud,youtube,associatif,sacem,producteur,dossierPresse,ficheTechnique,docSacem) 
                             VALUES 
                               (:nomGroupe,:id_departement,:id_scene,:id_utilisateur,:villeRepresentant,:codePostalRepresentant,:telRepresentant,:styleMusique,:anneeCreation,:presentationTexte,:expScenique,:webFacebook,:soundcloud,:youtube,:associatif,:sacem,:producteur,:dossierPresse,:ficheTechnique,:docSacem)
                             ");
       $req -> bindParam(':nomGroupe',$nomGrp);
-      $req -> bindParam(':id_departement',$idDep);
-      $req -> bindParam(':id_scene',$idScene);
-      $req -> bindParam(':id_utilisateur',$iduser);
+      $req -> bindParam(':id_departement',$idDep[0][0]);
+      $req -> bindParam(':id_scene',$idScene[0][0]);
+      $req -> bindParam(':id_utilisateur',$iduser[0][0]);
       $req -> bindParam(':villeRepresentant',$villeRep);
       $req -> bindParam(':codePostalRepresentant',$cp);
       $req -> bindParam(':telRepresentant',$tel);
@@ -1000,7 +976,7 @@ Flight::route('POST /login', function(){
       $req -> bindParam(':anneeCreation',$anneeCrea);
       $req -> bindParam(':presentationTexte',$presTexte);
       $req -> bindParam(':expScenique',$expScenique);
-      $req -> bindParam(':webFacebook',$ulrFB);
+      $req -> bindParam(':webFacebook',$urlFB);
       $req -> bindParam(':soundcloud',$urlSC);
       $req -> bindParam(':youtube',$urlYT);
       $req -> bindParam(':associatif',$statut);
@@ -1011,18 +987,21 @@ Flight::route('POST /login', function(){
       $req -> bindParam(':docSacem',$nomWebSacem);
       $req -> execute();
       
-      $idCandidature = $db -> query("SELECT id FROM candidatures WHERE id_utilisateur=$iduser);
+      $user=$iduser[0][0];
+      $ReqidCandidature = $db -> prepare("SELECT id FROM candidatures WHERE id_utilisateur=:iduser");
+      $ReqidCandidature -> execute(array(':iduser' => "$user"));
+      $idCandidature = $ReqidCandidature -> fetchAll();
       $reqMembres = $db -> prepare ("
                                     INSERT INTO
                                         membres(nom,prenom,instrument,id_candidature)
                                     VALUES
                                         (:nom,:prenom,:instrument,:id_candidature)
                                     ");
-      for($i=1;$i<$POST['nomMembre'].length;$i++){
+      for($i=1;$i<=sizeof($_POST['nomMembre']);$i++){
         $reqMembres -> bindParam(':nom',$nomMembre[$i]);
         $reqMembres -> bindParam(':prenom',$prenomMembre[$i]);
         $reqMembres -> bindParam(':instrument',$instrumentMembre[$i]);
-        $reqMembres -> bindParam(':id_candidature',$idCandidature);
+        $reqMembres -> bindParam(':id_candidature',$idCandidature[0][0]);
         $reqMembres -> execute();
       }
 
@@ -1033,8 +1012,8 @@ Flight::route('POST /login', function(){
                                         (:nomfichier,:id_candidature)
                                     ");
       for($i=1;$i<=2;$i++){
-        $reqPhoto -> bindParam(':nomfichier',$$nomWebGrp[$i]);
-        $reqPhoto -> bindParam(':id_candidature',$idCandidature);
+        $reqPhoto -> bindParam(':nomfichier',$nomWebGrp[$i]);
+        $reqPhoto -> bindParam(':id_candidature',$idCandidature[0][0]);
         $reqPhoto -> execute();
       }
 
@@ -1046,18 +1025,17 @@ Flight::route('POST /login', function(){
                                     ");
       for($i=1;$i<=3;$i++){
         $reqMus -> bindParam(':nomfichier',$nomWebmus[$i]);
-        $reqMus -> bindParam(':id_candidature',$idCandidature);
+        $reqMus -> bindParam(':id_candidature',$idCandidature[0][0]);
         $reqMus -> execute();
       }
       
       $reqUser = $db -> prepare ("
                                   UPDATE utilisateurs
                                   SET candidat = '0'
-                                  WHERE id=$iduser
+                                  WHERE id=$user
                                 ");
       $reqUser -> execute();
       $_SESSION['candidat']=0;
-      */
       
       Flight::redirect("/");
     }
@@ -1083,7 +1061,10 @@ Flight::route('POST /login', function(){
       "titre"=>"detail_candidature",
       "messages"=>array()
 
-    );
+    );/*
+    $iduser = $db -> query("SELECT id FROM utilisateurs WHERE mail=$_SESSION['mail']");
+    $Dep = $db -> query("SELECT departements.nom FROM departements,candidatures,utilisateurs WHERE departements.id=candidatures.id_departement AND candidatures.id_utilisateur=$iduser");
+    $Scene = $db -> query("SELECT scenes.type FROM scenes,candidatures,utilisateurs WHERE scenes.id=candidature.id_scene AND candidatures.id_utilisateur=$iduser");*/
     Flight::render('detail_candidature.tpl',$data);
   });
 
