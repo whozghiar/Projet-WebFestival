@@ -207,6 +207,11 @@ input[type=password],[type=text],[type=number],[type=tel],[type=url],[type=file]
     color : red;
   }
 
+  .header{
+    width:  40px;
+    height: 40px;
+    background-color:transparent;
+  }
 
 /* OTHERS */
 
@@ -223,3 +228,4 @@ input[type=password],[type=text],[type=number],[type=tel],[type=url],[type=file]
 {
   background-color: #56bbed80;
 }
+

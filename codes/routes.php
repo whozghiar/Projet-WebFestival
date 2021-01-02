@@ -24,6 +24,8 @@ Flight::route('GET /', function(){
 
 */
 Flight::route('GET /register', function(){
+  if(isset ($_SESSION['user']))
+    Flight::redirect('/');
     $data=array(
       "titre"=>"Inscription",
       "messages"=>array()
@@ -152,6 +154,8 @@ Flight::route('POST /register', function(){
 });
 
 Flight::route('GET /success', function(){
+  if(isset ($_SESSION['user']))
+    Flight::redirect('/');
   $data=array(
     "titre" => "Succès"
   );
@@ -167,6 +171,8 @@ Flight::route('GET /success', function(){
 */
 
   Flight::route('GET /login', function(){
+    if(isset ($_SESSION['user']))
+    Flight::redirect('/');
     $data=array(
       "titre"=>"Login",
       "messages"=>array()
@@ -251,7 +257,9 @@ Flight::route('POST /login', function(){
 
           $_SESSION['user'] = $compte[4];
           $_SESSION['mail'] = $compte[2];
+          $_SESSION['userType'] = $compte[1];
           $_SESSION['candidat'] = $compte[6];
+          $_SESSION['id'] = $compte[0];
 
         }
 
@@ -1056,18 +1064,229 @@ Flight::route('POST /login', function(){
 
 */
 
-  Flight::route('GET /detail_candidature', function(){
-    $data=array(
-      "titre"=>"detail_candidature",
-      "messages"=>array()
+  Flight::route('GET /detail_candidature(/@iduser)', function($iduser){
+    if(!isset($_SESSION['user'])){
+      Flight::redirect("/");
+    }else{
+    if ($_SESSION['candidat']=="1" and $_SESSION['userType']=="Candidat"){
+      Flight::redirect("/");
+    }
 
-    );/*
-    $iduser = $db -> query("SELECT id FROM utilisateurs WHERE mail=$_SESSION['mail']");
-    $Dep = $db -> query("SELECT departements.nom FROM departements,candidatures,utilisateurs WHERE departements.id=candidatures.id_departement AND candidatures.id_utilisateur=$iduser");
-    $Scene = $db -> query("SELECT scenes.type FROM scenes,candidatures,utilisateurs WHERE scenes.id=candidature.id_scene AND candidatures.id_utilisateur=$iduser");*/
-    Flight::render('detail_candidature.tpl',$data);
+      $db = Flight::get('db');
+
+        if ($iduser==NULL){
+          $mail = $_SESSION['mail'];
+          $Reqiduser = $db->prepare("SELECT nom,prenom,id FROM utilisateurs WHERE mail=:mail");
+          $Reqiduser -> execute(array(':mail' => "$mail"));
+          $requser = $Reqiduser -> fetchAll();
+          $iduser=$requser[0][2];
+          $lien=1;
+        }
+        else{
+          $Reqiduser = $db->prepare("SELECT nom,prenom FROM utilisateurs WHERE id=:iduser");
+          $Reqiduser -> execute(array(':iduser' => "$iduser"));
+          $requser = $Reqiduser -> fetchAll();
+          $lien=0;
+        }
+      if ($_SESSION['id']!=$iduser and $_SESSION['userType']=="Candidat"){
+         Flight::redirect("/");
+      }
+  
+      $ReqNomDep = $db -> prepare("SELECT departements.nom FROM departements,candidatures,utilisateurs WHERE departements.id=candidatures.id_departement AND candidatures.id_utilisateur=:iduser");
+      $ReqNomDep -> execute(array(':iduser' => "$iduser"));
+      $reqdep = $ReqNomDep -> fetchAll();
+      $nomDep=$reqdep[0][0];
+
+      $ReqTypeScene = $db -> prepare("SELECT scenes.type FROM scenes,candidatures,utilisateurs WHERE scenes.id=candidatures.id_scene AND candidatures.id_utilisateur=:iduser");
+      $ReqTypeScene -> execute(array(':iduser' => "$iduser"));
+      $reqScene = $ReqTypeScene -> fetchAll();
+      $typeScene=$reqScene[0][0];
+
+      $ReqAllCandidature = $db -> prepare("
+                                    SELECT id,nomGroupe,villeRepresentant,codePostalRepresentant,telRepresentant,styleMusique,anneeCreation,presentationTexte,expScenique,webFacebook,soundcloud,youtube,associatif,sacem,producteur,dossierPresse,ficheTechnique,docSacem
+                                    FROM candidatures
+                                    WHERE id_utilisateur=:iduser
+                                    ");
+      $ReqAllCandidature -> execute(array(':iduser' => "$iduser"));
+      $reqCandidature = $ReqAllCandidature -> fetchAll();
+      $idCandidature=$reqCandidature[0][0];
+
+      $ReqPhotos = $db -> prepare("SELECT nomfichier FROM photos WHERE id_candidature=:idCandidature");
+      $ReqPhotos -> execute(array(':idCandidature' => "$idCandidature"));
+      
+      $ReqMus = $db -> prepare("SELECT nomfichier FROM mp3s WHERE id_candidature=:idCandidature");
+      $ReqMus -> execute(array(':idCandidature' => "$idCandidature"));
+
+      $ReqMembres = $db -> prepare("SELECT nom,prenom,instrument FROM membres WHERE id_candidature=:idCandidature");
+      $ReqMembres -> execute(array(':idCandidature' => "$idCandidature"));
+      $Membres = $ReqMembres -> fetchAll();
+
+      $data=array(
+        "titre"=>"detail_candidature",
+        "messages"=>array(),
+        "lien"=>$lien,
+        "nomUser"=>$requser[0][0],
+        "prenomUser"=>$requser[0][1],
+        "nomDep"=>$nomDep,
+        "typeScene"=>$typeScene,
+        "reqMus"=>$ReqMus,
+        "reqPhotos"=>$ReqPhotos,
+        "Membres"=> $Membres,
+        "nomGrp"=> $reqCandidature[0][1],
+        "villeRepresentant"=>$reqCandidature[0][2],
+        "codePostalRepresentant"=>$reqCandidature[0][3],
+        "telRepresentant"=>$reqCandidature[0][4],
+        "styleMusique"=>$reqCandidature[0][5],
+        "anneeCreation"=>$reqCandidature[0][6],
+        "presentationTexte"=>$reqCandidature[0][7],
+        "expScenique"=>$reqCandidature[0][8],
+        "webFacebook"=>$reqCandidature[0][9],
+        "soundcloud"=>$reqCandidature[0][10],
+        "youtube"=>$reqCandidature[0][11],
+        "associatif"=>$reqCandidature[0][12],
+        "sacem"=>$reqCandidature[0][13],
+        "producteur"=>$reqCandidature[0][14],
+        "dossierPresse"=>$reqCandidature[0][15],
+        "ficheTechnique"=>$reqCandidature[0][16],
+        "docSacem"=>$reqCandidature[0][17],
+        "iduser"=>$iduser
+      );
+
+      Flight::render('detail_candidature.tpl',$data);
+    }
   });
 
+  Flight::route('GET /liste', function(){
+  if(!isset ($_SESSION['user'])){
+    Flight::redirect("/");
+  }else{
+  if ($_SESSION['userType']=="Candidat"){
+    Flight::redirect("/");
+  }
+    $db = Flight::get('db');
+    $dep=array();
+    $scene=array();
+    $nom=array();
+    $ReqAllCandidature = $db -> prepare("
+                                  SELECT nomGroupe,villeRepresentant,codePostalRepresentant,styleMusique,anneeCreation,id_utilisateur,id_scene,id_departement
+                                  FROM candidatures
+                                  ");
+    $ReqAllCandidature -> execute();
+    $candidatures = $ReqAllCandidature -> fetchAll();
+
+    foreach ($candidatures as $i=>$value){
+      $idDep=$value[7];
+      $idscene=$value[6];
+      $iduser=$value[5];
+
+      $ReqNomDep = $db -> prepare("SELECT nom FROM departements WHERE id=:idDep");
+      $ReqNomDep -> execute(array(':idDep' => "$idDep"));
+      $reqdep = $ReqNomDep -> fetchAll();
+
+      $dep[$i]= $reqdep[0][0];
+  
+      $ReqTypeScene = $db -> prepare("SELECT type FROM scenes WHERE id=:idscene");
+      $ReqTypeScene -> execute(array(':idscene' => "$idscene"));
+      $reqScene = $ReqTypeScene -> fetchAll();
+
+      $scene[$i]= $reqScene[0][0];
+
+      $ReqNomUser = $db -> prepare("SELECT nom FROM utilisateurs WHERE id=:iduser");
+      $ReqNomUser -> execute(array(':iduser' => "$iduser"));
+      $reqUser = $ReqNomUser -> fetchAll();
+
+      $nom[$i]= $reqUser[0][0];
+
+    }
+
+    $data=array(
+      "titre"=>"liste_candidature",
+      "messages"=>array(),
+      "nom"=>$nom,
+      "dep"=>$dep,
+      "scene"=>$scene,
+      "candidatures"=> $candidatures
+    );
+
+    Flight::render('liste_candidature.tpl',$data);
+  }
+  });
+
+  Flight::route('GET /userListe', function(){
+    if (!isset ($_SESSION['user'])){
+      Flight::redirect("/");
+    }
+    else{
+      if ($_SESSION['userType']=="Candidat"){
+        Flight::redirect("/");
+      }
+    }
+    $db = Flight::get('db');
+    $ReqAllUser = $db -> prepare("
+                                  SELECT nom,prenom,mail,type,candidat,id
+                                  FROM utilisateurs
+                                  ");
+    $ReqAllUser -> execute();
+    $users = $ReqAllUser -> fetchAll();
+
+    $data=array(
+      "titre"=>"liste_utilisateurs",
+      "messages"=>array(),
+      "users"=> $users
+    );
+
+    Flight::render('userListe.tpl',$data);
+  });
+
+  Flight::route('POST /userListe', function(){
+  
+    $db = Flight::get('db');
+    $type = $_POST['type'];
+    $reqUser = $db -> prepare ("
+                                  UPDATE utilisateurs
+                                  SET type=:type
+                                  WHERE id=:id
+                                ");
+    foreach ($type as $id=>$value){
+      $reqUser -> execute(array(':type' => "$value",':id' => "$id"));
+    }
+    Flight::redirect("/userListe");
+  });
+
+  Flight::route("/delete(/@iduser)", function($iduser){
+
+    if(!isset ($_SESSION['user'])){
+      Flight::redirect("/");
+    }else{
+    if($_SESSION['userType']=="Candidat" and $_SESSION['id']!=$iduser){
+      Flight::redirect("/");
+    }else{
+    $db = Flight::get('db');
+
+    if($iduser==NULL){
+      $mail=$_SESSION['mail'];
+      $Reqiduser = $db->prepare("SELECT id FROM utilisateurs WHERE mail=:mail");
+      $Reqiduser -> execute(array(':mail' => "$mail"));
+      $users = $Reqiduser -> fetchAll();
+      $iduser=$users[0][0];
+    }
+    $reqDelete = $db -> prepare ("
+                                  DELETE FROM candidatures
+                                  WHERE id_utilisateur=:iduser
+                                ");
+    $reqDelete -> execute(array(':iduser' => "$iduser"));
+
+    $reqUser = $db -> prepare ("
+                                  UPDATE utilisateurs
+                                  SET candidat = '1'
+                                  WHERE id=$iduser
+                                ");
+    $reqUser -> execute();
+    $_SESSION['candidat']=1;
+
+    Flight::redirect("/"); // Redirection vers l'accueil
+    }}
+});
 
   Flight::route("/logout", function(){
     $_SESSION = array(); // Réinitialisation de la variable de session

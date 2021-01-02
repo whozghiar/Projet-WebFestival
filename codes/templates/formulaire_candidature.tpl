@@ -113,6 +113,11 @@
 
         {/literal}
     </head>
+    <header>
+        <a class="header" href="/codes">
+        <img class="header" src="/images/home.png">
+        </a>
+    </header>
     <body>
     {if isset ($user)}
         {if ($candidat==1)}
@@ -122,7 +127,7 @@
 
     <div class = "wrapper fadeInDown">
         <div id = "formContent">
-            <form action="candidature" method="POST" enctype="multipart/form-data" novalidate>
+            <form action="candidature" method="POST" enctype="multipart/form-data">
             
                 <label class = "fadeIn second"> Nom du groupe :  * </label>
                 <input class = "fadeIn second" 
@@ -469,7 +474,7 @@
        
         <br>
         
-                 <a href = "profil">Voir ma candidature</a>
+                 <a href = "detail_candidature">Voir ma candidature</a>
         </div>
          {/if}
 
@@ -487,10 +492,6 @@
                  <a href = "login"> Se connecter</a>
         </div>
          <br>
-        <div class="img">
-                <img src="../images/neo_et_sa_mere.gif">
-        </div>
-            
         
 
         

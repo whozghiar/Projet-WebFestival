@@ -1,0 +1,195 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+@import url("https://fonts.googleapis.com/css?family=Fira+Sans");
+/* BASIC */
+
+html {
+  background-color: #56bbed80;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  height: 100vh;
+}
+
+/* STRUCTURE */
+
+.wrapper {
+  display: flex;
+  align-items: left;
+  flex-direction: row; 
+  justify-content: relative;
+  width: 100%;
+  min-height: 100%;
+  padding: 20px;
+}
+
+#formContent {
+  -webkit-border-radius: 10px 10px 10px 10px;
+  border-radius: 10px 10px 10px 10px;
+  background: rgb(194, 225, 255);
+  padding: 30px;
+  width: 90%;
+  max-width: auto;
+  position: relative;
+  -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+  text-align: left;
+}
+
+.page-title-holder {
+    position: center;
+    top: 0;
+    left: 0;
+    background-color: #56baed;
+    border-radius: 15px 15px 15px 15px;
+    width: 400px;
+    display: inline-block;
+    z-index: 98;
+    height: 200px;
+} 
+
+.photo {
+    text-align : center;
+    height : 250px;
+    width : auto;
+}
+
+
+
+/* Simple CSS3 Fade-in Animation */
+@-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+.fadeIn {
+  opacity:0;
+  -webkit-animation:fadeIn ease-in 1;
+  -moz-animation:fadeIn ease-in 1;
+  animation:fadeIn ease-in 1;
+
+  -webkit-animation-fill-mode:forwards;
+  -moz-animation-fill-mode:forwards;
+  animation-fill-mode:forwards;
+
+  -webkit-animation-duration:1s;
+  -moz-animation-duration:1s;
+  animation-duration:1s;
+}
+
+.fadeIn.H{
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    text-transform: uppercase;
+    margin: 40px 8px 10px 8px; 
+    color: black;
+    -webkit-animation-delay: 1.2s;
+    -moz-animation-delay: 1.2s;
+    animation-delay: 1.2s;
+  }
+
+
+  
+h1
+{
+  color : white;
+}
+
+h2, h3
+{
+  color : black;
+}
+
+.supprimer,.modif,.file {
+  background-color: #56baed;
+  border: none;
+  color: white;
+  padding: 15px 80px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 13px;
+  -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+  box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;
+  margin: 5px 20px 40px 20px;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.musique{
+  background-color:rgba(240, 240, 3, 0.63);
+  border: none;
+  color: black;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 6px;
+  -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+  box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;
+  margin: 5px 20px 40px 20px;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+.musique:hover{
+  background-color : #56baed;
+  color: white;
+}
+.file:hover{
+  background-color: rgba(240, 240, 3, 0.63);
+  color: white;
+}
+.supprimer:hover {
+  background-color: #f44336;
+  color: white;
+}
+
+.modif:hover {
+  background-color: rgb(58, 231, 81);
+  color: white;
+}
+
+
+a.musique{
+  font-size: 60%;
+  
+}
+.header{
+  width:  40px;
+  height: 40px;
+  background-color:transparent;
+}
+/* OTHERS */
+
+*:focus {
+    outline: none;
+} 
+
+* {
+  box-sizing: border-box;
+}
+
+
+
+
+
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0px 0px;
+}

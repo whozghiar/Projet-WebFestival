@@ -198,7 +198,11 @@ input[type=mail]::placeholder,input[type=password]:placeholder {
     animation-delay: 1.2s;
   }
   
-
+  .header{
+    width:  40px;
+    height: 40px;
+    background-color:transparent;
+  }
 
 /* OTHERS */
 
@@ -209,3 +213,5 @@ input[type=mail]::placeholder,input[type=password]:placeholder {
 * {
   box-sizing: border-box;
 }
+
+

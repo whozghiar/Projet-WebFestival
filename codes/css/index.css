@@ -6,7 +6,7 @@ html {
   background-color: #56bbed80;
 }
 
-body {
+ body{
   font-family: "Poppins", sans-serif;
   height: 100vh;
 }
@@ -203,8 +203,22 @@ h2, h3
 
 *:focus {
     outline: none;
-} 
+}
+ .header{
+  width:  40px;
+  height: 40px;
+  background-color:transparent;
+}
+a.header,input[type="submit"].header{
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
 
 * {
   box-sizing: border-box;
 }
+

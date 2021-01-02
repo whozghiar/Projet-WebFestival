@@ -29,7 +29,7 @@ body {
 #formContent {
   -webkit-border-radius: 10px 10px 10px 10px;
   border-radius: 10px 10px 10px 10px;
-  background: #fff;
+  background: white;
   padding: 30px;
   width: 90%;
   max-width: 450px;
@@ -226,7 +226,11 @@ input[type=mail]::placeholder,input[type=password]:placeholder, [type=text]:plac
   }
   
 
-
+  .header{
+    width:  40px;
+    height: 40px;
+    background-color:transparent;
+  }
 
 
 /* OTHERS */
@@ -238,3 +242,4 @@ input[type=mail]::placeholder,input[type=password]:placeholder, [type=text]:plac
 * {
   box-sizing: border-box;
 }
+

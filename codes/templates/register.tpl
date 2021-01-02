@@ -5,6 +5,11 @@
             <meta name= "viewport" content="width=device-width, initial-scale=1">
             <title>Inscription</title>
     </head>
+    <header>
+        <a class="header" href="/codes">
+        <img class="header" src="/images/home.png">
+        </a>
+    </header>
     <body>
         <div class="fadeIn H1">
             <h1> Inscription : </h1>

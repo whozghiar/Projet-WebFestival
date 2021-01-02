@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-12-31 14:07:37
+/* Smarty version 3.1.34-dev-7, created on 2021-01-02 18:33:13
   from 'C:\projetWEB\codes\templates\formulaire_candidature.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5feddb2929a910_18155361',
+  'unifunc' => 'content_5ff0bc69d70890_13826850',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '21771375d4e8c2ffa9c902722f08180574156fd3' => 
     array (
       0 => 'C:\\projetWEB\\codes\\templates\\formulaire_candidature.tpl',
-      1 => 1609423648,
+      1 => 1609612388,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5feddb2929a910_18155361 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5ff0bc69d70890_13826850 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 
 
@@ -138,6 +138,11 @@ function content_5feddb2929a910_18155361 (Smarty_Internal_Template $_smarty_tpl)
 
         
     </head>
+    <header>
+        <a class="header" href="/codes">
+        <img class="header" src="/images/home.png">
+        </a>
+    </header>
     <body>
     <?php if ((isset($_smarty_tpl->tpl_vars['user']->value))) {?>
         <?php if (($_smarty_tpl->tpl_vars['candidat']->value == 1)) {?>
@@ -147,7 +152,7 @@ function content_5feddb2929a910_18155361 (Smarty_Internal_Template $_smarty_tpl)
 
     <div class = "wrapper fadeInDown">
         <div id = "formContent">
-            <form action="candidature" method="POST" enctype="multipart/form-data" novalidate>
+            <form action="candidature" method="POST" enctype="multipart/form-data">
             
                 <label class = "fadeIn second"> Nom du groupe :  * </label>
                 <input class = "fadeIn second" 
@@ -569,7 +574,7 @@ echo (($tmp = @$_smarty_tpl->tpl_vars['instrumentMembre']->value[$_prefixVariabl
        
         <br>
         
-                 <a href = "profil">Voir ma candidature</a>
+                 <a href = "detail_candidature">Voir ma candidature</a>
         </div>
          <?php }?>
 
@@ -587,10 +592,6 @@ echo (($tmp = @$_smarty_tpl->tpl_vars['instrumentMembre']->value[$_prefixVariabl
                  <a href = "login"> Se connecter</a>
         </div>
          <br>
-        <div class="img">
-                <img src="../images/neo_et_sa_mere.gif">
-        </div>
-            
         
 
         
