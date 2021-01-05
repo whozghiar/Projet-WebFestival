@@ -38,7 +38,7 @@ body {
 }
 /* FORM TYPOGRAPHY*/
 
-input[type=submit], a {
+input[type=submit], a:not(.header) {
   background-color: #56baed;
   border: none;
   color: white;
@@ -207,7 +207,8 @@ input[type=password],[type=text],[type=number],[type=tel],[type=url],[type=file]
     color : red;
   }
 
-  .header{
+  
+  img.header{
     width:  40px;
     height: 40px;
     background-color:transparent;

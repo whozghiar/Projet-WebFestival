@@ -4,9 +4,16 @@
 <!doctype html>
 <html>
     <head>
-            <link href="css/candidature.css" type="text/css" rel="stylesheet" >
+    
+    <link rel="icon" type="image/x-icon" href="https://www.flaticon.com/svg/static/icons/svg/3022/3022607.svg">
             <meta name= "viewport" content="width=device-width, initial-scale=1">
             <title>Candidature</title>
+        <!-- 
+        Ci dessous nous avons un script en JavaScript pour ajouter des membres à notre groupe.
+        Il y a 3 champ qui sont ajouté à chaque fois qu'on appuie sur le bouton ajouter un membre: nomMembre, prenomMembre, Instrument.
+        Il y a aussi une vérification pour ajouter un maximum de 8 membres. 
+        Nous avons aussi mis un bouton supprimer un membre.
+        -->
         {literal}
             <script type="text/JavaScript">
                 <!--
@@ -110,8 +117,9 @@
                 }
 
                 </script>
-
         {/literal}
+        
+        <link href="css/candidature.css" type="text/css" rel="stylesheet" >
     </head>
     <header>
         <a class="header" href="/codes">
@@ -119,8 +127,8 @@
         </a>
     </header>
     <body>
-    {if isset ($user)}
-        {if ($candidat==1)}
+    {if isset ($user)} <!-- On vérifie si la personne est bien connectée pour pouvoir fare une candidature -->
+        {if ($candidat==1)} <!-- On vérifie si la personne a déjà fait une candidature, si il n'a pas fait de candidature il remplit les champs suivant -->
         <div class="fadeIn H">
             <h1> Candidature au festival : </h1>
         </div>
@@ -315,6 +323,7 @@
                         {/if}
 		</div>
                 <span class="erreur"> {$messages.membre|default:''} </span>
+                <br>
                 <input type="button" value="Ajouter un membre" onClick="javascript:ajouter({if isset ($membreLength)} {$membreLength} {else} 'undefined' {/if})">
                 <input type="button" value="Supprimer un membre" onClick="javascript:supprimer({if isset ($membreLength)} {$membreLength} {else} 'undefined' {/if})">
                 <br>
@@ -382,7 +391,7 @@
                         name = "dossierPresse"
                         type="file"> 
                 <br>
-                <span class="erreur">  {$messages.dp|default:''} </span>
+                <span class="erreur">  {$messages.dossierPresse|default:''} </span>
 
                 <input  type = "hidden"
                         name ="MAX_FILE_SIZE"
@@ -398,7 +407,7 @@
                         name = "ficheTechnique"
                         type="file">
                 <br>
-                <span class="erreur"> {$messages.ft|default:''} </span>
+                <span class="erreur"> {$messages.ficheTechnique|default:''} </span>
 
                 <input  type = "hidden"
                         name ="MAX_FILE_SIZE"
@@ -467,7 +476,7 @@
 </form>
 
 
-        {else} 
+        {else}  <!-- si Il y a déjà une candidature alors il y a un bouton pour voir sa candidature -->
         <div class="fadeIn H">
                 <h1> Vous avez déjà fait une candidature.</h1>
         
@@ -483,8 +492,8 @@
 
 
         
-        <div class="fadeIn H">
-                <h1> Vous devez être connecté pour pouvoir candidater.</h1>
+        <div class="fadeIn H"> <!-- on gère aussi le cas où la personne à mis le lien vers candidature sans être connectée  -->
+                <h1> Vous devez être connectés pour pouvoir candidater.</h1>
         
        
         <br>

@@ -199,6 +199,12 @@ h2, h3
   color : black;
 }
 
+.erreur{
+  text-decoration: underline;
+  font-size : 12px;
+  font-style : italic;
+  color : red;
+}
 /* OTHERS */
 
 *:focus {

@@ -10,7 +10,17 @@ body {
   font-family: "Poppins", sans-serif;
   height: 100vh;
 }
-
+.page-title-holder {
+  position: center;
+  top: 0;
+  left: 0;
+  background-color: #56baed;
+  border-radius: 15px 15px 15px 15px;
+  width: 400px;
+  display: inline-block;
+  z-index: 98;
+  height: 300px;
+}
 
 /* STRUCTURE */
 
@@ -60,6 +70,8 @@ input[type=submit]  {
   -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
+
+
 
 input[type=submit]:hover{
   background-color: #39ace7;

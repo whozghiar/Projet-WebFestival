@@ -39,7 +39,17 @@ body {
   text-align: center;
 }
 
-
+.page-title-holder {
+  position: center;
+  top: 0;
+  left: 0;
+  background-color: #56baed;
+  border-radius: 15px 15px 15px 15px;
+  width: 400px;
+  display: inline-block;
+  z-index: 98;
+  height: 130px;
+}
 
 
 

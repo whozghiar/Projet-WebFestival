@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2021-01-02 18:33:13
+/* Smarty version 3.1.34-dev-7, created on 2021-01-05 17:53:28
   from 'C:\projetWEB\codes\templates\formulaire_candidature.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5ff0bc69d70890_13826850',
+  'unifunc' => 'content_5ff4a79845a399_74539609',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '21771375d4e8c2ffa9c902722f08180574156fd3' => 
     array (
       0 => 'C:\\projetWEB\\codes\\templates\\formulaire_candidature.tpl',
-      1 => 1609612388,
+      1 => 1609868366,
       2 => 'file',
     ),
   ),
@@ -20,16 +20,23 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5ff0bc69d70890_13826850 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5ff4a79845a399_74539609 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 
 
 <!doctype html>
 <html>
     <head>
-            <link href="css/candidature.css" type="text/css" rel="stylesheet" >
+    
+    <link rel="icon" type="image/x-icon" href="https://www.flaticon.com/svg/static/icons/svg/3022/3022607.svg">
             <meta name= "viewport" content="width=device-width, initial-scale=1">
             <title>Candidature</title>
+        <!-- 
+        Ci dessous nous avons un script en JavaScript pour ajouter des membres à notre groupe.
+        Il y a 3 champ qui sont ajouté à chaque fois qu'on appuie sur le bouton ajouter un membre: nomMembre, prenomMembre, Instrument.
+        Il y a aussi une vérification pour ajouter un maximum de 8 membres. 
+        Nous avons aussi mis un bouton supprimer un membre.
+        -->
         
             <?php echo '<script'; ?>
  type="text/JavaScript">
@@ -135,8 +142,9 @@ function content_5ff0bc69d70890_13826850 (Smarty_Internal_Template $_smarty_tpl)
 
                 <?php echo '</script'; ?>
 >
-
         
+        
+        <link href="css/candidature.css" type="text/css" rel="stylesheet" >
     </head>
     <header>
         <a class="header" href="/codes">
@@ -144,8 +152,8 @@ function content_5ff0bc69d70890_13826850 (Smarty_Internal_Template $_smarty_tpl)
         </a>
     </header>
     <body>
-    <?php if ((isset($_smarty_tpl->tpl_vars['user']->value))) {?>
-        <?php if (($_smarty_tpl->tpl_vars['candidat']->value == 1)) {?>
+    <?php if ((isset($_smarty_tpl->tpl_vars['user']->value))) {?> <!-- On vérifie si la personne est bien connectée pour pouvoir fare une candidature -->
+        <?php if (($_smarty_tpl->tpl_vars['candidat']->value == 1)) {?> <!-- On vérifie si la personne a déjà fait une candidature, si il n'a pas fait de candidature il remplit les champs suivant -->
         <div class="fadeIn H">
             <h1> Candidature au festival : </h1>
         </div>
@@ -405,6 +413,7 @@ echo (($tmp = @$_smarty_tpl->tpl_vars['instrumentMembre']->value[$_prefixVariabl
 		</div>
                 <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['membre'])===null||$tmp==='' ? '' : $tmp);?>
  </span>
+                <br>
                 <input type="button" value="Ajouter un membre" onClick="javascript:ajouter(<?php if ((isset($_smarty_tpl->tpl_vars['membreLength']->value))) {?> <?php echo $_smarty_tpl->tpl_vars['membreLength']->value;?>
  <?php } else { ?> 'undefined' <?php }?>)">
                 <input type="button" value="Supprimer un membre" onClick="javascript:supprimer(<?php if ((isset($_smarty_tpl->tpl_vars['membreLength']->value))) {?> <?php echo $_smarty_tpl->tpl_vars['membreLength']->value;?>
@@ -474,7 +483,7 @@ echo (($tmp = @$_smarty_tpl->tpl_vars['instrumentMembre']->value[$_prefixVariabl
                         name = "dossierPresse"
                         type="file"> 
                 <br>
-                <span class="erreur">  <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['dp'])===null||$tmp==='' ? '' : $tmp);?>
+                <span class="erreur">  <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['dossierPresse'])===null||$tmp==='' ? '' : $tmp);?>
  </span>
 
                 <input  type = "hidden"
@@ -491,7 +500,7 @@ echo (($tmp = @$_smarty_tpl->tpl_vars['instrumentMembre']->value[$_prefixVariabl
                         name = "ficheTechnique"
                         type="file">
                 <br>
-                <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['ft'])===null||$tmp==='' ? '' : $tmp);?>
+                <span class="erreur"> <?php echo (($tmp = @$_smarty_tpl->tpl_vars['messages']->value['ficheTechnique'])===null||$tmp==='' ? '' : $tmp);?>
  </span>
 
                 <input  type = "hidden"
@@ -567,7 +576,7 @@ echo (($tmp = @$_smarty_tpl->tpl_vars['instrumentMembre']->value[$_prefixVariabl
 </form>
 
 
-        <?php } else { ?> 
+        <?php } else { ?>  <!-- si Il y a déjà une candidature alors il y a un bouton pour voir sa candidature -->
         <div class="fadeIn H">
                 <h1> Vous avez déjà fait une candidature.</h1>
         
@@ -583,8 +592,8 @@ echo (($tmp = @$_smarty_tpl->tpl_vars['instrumentMembre']->value[$_prefixVariabl
 
 
         
-        <div class="fadeIn H">
-                <h1> Vous devez être connecté pour pouvoir candidater.</h1>
+        <div class="fadeIn H"> <!-- on gère aussi le cas où la personne à mis le lien vers candidature sans être connectée  -->
+                <h1> Vous devez être connectés pour pouvoir candidater.</h1>
         
        
         <br>

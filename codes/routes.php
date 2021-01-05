@@ -1,6 +1,6 @@
 <?php
 require('../includes/pdo.php');
-
+require('fonctions.php');
 
 /*
 
@@ -14,6 +14,12 @@ Flight::route('GET /', function(){
   );
   Flight::render('index.tpl',$data);
 
+});
+
+Flight::route('GET /echo',function(){
+  echo "test";
+  $data=array();
+  Flight::render('register.tpl',$data);
 });
 
 
@@ -86,48 +92,7 @@ Flight::route('POST /register', function(){
   $mail = $_POST["email"];
   $mdp = $_POST["passe"];
 
-  if (empty($nom)){
-    $erreur = True;
-    $messages["prenom"] = 'Vous devez saisir un Prénom.';
-  }
-
-  if (empty($nom)){
-    $erreur = True;
-    $messages["nom"] = 'Vous devez saisir un Nom.';
-  }
-  if (empty($mail)){
-    $erreur = True;
-    $messages["email"] = 'Vous devez saisir une Email.';
-  }
-
-  elseif (!filter_var($mail,FILTER_VALIDATE_EMAIL)){
-    $erreur = True;
-    $messages["email"]='Vous devez saisir une Email VALIDE.';
-  }
-
-  if (empty($mdp)){
-    $erreur = True;
-    $messages["passe"] = 'Vous devez saisir un mot de passe.';
-  }
-
-  elseif  (strlen($mdp) < 8 ){
-    $erreur = True;
-    $messages["passe"] = 'Votre mot de passe doit faire 8 caractères minimum.';
-  }
-
-  else {
-    $db = Flight::get('db');
-    // MAIL
-    $req = $db -> prepare( "SELECT mail FROM utilisateurs where mail = :mail");
-    $req -> execute (array(':mail' => "$mail"));
-
-    if ($req -> rowCount() > 0)
-    {
-      $erreur = True;
-      $messages['email'] = 'Email déjà existante.';
-    }
-  }
-
+  verifRegister($prenom,$nom,$mail,$mdp,$erreur,$messages);
 
 
   if ($erreur){
@@ -152,6 +117,13 @@ Flight::route('POST /register', function(){
 
 
 });
+
+/*
+    Cette route permet d'accéder à la page success par la méthode GET
+    Cette route peut seulement être accéder si l'utilisateur n'est pas connecté, à la suite d'un enregistrement. Elle affiche le fichier success.tpl
+    Qui correspond à un bouton renvoyant vers la connexion.
+
+*/
 
 Flight::route('GET /success', function(){
   if(isset ($_SESSION['user']))
@@ -222,57 +194,7 @@ Flight::route('POST /login', function(){
   $mail = $_POST["email"];
   $mdp = $_POST["passe"];
 
-  if(empty($mail)){
-
-    $erreur = True;
-    $messages['Email'] = "L'email est invalide, SAISISSEZ UN MAIL VALIDE.";
-  }
-
-  if (empty($mdp)){
-
-    $erreur = True;
-    $messages['passe'] = "Le mot de passe est invalide, SAISISSEZ UN MOT DE PASSE.";
-  }
-
-  else {
-    $db = Flight::get('db');
-    $req = $db -> prepare ("SELECT * FROM utilisateurs WHERE mail=:email");
-    $req -> bindParam(':email',$mail);
-    $req -> execute();
-    if ($req -> rowCount()==0){
-
-      $erreur = True;
-      $messages['Email'] = " Les identifiants n'existent pas.";
-    }
-
-    else{
-
-      $compte= $req -> fetch();
-
-    }
-
-    if (isset($compte)){
-
-      if (password_verify($mdp,$compte[5])){
-
-          $_SESSION['user'] = $compte[4];
-          $_SESSION['mail'] = $compte[2];
-          $_SESSION['userType'] = $compte[1];
-          $_SESSION['candidat'] = $compte[6];
-          $_SESSION['id'] = $compte[0];
-
-        }
-
-      else{
-
-          $erreur = True;
-          $messages['passe'] = "Mot de passe incorrect";
-
-        }
-    }
-
-  }
-
+  verifLogs($mail,$mdp,$erreur,$messages); 
   if ($erreur==False){
 
     Flight::redirect("/");
@@ -286,24 +208,6 @@ Flight::route('POST /login', function(){
   }
 
 });
-
-
-
-  /*
-    Cette route permet d'accéder à la page de liste des candidatures par la méthode GET
-    On y déclare un tableau, dans lequel on retrouve le titre de la page, sa route complète et les messages d'erreurs qui s'afficheront.
-    On fait ensuite un rendu du fichier template : "liste_candidature.tpl" ; Une liste permettant de consulter tous les groupes de musiques s'étant inscrit.
-
-*/
-
-  Flight::route('GET /liste_candidature', function(){
-    $data=array(
-      "titre"=>"liste_candidature",
-      "messages"=>array()
-    );
-    Flight::render('liste_candidature.tpl',$data);
-  });
-
 
 
   /*
@@ -354,12 +258,7 @@ Flight::route('POST /login', function(){
     $prenomMembre = $_POST['prenomMembre'];
     $instrumentMembre = $_POST['instrumentMembre'];
 
-    for($i=1;$i<=sizeof($nomMembre);$i++){
-      if (empty($nomMembre[$i]) or empty($prenomMembre[$i]) or empty($instrumentMembre[$i])){
-        $erreur = True; 
-        $messages['membre'] = "(Serveur) Veuillez completer tous les champs des membres";
-      }
-    }
+    verifMembre($nomMembre,$prenomMembre,$instrumentMembre,$messages,$erreur);
 
     //Statut, sacem et producteur
     if($_POST['statut']=="Oui"){
@@ -380,423 +279,98 @@ Flight::route('POST /login', function(){
     else{
       $producteur=1;
     }
+
     // Test sur le nom du groupe :
-
-      //Test Côté client :
+      //Test Côté PHP :
+       $fNomGrp = Flight::request()->data->nomGrp;
+        verifNomGroupe($fNomGrp,$messages,$erreur);
+      //Test Côté Serveur :
+        verifNomGroupe($nomGrp,$messages,$erreur);
       
-      $fNomGrp = Flight::request()->data->nomGrp;
-      
-      if (empty($fNomGrp)){
-        $erreur = True;
-        $messages['nomGrp'] = "(Client) Veuillez saisir un nom de groupe ";
-      }
 
-      // Test Côté serveur :
-       
-      if (empty($nomGrp)){
-        $erreur = True; 
-        $messages['nomGrp'] = "(Serveur) Veuillez saisir un nom de groupe";
-      }
-
-
-      if (strlen($nomGrp)>30){
-        $erreur = True;
-        $messages['nomGrp'] = "(Serveur) Veuillez saisir un nom plus court (-30 caractères)";
-        $_POST['nomGrp']="";
-      }
-
- // Test Sur l'année :
-
-    // Test Côté Client :
-    $fannee = Flight::request()->data->annee;
-
-    if(empty($fannee)){
-      $erreur = True;
-      $messages['anneeCrea'] = " (Client) Veuillez saisir une année.";
-    }
-    
-    if (!is_numeric($fannee)){
-      $erreur = True;
-      $messages['anneeCrea'] = "(Client)Veuillez saisir une année valide.";
-      $_POST['annee']="";
-    }
-    if((strlen($fannee)<4) or (strlen($fannee)>4)){
-      $erreur = True;
-      $messages['anneeCrea'] = " (Client) Veuillez saisir une année valide.";
-      $_POST['annee']="";
-    }
-    
-    if ((intval($fannee)<=1930) or (intval($fannee)>=2021)){
-      $erreur = True;
-      $messages['anneeCrea'] = " (Client) Veuillez saisir une année entre 1930 et 2021";
-      $_POST['annee']="";
-    }
-    // Test côté Serveur : 
-
-
-    if(empty($anneeCrea)){
-      $erreur = True;
-      $messages['anneeCrea'] = "(Serveur) Veuillez saisir une année.";
-    }
-
-    if (!is_numeric($anneeCrea)){
-      $erreur = True;
-      $messages['anneeCrea'] = "(Serveur)Veuillez saisir une année valide.";
-      $_POST['annee']="";
-    }
-
-    if ((strlen($anneeCrea) > 4) or (strlen($anneeCrea) < 4)){
-      $erreur = True;
-      $messages['anneeCrea'] = "(Serveur) L'année est incorrecte, veuillez rééssayer";
-      $_POST['annee']="";
-    }
-
-    if ((intval($anneeCrea)<=1930) and (intval($anneeCrea)>=2021)){
-      $erreur = True;
-      $messages['anneeCrea'] = "(Serveur) Veuillez saisir une année entre 1930 et 2021";
-      $_POST['annee']="";
-    }
-    
-  // Test sur l'URL Facebook ou site :
-
-    // Test Côté Client :
-      $furlFB = Flight::request()->data->facebook;
-      
-      if(empty($furlFB)){
-        $erreur = True;
-        $messages['urlFB'] = "<br>(Client) Veuillez saisir une URL Facebook.";
-      }
-      else {
-        if(!filter_var($furlFB, FILTER_VALIDATE_URL)){
-            $erreur = True;
-            $messages['urlFB'] = "<br>(Client) Veuillez saisir une URL valide.";
-            $_POST['facebook']="";
-        }
-      }  
-    // Test Côté Serveur : 
-      if(empty($urlFB)){
-        $erreur = True;
-        $messages['urlFB'] = "<br>(Serveur) Veuillez saisir une URL Facebook.";
-
-      }
-      else {
-        if(!filter_var($urlFB, FILTER_VALIDATE_URL)){
-            $erreur = True;
-            $messages['urlFB'] = "<br>(Serveur) Veuillez saisir une URL valide.";
-            $_POST['facebook']="";
-        }
-      }
-
-  // Test sur l'URL SoundCloud:
-
-    // Test Côté Client :
-    $furlSC = Flight::request()->data->soundcloud;
-   
-    if(!empty($furlSC)){
-      if((!filter_var($furlSC, FILTER_VALIDATE_URL)) or (strpos($furlSC,'soundcloud')==FALSE)){
-          $erreur = True;
-          $messages['urlSC'] = "<br>(Client) Veuillez saisir une URL Soundclound valide.";
-          $_POST['soundcloud']="";
-    }}
-  // Test Côté Serveur : 
-    if (!empty($urlSC)){
-      if((!filter_var($urlSC, FILTER_VALIDATE_URL)) or (strpos($urlSC,'soundcloud')==FALSE)){
-          $erreur = True;
-          $messages['urlSC'] = "<br>(Serveur) Veuillez saisir une URL Soundcloud valide.";
-          $_POST['soundcloud']="";
-      }}
-    
-
-  // Test sur l'URL YouTube:
-
-    // Test Côté Client :
-    $furlYT = Flight::request()->data->youTube;
-    if(!empty($furlYT)){
-      if((!filter_var($furlYT, FILTER_VALIDATE_URL)) or (strpos($furlYT,'youtube')==FALSE)){
-          $erreur = True;
-          $messages['urlYT'] = "<br>(Client) Veuillez saisir une URL YouTube valide.";
-          $_POST['youTube']="";
-      }
-    }
-  // Test Côté Serveur : 
-    if (!empty($urlYT)){
-      if((!filter_var($urlYT, FILTER_VALIDATE_URL)) or (strpos($urlYT,'youtube')==FALSE)){
-          $erreur = True;
-          $messages['urlYT'] = "<br>(Serveur) Veuillez saisir une URL YouTube valide.";
-          $_POST['youTube']="";
-      }
-    }
-    
-
-
-
-
-
-
-
-  // Test sur le code Postal :
-    
-    // Test Côté Client : 
-
-      $fcp = Flight::request()->data->codePostal;
-
-      if (empty ($fcp)){
-        $erreur = True;
-        $messages['cp'] = "(Client) Veuillez saisir un code postal.";
-
-      }
-
-      if((strlen($fcp) < 4) or (strlen($fcp) >5)){
-        $erreur = True;
-        $messages['cp'] = "(Client) Veuillez saisir un code postal valide (entre 5 et 6 chiffres).";
-        $_POST['codePostal'] = "";
-      }
-
-      if (!is_numeric($fcp)){
-        $erreur = True;
-        $messages['codePostal'] = "(Client) Veuillez saisir un code postal valide.";
-        $_POST['codePostal']="";
-      }
+    // Test Sur l'année :
+      // Test Côté PHP
+        $fannee = Flight::request()->data->annee;
+        verifAnnee($fannee,$messages,$erreur);
+      // Test Côté Serveur
+        verifAnnee($anneeCrea,$messages,$erreur);
   
+    // Test sur l'URL Facebook ou site :
+      // Test Côté PHP
+        $furlFB = Flight::request()->data->facebook;
+        verifUrlFb($urlFB,$messages,$erreur);
+      // Test Côté Serveur
+        verifUrlFb($furlFB,$messages,$erreur);
 
-    // Test Côté Serveur  
-      if (empty($cp)){
-        $erreur = True;
-        $message['cp'] = "(Serveur) Veuillez saisir un code postal.";
-        $_POST['codePostal'] = "";
-      }
+    // Test sur l'URL SoundCloud:
+      // Test Côté PHP :
+        $furlSC = Flight::request()->data->soundcloud;
+        verifUrlSc($furlSC,$messages,$erreur);
+      // Test Côté Serveur :
+        verifUrlSc($urlSC,$messages,$erreur);  
 
-      if (!is_numeric($cp)){
-        $erreur = True;
-        $messages['cp'] = "(Serveur) Veuillez saisir un code postal valide.";
-        $_POST['codePostal']="";
-      }
+    // Test sur l'URL YouTube:
+      // Test Côté PHP :
+        $furlYT = Flight::request()->data->youTube;
+        verifUrlYt($furlYT,$messages,$erreur);
+      // Test Côté Serveur : 
+        verifUrlYt($urlYT,$messages,$erreur);
 
-      if((strlen($cp) < 4) or (strlen($cp) > 5)){
-        $erreur = True;
-        $messages['cp'] = "(Serveur) Veuillez saisir un code postal valide (entre 5 et 6 chiffres).";
-        $_POST['codePostal'] = "";
-      }
-      
+    // Test sur le code Postal :
+        // Test Côté PHP : 
+          $fcp = Flight::request()->data->codePostal;
+          verifCodePostal($fcp,$messages,$erreur);
+        // Test Côté Serveur : 
+          verifCodePostal($cp,$messages,$erreur);
+        
 
 
     // Test sur la présentation du texte :
-
-      // Test Côté Client :
-      
-      $fpresTexte = Flight::request()->data->presTexte;
-
-      if (empty ($fpresTexte)){
-        $erreur = True;
-        $messages['presTexte'] = "(Client) Veuillez présenter votre groupe. (500 car. max)";
-      }
-
-      if (is_numeric($fpresTexte)){
-        $erreur = True;
-        $messages['presTexte'] = "(Client) Utilisez des lettres !";
-        $_POST['presTexte']="";
-      }
-
-      if (strlen($fpresTexte) > 500){
-        $erreur = True;
-        $messages['presTexte'] = "(Client) Votre texte dépasse les 500 caractères.";
-        $_POST['presTexte']="";
-      }
-
+      // Test Côté PHP : 
+        $fpresTexte = Flight::request()->data->presTexte;
+        verifPresTexte($fpresTexte,$messages,$erreur);
+        // Test Côté Serveur : 
+        verifPresTexte($presTexte,$messages,$erreur);
+        
+    // Test sur l'experience scenique':
+      // Test Côté PHP :
+        $fexpScenique = Flight::request()->data->expScenique;
+        verifExpScenique($fexpScenique,$messages,$erreur);
       // Test Côté Serveur :
-
-      if (empty ($presTexte)){
-        $erreur = True;
-        $messages['presTexte'] = "(Serveur) Veuillez présenter votre groupe. (500 car. max)";
-      }
-
-      if (is_numeric($presTexte)){
-        $erreur = True;
-        $messages['presTexte'] = "(Serveur) Utilisez des lettres !";
-        $_POST['presTexte']="";
-      }
-
-      if (strlen($presTexte) > 500){
-        $erreur = True;
-        $messages['presTexte'] = "(Serveur) Votre texte dépasse les 500 caractères.";
-        $_POST['presTexte']="";
-      }
-
+        verifExpScenique($expScenique,$messages,$erreur);
       
-    // Test sur la présentation du texte :
-     
-      // Test Côté Client :
-      
-      $fexpScenique = Flight::request()->data->expScenique;
-
-      if (empty ($fexpScenique)){
-        $erreur = True;
-        $messages['expScenique'] = "(Client) Veuillez présenter votre expérience scénique. (500 car. max)";
-      }
-      if (is_numeric($fexpScenique)){
-        $erreur = True;
-        $messages['expScenique'] = "(Client) Utilisez des lettres !";
-        $_POST['expScenique']="";
-      }
-
-      if (strlen($fexpScenique) > 500){
-        $erreur = True;
-        $messages['expScenique'] = "(Client) Votre texte dépasse les 500 caractères.";
-        $_POST['expScenique']="";
-      }
-
-      // Test Côté Serveur :
-
-      if (empty ($expScenique)){
-        $erreur = True;
-        $messages['expScenique'] = "(Serveur) Veuillez présenter votre expérience scénique. (500 car. max)";
-      }
-
-      if (is_numeric($expScenique)){
-        $erreur = True;
-        $messages['expScenique'] = "(Serveur) Utilisez des lettres !";
-        $_POST['expScenique']="";
-      }
-
-      if (strlen($expScenique) > 500){
-        $erreur = True;
-        $messages['expScenique'] = "(Serveur) Votre texte dépasse les 500 caractères.";
-        $_POST['expScenique']="";
-      }
-    
-    // Test sur le style musical : 
-      // Test Côté Client : 
-      $fvilleRep = Flight::request()->data->ville;
-
-      if (empty ($fvilleRep)){
-        $erreur = True;
-        $messages['villeRep'] = "(Client) Saisissez votre ville.";
-      }
-
-      if (is_numeric($fvilleRep)){
-        $erreur = True;
-        $messages['villeRep'] = "(Client) Utilisez des lettres !";
-        $_POST['ville']="";
-      }
-      // Test Côté Serveur :
-
-      if (empty ($villeRep)){
-        $erreur = True;
-        $messages['villeRep'] = "(Serveur) Saisissez votre ville.";
-      }
-
-      if (is_numeric($villeRep)){
-        $erreur = True;
-        $messages['villeRep'] = "(Serveur) Utilisez des lettres !";
-        $_POST['ville']="";
-      }
-
     // Test sur la ville : 
-      // Test Côté Client : 
-      $fstyleMus = Flight::request()->data->styleMus;
-
-      if (empty ($fstyleMus)){
-        $erreur = True;
-        $messages['styleMus'] = "(Client) Veuillez présenter votre expérience scénique (500 car. max)";
-      }
-
-      if (is_numeric($fstyleMus)){
-        $erreur = True;
-        $messages['styleMus'] = "(Client) Utilisez des lettres !";
-        $_POST['styleMus']="";
-      }
+      // Test Côté PHP :
+        $fvilleRep = Flight::request()->data->ville;
+        verifVille($fvilleRep,$messages,$erreur);
       // Test Côté Serveur :
+        verifVille($villeRep,$messages,$erreur);
 
-      if (empty ($styleMus)){
-        $erreur = True;
-        $messages['styleMus'] = "(Serveur) Veuillez présenter votre style musical.";
-      }
-
-      if (is_numeric($styleMus)){
-        $erreur = True;
-        $messages['styleMus'] = "(Serveur) Utilisez des lettres !";
-        $_POST['styleMus']="";
-      }
+      // Test sur le style musical : 
+        // Test Côté PHP : 
+        $fstyleMus = Flight::request()->data->styleMus;
+        verifStyle($fstyleMus,$messages,$erreur);
+        // Test Côté Serveur :
+        verifStyle($styleMus,$messages,$erreur);
 
 
- // Test sur le Tel : 
-      // Test Côté Client : 
-      $ftel = Flight::request()->data->tel;
-
-      if (empty ($ftel)){
-        $erreur = True;
-        $messages['tel'] = "(Client) Veuillez saisir votre N° de téléphone.";
-      }
-
-      if (!is_numeric($ftel)){
-        $erreur = True;
-        $messages['tel'] = "(Client) Utilisez des chiffres !";
-        $_POST['tel']="";
-      }
-
-      if ((strlen(trim($ftel))>10) or (strlen(trim($ftel))<10) ){
-        $erreur = True;
-        $messages['tel'] = "(Client) N° Incorrect, Réessayez avec un N° de téléphone au bon format !";
-        $_POST['tel']="";        
-      }
-      // Test Côté Serveur :
-
-      if (empty ($tel)){
-        $erreur = True;
-        $messages['tel'] = "(Serveur) Veuillez saisir votre N° de téléphone";
-      }
-
-      if (!is_numeric($tel)){
-        $erreur = True;
-        $messages['tel'] = "(Serveur) Utilisez des chiffres !";
-        $_POST['tel']="";
-      }
-
-      if ((strlen(trim($tel))>10) or (strlen(trim($tel))<10) ){
-        $erreur = True;
-        $messages['tel'] = "(Serveur) N° Incorrect, Réessayez avec un N° de téléphone au bon format !";
-        $_POST['tel']="";        
-      }
+    // Test sur le Tel : 
+          // Test Côté PHP : 
+            $ftel = Flight::request()->data->tel;
+            verifTel($ftel,$messages,$erreur);
+          // Test Côté Serveur :
+            verifTel($tel,$messages,$erreur);
 
 
-
-    if(isset(Flight::request()->files)){
+    if(isset(Flight::request()->files)){ //FICHIER
 
       // Fichier FicheTechnique.pdf
       $nomWebFT = $_FILES['ficheTechnique']['name'];
       $sizeFT = $_FILES['ficheTechnique']['size'];
       $nomTmpFT = $_FILES['ficheTechnique']['tmp_name'];
       $codeErrFT = $_FILES['ficheTechnique']['error'];
-        // Test Côté Client :  
-
-        // Test Côté Serveur : 
-          if (isset($_FILES['ficheTechnique']) AND $codeErrFT == 0){
-            
-            if ($sizeFT<= 1500000){
-
-              $infosfichier = pathinfo($nomWebFT);
-              $extension_fichier = $infosfichier['extension'];
-              $extension_verif = array('pdf','txt','odt');
-              if (in_array($extension_fichier,$extension_verif)){
-                move_uploaded_file($nomTmpFT,"../data/upload/upload ".basename($nomWebFT));
-              }
-              else {
-                $erreur = True;
-                $messages['ft'] = "Veuillez joindre un fichier au format PDF.";
-              }
-
-            }
-            else{
-              $erreur = True;
-              $messages['ft'] = "Fichier trop lourd";
-            }
-         
-          }
-        else{
-          $erreur = True;
-          $messages['ft'] = "Erreur lors de l'upload du fichier.";
-        }
-
+      
+      verifFichierPDF("ficheTechnique",$nomWebFT,$sizeFT,$nomTmpFT,$codeErrFT,$messages,$erreur,$nomGrp);
          
 
       // Fichier DocumentSACEM.pdf
@@ -805,34 +379,7 @@ Flight::route('POST /login', function(){
       $nomTmpSacem = $_FILES['sacem']['tmp_name'];
       $codeErrSacem = $_FILES['sacem']['error'];
 
-        // Test Côté Serveur : 
-        if (isset($_FILES['sacem']) AND $codeErrSacem == 0){
-            
-          if ($sizeSacem<= 1500000){
-
-            $infosfichier = pathinfo($nomWebSacem);
-            $extension_fichier = $infosfichier['extension'];
-            $extension_verif = array('pdf','txt','odt');
-            if (in_array($extension_fichier,$extension_verif)){
-              move_uploaded_file($nomTmpSacem,"../data/upload/upload ".basename($nomWebSacem));
-            }
-            else {
-              $erreur = True;
-              $messages['sacem'] = "Veuillez joindre un fichier au format PDF.";
-            }
-
-          }
-          else{
-            $erreur = True;
-            $messages['sacem'] = "Fichier trop lourd";
-          }
-       
-        }
-      else{
-        $erreur = True;
-        $messages['sacem'] = "Erreur lors de l'upload du fichier.";
-      }
-
+      verifFichierPDF("sacem",$nomWebSacem,$sizeSacem,$nomTmpSacem,$codeErrSacem,$messages,$erreur,$nomGrp);
 
 
       // Fichier DossierPresse.pdf
@@ -841,32 +388,10 @@ Flight::route('POST /login', function(){
       $nomTmpDp = $_FILES['dossierPresse']['tmp_name'];
       $codeErrDp = $_FILES['dossierPresse']['error'];
       
-        // Test Côté Serveur : 
         if(!empty($_FILES['dossierPresse']['name'])){
-          if (isset($_FILES['dossierPresse']) AND $codeErrDp == 0){
-            if ($sizeDp<= 1500000){
-              $infosfichier = pathinfo($nomWebDp);
-              $extension_fichier = $infosfichier['extension'];
-              $extension_verif = 'pdf';
-              if ($extension_fichier==$extension_verif){
-                move_uploaded_file($nomTmpDp,"../data/upload/upload ".basename($nomWebDp));
-              }
-              else {
-                $erreur = True;
-                $messages['dp'] = "Veuillez joindre un fichier au format PDF.";
-              }
-
-            }
-            else{
-              $erreur = True;
-              $messages['dp'] = "Fichier trop lourd";
-            }
-          }
-          else{
-            $erreur = True;
-            $messages['dp'] = "Erreur lors de l'upload du fichier.";
-          }
+          verifFichierPDF("dossierPresse",$nomWebDp,$sizeDp,$nomTmpDp,$codeErrDp,$messages,$erreur,$nomGrp);
       }
+
       // Fichier photoGrp.jpg
 
       for($i=1;$i<=2;$i++){
@@ -874,35 +399,9 @@ Flight::route('POST /login', function(){
         $sizeGrp[$i] = $_FILES["photoGrp$i"]['size'];
         $nomTmpGrp[$i] = $_FILES["photoGrp$i"]['tmp_name'];
         $codeErrGrp[$i]= $_FILES["photoGrp$i"]['error'];
-
-          // Test Côté Serveur : 
-          if (isset($_FILES["photoGrp$i"]) AND $codeErrGrp[$i] == 0){
-              
-            if ($sizeGrp[$i] <= 6000000){
-
-              $infosfichier = pathinfo($nomWebGrp[$i]);
-              $extension_fichier = pathinfo($nomWebGrp[$i], PATHINFO_EXTENSION); //infosfichier['extension'];
-              $extension_verif = array('png','jpeg','jpg','gif');
-              if (in_array($extension_fichier,$extension_verif)){
-                move_uploaded_file($nomTmpGrp[$i],"../data/upload/upload ".basename($nomWebGrp[$i]));
-              }
-              else {
-                $erreur = True;
-                $messages["photoGrp$i"] = "Veuillez joindre un fichier au format .png, .jpeg ou .jpg.";
-              }
-
-            }
-            else{
-              $erreur = True;
-              $messages["photoGrp$i"] = "Fichier bien trop lourd";
-            }
-        
-          }
-        else{
-          $erreur = True;
-          $messages["photoGrp$i"] = "Erreur lors de l'upload du fichier.";
-        }  
       }
+   
+      verifPhotos($nomWebGrp,$sizeGrp,$nomTmpGrp,$codeErrGrp,$messages,$erreur,$nomGrp);
       
       // Fichier mus.mp3
       for($i=1;$i<=3;$i++){
@@ -910,36 +409,15 @@ Flight::route('POST /login', function(){
         $sizemus[$i] = $_FILES["mus$i"]['size'];
         $nomTmpmus[$i] = $_FILES["mus$i"]['tmp_name'];
         $codeErrmus[$i] = $_FILES["mus$i"]['error'];  
-
-        if (isset($_FILES["mus$i"]) AND $codeErrmus[$i] == 0){
-              
-          if ($sizemus[$i] <= 20000000){
-
-            $infosfichier = pathinfo($nomWebmus[$i]);
-            $extension_fichier = pathinfo($nomWebmus[$i], PATHINFO_EXTENSION); //infosfichier['extension'];
-            $extension_verif = 'mp3';
-            if ($extension_fichier==$extension_verif){
-              move_uploaded_file($nomTmpmus[$i],"../data/upload/upload ".basename($nomWebmus[$i]));
-            }
-            else {
-              $erreur = True;
-              $messages["mus$i"] = "Veuillez joindre un fichier au format .mp3.";
-            }
-
-          }
-          else{
-            $erreur = True;
-            $messages["mus$i"] = "Fichier bien trop lourd";
-          }
-      
-        }
-        else{
-          $erreur = True;
-          $messages["mus$i"] = "Erreur lors de l'upload du fichier.";
-        }
       }
+        verifMusiques($nomWebmus,$sizemus,$nomTmpmus,$codeErrmus,$messages,$erreur,$nomGrp);
     }
-    if ($erreur){
+
+  /* Dans le cas où une erreur est trouvé, on assigne $messages contenant les messages d'erreur à Flight, on récupère ensuite
+    les requètes SQL nécessaires à notre formulaire, celle-ci sont assignés. De même pour les fichier et le nombre de membre.tmpfile
+    On redirige ensuite vers le template formulaire_candidature.tpl dans lequel on passe $_POST.
+  */
+    if ($erreur){ 
 
       Flight::view()->assign('messages',$messages);
       $db = Flight::get('db');
@@ -955,7 +433,21 @@ Flight::route('POST /login', function(){
   
     }
   
+    /* Sinon, on rentre les données dans la base de donnée et on upload les fichiers*/
     else{
+
+    //On télécharge les fichiers et on les met dans le dossier upload.
+      uploadFile($nomTmpFT,$nomGrp,$nomWebFT);
+      uploadFile($nomTmpSacem,$nomGrp,$nomWebSacem);
+      uploadFile($nomTmpDp,$nomGrp,$nomWebDp);
+
+      for($i=1;$i<=3;$i++){
+        uploadFile($nomTmpmus[$i],$nomGrp,$nomWebmus[$i]);
+        if($i<3)
+          uploadFile($nomTmpGrp[$i],$nomGrp,$nomWebGrp[$i]);
+      }
+
+    //Récupération des id nécessaire pour avoir le département, la scène et l'utilisateur
       $db = Flight::get('db');
       $ReqIDDep = $db->prepare("SELECT id FROM departements WHERE nom=:nom");
       $ReqIDDep -> execute(array(':nom' => "$dep"));
@@ -967,6 +459,7 @@ Flight::route('POST /login', function(){
       $Reqiduser = $db->prepare("SELECT id FROM utilisateurs WHERE mail=:mail");
       $Reqiduser -> execute(array(':mail' => "$mail"));
       $iduser = $Reqiduser -> fetchAll();
+    //Cette requète complète la table candidature avec les données obtenue par le formulaire
       $req = $db->prepare("
                             INSERT INTO 
                               candidatures(nomGroupe,id_departement,id_scene,id_utilisateur,villeRepresentant,codePostalRepresentant,telRepresentant,styleMusique,anneeCreation,presentationTexte,expScenique,webFacebook,soundcloud,youtube,associatif,sacem,producteur,dossierPresse,ficheTechnique,docSacem) 
@@ -995,10 +488,12 @@ Flight::route('POST /login', function(){
       $req -> bindParam(':docSacem',$nomWebSacem);
       $req -> execute();
       
+      //Récupération de l'id de la candidature crée.
       $user=$iduser[0][0];
       $ReqidCandidature = $db -> prepare("SELECT id FROM candidatures WHERE id_utilisateur=:iduser");
       $ReqidCandidature -> execute(array(':iduser' => "$user"));
       $idCandidature = $ReqidCandidature -> fetchAll();
+      //Cette requète complète la table membres avec les données obtenue par le formulaire
       $reqMembres = $db -> prepare ("
                                     INSERT INTO
                                         membres(nom,prenom,instrument,id_candidature)
@@ -1013,6 +508,7 @@ Flight::route('POST /login', function(){
         $reqMembres -> execute();
       }
 
+      //Cette requète complète la table photos avec les données obtenue par le formulaire
       $reqPhoto = $db -> prepare ("
                                     INSERT INTO
                                         photos(nomfichier,id_candidature)
@@ -1025,6 +521,7 @@ Flight::route('POST /login', function(){
         $reqPhoto -> execute();
       }
 
+      //Cette requète complète la table mp3s avec les données obtenue par le formulaire
       $reqMus = $db -> prepare ("
                                     INSERT INTO
                                         mp3s(nomfichier,id_candidature)
@@ -1036,7 +533,7 @@ Flight::route('POST /login', function(){
         $reqMus -> bindParam(':id_candidature',$idCandidature[0][0]);
         $reqMus -> execute();
       }
-      
+      //Cette requète modifie la table utilisateur pour indiquer que l'utilisateur possède deja une candidature.
       $reqUser = $db -> prepare ("
                                   UPDATE utilisateurs
                                   SET candidat = '0'
@@ -1049,32 +546,23 @@ Flight::route('POST /login', function(){
     }
   });
 
-
-
-
-
-
-
-
-
   /*
-    Cette route permet d'accéder à la page de formulaire des candidatures par la méthode GET
-    On y déclare un tableau, dans lequel on retrouve le titre de la page, sa route complète et les messages d'erreurs qui s'afficheront.
+    Cette route permet d'accéder à une page qui affiche le détail d'une candidatures par la méthode GET,
+    Après avoir effectué une verification, afin de savoir si l'utilisateur peut voir ou non cette candidature.
     On fait ensuite un rendu du fichier template : "detail_candidature.tpl" ; Ce template fait un affichage en detail des candidatures des groupes.
+  */
 
-*/
-
-  Flight::route('GET /detail_candidature(/@iduser)', function($iduser){
-    if(!isset($_SESSION['user'])){
+  Flight::route('GET /detail_candidature(/@iduser)', function($iduser){ //Le paramètre iduser permet d'acceder à la candidature par un id
+    if(!isset($_SESSION['user'])){ //Si aucun utilisateur n'est connecté
       Flight::redirect("/");
     }else{
-    if ($_SESSION['candidat']=="1" and $_SESSION['userType']=="Candidat"){
+    if ($_SESSION['candidat']=="1" and $_SESSION['userType']=="Candidat"){ //Si l'utilisateur n'est ni responsable ni administrateur
       Flight::redirect("/");
     }
 
       $db = Flight::get('db');
 
-        if ($iduser==NULL){
+        if ($iduser==NULL){//Si l'url est juste "/detail_candidature" on en déduit que l'utilisateur tente d'accéder à sa propre candidature. On cherche donc le nom, le prénom et l'id utilisateur.
           $mail = $_SESSION['mail'];
           $Reqiduser = $db->prepare("SELECT nom,prenom,id FROM utilisateurs WHERE mail=:mail");
           $Reqiduser -> execute(array(':mail' => "$mail"));
@@ -1082,16 +570,16 @@ Flight::route('POST /login', function(){
           $iduser=$requser[0][2];
           $lien=1;
         }
-        else{
+        else{//Si l'url est "/detail_candiature/" suivi d'un id, on cherche alors seulement le  nom et le prénom de l'utilisateur
           $Reqiduser = $db->prepare("SELECT nom,prenom FROM utilisateurs WHERE id=:iduser");
           $Reqiduser -> execute(array(':iduser' => "$iduser"));
           $requser = $Reqiduser -> fetchAll();
           $lien=0;
         }
-      if ($_SESSION['id']!=$iduser and $_SESSION['userType']=="Candidat"){
+      if ($_SESSION['id']!=$iduser and $_SESSION['userType']=="Candidat"){ //Si l'utilisateur est un candidat qui tente d'accéder à une candidature différente de la sienne
          Flight::redirect("/");
       }
-  
+      // Selections des différentes données qui vont être affichées
       $ReqNomDep = $db -> prepare("SELECT departements.nom FROM departements,candidatures,utilisateurs WHERE departements.id=candidatures.id_departement AND candidatures.id_utilisateur=:iduser");
       $ReqNomDep -> execute(array(':iduser' => "$iduser"));
       $reqdep = $ReqNomDep -> fetchAll();
@@ -1156,6 +644,12 @@ Flight::route('POST /login', function(){
     }
   });
 
+  /*
+    Cette route permet d'accéder à une page qui liste les candidatures par la méthode GET
+    Après des vérifications afin de vérifié si l'utilisateur a accès à la page, on récupère les valeurs nécessaire dans la base de donnée.
+    On fait ensuite un rendu du fichier template : "liste_candidature.tpl" ; Ce template fait un affichage d'une liste des candidatures des groupes.
+  */
+
   Flight::route('GET /liste', function(){
   if(!isset ($_SESSION['user'])){
     Flight::redirect("/");
@@ -1167,6 +661,7 @@ Flight::route('POST /login', function(){
     $dep=array();
     $scene=array();
     $nom=array();
+    //Cette requète récupère les données que l'on veut dans tous les candidatures.
     $ReqAllCandidature = $db -> prepare("
                                   SELECT nomGroupe,villeRepresentant,codePostalRepresentant,styleMusique,anneeCreation,id_utilisateur,id_scene,id_departement
                                   FROM candidatures
@@ -1178,19 +673,24 @@ Flight::route('POST /login', function(){
       $idDep=$value[7];
       $idscene=$value[6];
       $iduser=$value[5];
-
+      //Cette requète récupère le nom du département pour la candidature
+      //On récupère ce nom pour chaque candidature.
       $ReqNomDep = $db -> prepare("SELECT nom FROM departements WHERE id=:idDep");
       $ReqNomDep -> execute(array(':idDep' => "$idDep"));
       $reqdep = $ReqNomDep -> fetchAll();
 
       $dep[$i]= $reqdep[0][0];
   
+      //Cette requète récupère le type de scène pour la candidature
+      //On récupère ce type pour chaque candidature.
       $ReqTypeScene = $db -> prepare("SELECT type FROM scenes WHERE id=:idscene");
       $ReqTypeScene -> execute(array(':idscene' => "$idscene"));
       $reqScene = $ReqTypeScene -> fetchAll();
 
       $scene[$i]= $reqScene[0][0];
 
+      //Cette requète récupère le nom de l'utilisateur pour la candidature
+      //On récupère ce nom pour chaque candidature.
       $ReqNomUser = $db -> prepare("SELECT nom FROM utilisateurs WHERE id=:iduser");
       $ReqNomUser -> execute(array(':iduser' => "$iduser"));
       $reqUser = $ReqNomUser -> fetchAll();
@@ -1211,6 +711,12 @@ Flight::route('POST /login', function(){
     Flight::render('liste_candidature.tpl',$data);
   }
   });
+
+   /*
+    Cette route permet d'accéder à une page qui liste les utilisateurs par la méthode GET
+    Après des vérifications afin de vérifié si l'utilisateur a accès à la page, on récupère les valeurs nécessaire dans la base de donnée.
+    On fait ensuite un rendu du fichier template : "userListe.tpl" ; Ce template fait un affichage d'une liste des utilisateurs.
+  */
 
   Flight::route('GET /userListe', function(){
     if (!isset ($_SESSION['user'])){
@@ -1238,6 +744,11 @@ Flight::route('POST /login', function(){
     Flight::render('userListe.tpl',$data);
   });
 
+   /*
+    Cette route permet d'accéder à une page qui liste les utilisateurs par la méthode POST
+    Elle permet de changer le type de l'utilisateur dans la base des données.
+    On fait ensuite un rendu du fichier template : "userListe.tpl" ; Ce template fait un affichage d'une liste des utilisateurs.
+  */
   Flight::route('POST /userListe', function(){
   
     $db = Flight::get('db');
@@ -1253,41 +764,116 @@ Flight::route('POST /login', function(){
     Flight::redirect("/userListe");
   });
 
-  Flight::route("/delete(/@iduser)", function($iduser){
+  /*
+    Cette route permet de supprimer une candidature
+    Après vérification de l'utilisateur, elle supprime les fichiers dans le dossier upload puis dans les tables.
+    Cette route possède un argument optionel. Dans le cas où quelqu'un d'autre qu'un candidat veut supprimer la candidature d'un utilisateur, on utilise son id en paramètre.
+    On redirige ensuite vers l'index.
+  */
 
+  Flight::route('/delete(/@iduser)', function($iduser){
+    $db = Flight::get('db');
     if(!isset ($_SESSION['user'])){
       Flight::redirect("/");
     }else{
-    if($_SESSION['userType']=="Candidat" and $_SESSION['id']!=$iduser){
-      Flight::redirect("/");
-    }else{
-    $db = Flight::get('db');
+        if(empty($iduser)){ // Si il n'y a pas de paramètre, on récupère l'id de l'utilisateur 
+          $mail=$_SESSION['mail'];
+          $Reqiduser = $db->prepare("SELECT id FROM utilisateurs WHERE mail=:mail");
+          $Reqiduser -> execute(array(':mail' => "$mail"));
+          $users = $Reqiduser -> fetchAll();
+          $iduser=$users[0][0];
+          $lien=0;
+        }else{
+          $lien=1;
+        }
+      if($_SESSION['userType']=="Candidat" and $_SESSION['id']!=$iduser){
+          Flight::redirect("/");
+      }else{
 
-    if($iduser==NULL){
-      $mail=$_SESSION['mail'];
-      $Reqiduser = $db->prepare("SELECT id FROM utilisateurs WHERE mail=:mail");
-      $Reqiduser -> execute(array(':mail' => "$mail"));
-      $users = $Reqiduser -> fetchAll();
-      $iduser=$users[0][0];
+        // Récupération de l'id de la candidature ainsi que le nom du groupe et les noms des différents fichiers.
+        $ReqidCandidature = $db -> prepare("SELECT id,nomGroupe,dossierPresse,ficheTechnique,docSacem FROM candidatures WHERE id_utilisateur=:iduser");
+        $ReqidCandidature -> execute(array(':iduser' => "$iduser"));
+        $ResidCandidature = $ReqidCandidature -> fetchAll();
+        $idCandidature=$ResidCandidature[0][0];
+        $nomGrp=$ResidCandidature[0][1];
+        $dossierPresse = $ResidCandidature[0][2];
+        $ficheTechnique = $ResidCandidature[0][3];
+        $docSacem=$ResidCandidature[0][4];
+
+        // Suppression du fichier dossier presse dans le dossier upload si il existe.
+        if($dossierPresse!=NULL){
+          if($lien){
+            if(file_exists("../data/upload/$nomGrp $dossierPresse")) unlink("../data/upload/$nomGrp $dossierPresse");
+          }else{
+            if(file_exists("../../data/upload/$nomGrp $dossierPresse")) unlink("../../data/upload/$nomGrp $dossierPresse");
+          }
+        }
+        // Suppression du fichier fiche Techniquedans le dossier upload.
+        if($lien){
+          if(file_exists("../data/upload/$nomGrp $ficheTechnique")) unlink("../data/upload/$nomGrp $ficheTechnique");
+        }else{
+          if(file_exists("../../data/upload/$nomGrp $ficheTechnique")) unlink("../../data/upload/$nomGrp $ficheTechnique");
+        }
+        // Suppression du fichier doc sacem dans le dossier upload.
+        if($lien){
+          if(file_exists("../data/upload/$nomGrp $docSacem")) unlink("../data/upload/$nomGrp $docSacem");
+        }else{
+          if(file_exists("../../data/upload/$nomGrp $docSacem")) unlink("../../data/upload/$nomGrp $docSacem");
+        }
+
+        // Récupération des noms des fichiers photos pour la candidature
+        $ReqPhotos = $db -> prepare("SELECT nomfichier FROM photos WHERE id_candidature=:idCandidature");
+        $ReqPhotos -> execute(array(':idCandidature' => "$idCandidature"));
+        foreach($ReqPhotos as $photo){ // Suppression des fichiers photos dans le dossier upload
+          if($lien){
+            if(file_exists("../data/upload/$nomGrp $photo[0]")) unlink("../data/upload/$nomGrp $photo[0]");
+          }else{
+            if(file_exists("../../data/upload/$nomGrp $photo[0]")) unlink("../../data/upload/$nomGrp $photo[0]");
+          }
+        }
+
+        // Récupération des noms des fichiers musique pour la candidature
+        $ReqMus = $db -> prepare("SELECT nomfichier FROM mp3s WHERE id_candidature=:idCandidature");
+        $ReqMus -> execute(array(':idCandidature' => "$idCandidature"));
+        foreach($ReqMus as $Mus){// Suppression des fichiers musique dans le dossier upload
+          if($lien){
+            if(file_exists("../data/upload/$nomGrp $Mus[0]")) unlink("../data/upload/$nomGrp $Mus[0]");
+          }else{
+            if(file_exists("../../data/upload/$nomGrp $Mus[0]")) unlink("../../data/upload/$nomGrp $Mus[0]");
+          }
+        }
+
+        //Suppression des données liés à la candidature dans la table photos.
+        $reqDeletePhotos = $db -> prepare("DELETE FROM photos WHERE id_candidature=:idCandidature");
+        $reqDeletePhotos -> execute(array(':idCandidature' => "$idCandidature"));
+        //Suppression des données liés à la candidature dans la table mp3s.
+        $reqDeleteMus = $db -> prepare("DELETE FROM mp3s WHERE id_candidature=:idCandidature");
+        $reqDeleteMus -> execute(array(':idCandidature' => "$idCandidature"));
+        //Suppression des données liés à la candidature dans la table membres.
+        $reqDeleteMembre = $db -> prepare("DELETE FROM membres WHERE id_candidature=:idCandidature");
+        $reqDeleteMembre -> execute(array(':idCandidature' => "$idCandidature"));
+        //Suppression des données liés à la candidature dans la table candidatures.
+        $reqDeleteCandidature = $db -> prepare ("DELETE FROM candidatures WHERE id_utilisateur=:iduser");
+        $reqDeleteCandidature -> execute(array(':iduser' => "$iduser"));
+        //Modification de la table utilisateur pour indiquer que l'utilisateur n'a pas fait de candidature.
+        $reqUser = $db -> prepare ("
+                                      UPDATE utilisateurs
+                                      SET candidat = '1'
+                                      WHERE id=$iduser
+                                    ");
+        $reqUser -> execute();
+        if($iduser==$_SESSION['id'])
+          $_SESSION['candidat']=1;
+
+        Flight::redirect("/"); // Redirection vers l'accueil
+      }
     }
-    $reqDelete = $db -> prepare ("
-                                  DELETE FROM candidatures
-                                  WHERE id_utilisateur=:iduser
-                                ");
-    $reqDelete -> execute(array(':iduser' => "$iduser"));
-
-    $reqUser = $db -> prepare ("
-                                  UPDATE utilisateurs
-                                  SET candidat = '1'
-                                  WHERE id=$iduser
-                                ");
-    $reqUser -> execute();
-    $_SESSION['candidat']=1;
-
-    Flight::redirect("/"); // Redirection vers l'accueil
-    }}
 });
 
+/*
+    Cette route permet de se déconnecter.
+    On redirige vers l'index.
+  */
   Flight::route("/logout", function(){
     $_SESSION = array(); // Réinitialisation de la variable de session
     session_destroy(); // Déstruction de la session
